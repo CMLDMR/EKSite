@@ -13,10 +13,44 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
     wApp->addMetaHeader("description","ERK Realty Show","text/html; charset=utf-8");
 
 
-    mClient = new mongocxx::client(mongocxx::uri(_url));
+    try {
+        mClient = new mongocxx::client(mongocxx::uri(_url));
+    } catch (mongocxx::exception &e) {
+        con << e.what();
+    }
 
 
-    db = mClient->database("db");
+
+    db = mClient->database("EKSite");
+
+
+
+    try {
+        auto ins = this->db.collection("villa").insert_one(make_document(kvp("sd",23)).view());
+
+        con << ins.value().result().inserted_count();
+
+    } catch (mongocxx::exception &e) {
+        con << e.what();
+    }
+
+
+
+    con << "QUERY DATABASE";
+    try {
+        auto cursor = this->db.collection("villa").find(document{}.view());
+
+
+        for( auto doc : cursor )
+        {
+            qDebug() << bsoncxx::to_json(doc).c_str() << "dd";
+        }
+
+    } catch (mongocxx::exception &e) {
+
+    }
+
+    con << "QUERY DATABASE ENDED";
 
 
 
@@ -25,13 +59,13 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
     app->loadingIndicator()->setMessage("Yükleniyor...");
 
 
-//    p_wtTheme = std::make_shared<Wt::WBootstrapTheme>();
+    p_wtTheme = std::make_shared<Wt::WBootstrapTheme>();
 
-//    p_wtTheme->setVersion(Wt::WBootstrapTheme::Version::v3);
+    p_wtTheme->setVersion(Wt::WBootstrapTheme::Version::v3);
 
-//    p_wtTheme.get()->setResponsive(true);
+    p_wtTheme.get()->setResponsive(true);
 
-//    Wt::WApplication::instance()->setTheme(p_wtTheme);
+    Wt::WApplication::instance()->setTheme(p_wtTheme);
 
 
     WApplication::instance()->addMetaHeader("viewport","width=device-width, initial-scale=1.0");
