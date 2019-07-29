@@ -2,6 +2,9 @@
 #define DBCLASS_H
 
 #include "mongoheaders.h"
+#include <QDebug>
+
+#define con qDebug()
 
 class DBClass
 {
