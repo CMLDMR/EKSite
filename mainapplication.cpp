@@ -25,14 +25,14 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
 
 
 
-    try {
-        auto ins = this->db.collection("villa").insert_one(make_document(kvp("sd",23)).view());
+//    try {
+//        auto ins = this->db.collection("villa").insert_one(make_document(kvp("sd",23)).view());
 
-        con << ins.value().result().inserted_count();
+//        con << ins.value().result().inserted_count();
 
-    } catch (mongocxx::exception &e) {
-        con << e.what();
-    }
+//    } catch (mongocxx::exception &e) {
+//        con << e.what();
+//    }
 
 
 
@@ -75,10 +75,12 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
     root()->setContentAlignment(AlignmentFlag::Center);
 
 
-    root()->addWidget(cpp14::make_unique<Header>());
-    root()->addWidget(cpp14::make_unique<Body>(&db));
-    root()->addWidget(cpp14::make_unique<Footer>());
+    auto header = root()->addWidget(cpp14::make_unique<Header>());
+    auto body = root()->addWidget(cpp14::make_unique<Body>(&db));
+    auto footer = root()->addWidget(cpp14::make_unique<Footer>());
 
+
+    header->ClickGiris().connect(body,&Body::initLogin);
 
 
 

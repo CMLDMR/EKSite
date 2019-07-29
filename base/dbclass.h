@@ -17,6 +17,8 @@ public:
 
     mongocxx::collection collection(std::string coll);
 
+    int getRandom(int begin = 0 , int end = 255 );
+
 private:
     mongocxx::database* mDB;
 };

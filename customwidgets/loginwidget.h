@@ -1,11 +1,22 @@
 #ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
 
+#include "wtinclude.h"
 
-class LoginWidget : public WContainerWidget
+#include <base/dbclass.h>
+
+
+class LoginWidget : public WContainerWidget , public DBClass
 {
 public:
-    LoginWidget();
+    LoginWidget(mongocxx::database* _db);
+
+
+    Signal<NoClass> &ClickMainMenu();
+
+private:
+
+    Signal<NoClass> _ClickMainMenu;
 };
 
 #endif // LOGINWIDGET_H

@@ -11,6 +11,11 @@ class Body : public WContainerWidget , public DBClass
 {
 public:
     Body(mongocxx::database* _db);
+
+
+    void initMain();
+
+    void initLogin();
 };
 
 #endif // BODY_H

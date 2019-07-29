@@ -30,6 +30,7 @@ SOURCES += \
         body/body.cpp \
         body/footer.cpp \
         body/header.cpp \
+        customwidgets/loginwidget.cpp \
         customwidgets/reservationwidget.cpp \
         customwidgets/slider.cpp \
         ilancontainer.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     body/footer.h \
     body/header.h \
     bootstrap.h \
+    customwidgets/loginwidget.h \
     customwidgets/reservationwidget.h \
     customwidgets/slider.h \
     ilancontainer.h \

@@ -25,6 +25,7 @@ Slider::Slider()
         current++;
         current = current % count;
         mStack->setCurrentIndex(current);
+        mStack->currentWidget()->setHeight(WLength("100%"));
     });
 
 
@@ -32,20 +33,22 @@ Slider::Slider()
 
 void Slider::addItem(std::unique_ptr<SliderItem> item)
 {
+//    item->setHeight(WLength("100%"));
     mStack->addWidget(std::move(item));
 }
 
 SliderItem::SliderItem(const std::string &imgurl, const std::string &title)
 {
 
+    setPositionScheme(PositionScheme::Absolute);
     setWidth(WLength("100%"));
-    setHeight(WLength("100%"));
+    setMinimumSize(WLength::Auto,400);
     setAttributeValue(Style::style,Style::background::url(imgurl)+Style::background::size::cover+Style::background::repeat::norepeat+Style::background::position::center_center);
 
     auto container = addWidget(cpp14::make_unique<WContainerWidget>());
-    container->setPositionScheme(PositionScheme::Relative);
+    container->setPositionScheme(PositionScheme::Absolute);
 
-    container->setOffsets(0,Side::Left);
+    container->setOffsets(WLength("50%"),Side::Left);
     container->setOffsets(WLength("50%"),Side::Top);
 
     container->setAttributeValue(Style::style,Style::background::color::rgba(55,55,55));

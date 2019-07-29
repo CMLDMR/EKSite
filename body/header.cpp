@@ -40,6 +40,9 @@ Header::Header()
         _container->setMargin(WLength::Auto,Side::Top|Side::Bottom);
         auto text = _container->addWidget(cpp14::make_unique<WText>("Giriş Yap"));
         text->setAttributeValue(Style::style,Style::color::rgb("0,0,0"));
+        _container->clicked().connect(this,[=](){
+            _ClickGiris.emit(NoClass());
+        });
     }
 
     {
@@ -56,4 +59,9 @@ Header::Header()
         text->setAttributeValue(Style::style,Style::color::rgb("0,0,0"));
     }
 
+}
+
+Signal<NoClass> &Header::ClickGiris()
+{
+    return _ClickGiris;
 }

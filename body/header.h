@@ -10,8 +10,14 @@ class Header : public WContainerWidget
 public:
     Header();
 
+
+    Signal<NoClass> &ClickGiris();
+
 private:
     WContainerWidget* mMenuWidgets;
+
+
+    Signal<NoClass> _ClickGiris;
 
 };
 
