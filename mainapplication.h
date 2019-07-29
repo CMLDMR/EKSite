@@ -14,7 +14,7 @@ class MainApplication : public WApplication
 public:
     MainApplication(const WEnvironment& env);
     ~MainApplication();
-//    std::shared_ptr<Wt::WBootstrapTheme> p_wtTheme;
+    std::shared_ptr<Wt::WBootstrapTheme> p_wtTheme;
 
 
 
