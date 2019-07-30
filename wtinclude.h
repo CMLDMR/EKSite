@@ -25,6 +25,7 @@
 #include <Wt/WComboBox.h>
 #include <Wt/WMessageBox.h>
 #include <Wt/WPushButton.h>
+#include <Wt/WServer.h>
 
 #include <Wt/WBootstrapTheme.h>
 

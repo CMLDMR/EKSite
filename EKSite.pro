@@ -26,7 +26,10 @@ CONFIG += c++14 console
 CONFIG += no_keywords
 
 SOURCES += \
+        admin/adminpanel.cpp \
+        base/containerwidget.cpp \
         base/dbclass.cpp \
+        base/userclass.cpp \
         body/body.cpp \
         body/footer.cpp \
         body/header.cpp \
@@ -38,7 +41,10 @@ SOURCES += \
         mainapplication.cpp
 
 HEADERS += \
+    admin/adminpanel.h \
+    base/containerwidget.h \
     base/dbclass.h \
+    base/userclass.h \
     body/body.h \
     body/footer.h \
     body/header.h \

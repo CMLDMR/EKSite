@@ -19,6 +19,9 @@ public:
 
     int getRandom(int begin = 0 , int end = 255 );
 
+
+    int count(const std::string &collection , const bsoncxx::builder::basic::document &view);
+
 private:
     mongocxx::database* mDB;
 };

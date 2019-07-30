@@ -14,9 +14,17 @@ public:
 
     Signal<NoClass> &ClickMainMenu();
 
+    Signal<NoClass> &LoginSucces();
+
 private:
 
     Signal<NoClass> _ClickMainMenu;
+
+    Signal<NoClass> _LoginSucces;
+
+
+    WLineEdit* mUserNameLineEdit;
+    WLineEdit* mPasswordLineEdit;
 };
 
 #endif // LOGINWIDGET_H

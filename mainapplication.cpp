@@ -80,7 +80,7 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
     auto footer = root()->addWidget(cpp14::make_unique<Footer>());
 
 
-    header->ClickGiris().connect(body,&Body::initLogin);
+    footer->ClickAdmin().connect(body,&Body::initLogin);
 
 
 

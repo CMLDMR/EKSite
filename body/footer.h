@@ -10,9 +10,12 @@ class Footer : public WContainerWidget
 public:
     Footer();
 
+    Signal<NoClass> &ClickAdmin();
 
 private:
     WContainerWidget* mMenuWidgets;
+
+    Signal<NoClass> _ClickAdmin;
 };
 
 #endif // FOOTER_H

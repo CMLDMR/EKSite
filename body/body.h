@@ -16,6 +16,8 @@ public:
     void initMain();
 
     void initLogin();
+
+    void initAdminPanel();
 };
 
 #endif // BODY_H

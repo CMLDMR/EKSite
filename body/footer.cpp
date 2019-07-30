@@ -20,5 +20,16 @@ Footer::Footer()
     auto text = layout->addWidget(cpp14::make_unique<WText>("copyright ERK (c) 2019"),0,AlignmentFlag::Middle|AlignmentFlag::Center);
     text->setAttributeValue(Style::style,Style::color::rgb("255,255,255"));
 
+    auto clickAdminText = layout->addWidget(cpp14::make_unique<WText>("..."));
 
+    clickAdminText->clicked().connect([=](){
+        _ClickAdmin.emit(NoClass());
+    });
+
+
+}
+
+Signal<NoClass> &Footer::ClickAdmin()
+{
+    return _ClickAdmin;
 }

@@ -38,17 +38,44 @@ LoginWidget::LoginWidget(mongocxx::database *_db)
         auto container = layout->addWidget(cpp14::make_unique<WContainerWidget>());
         container->addStyleClass(Bootstrap::Grid::col_full_12);
         container->setContentAlignment(AlignmentFlag::Center);
-        auto backBtn = container->addWidget(cpp14::make_unique<WText>("Giriş"));
+        mUserNameLineEdit = container->addWidget(cpp14::make_unique<WLineEdit>());
+        mUserNameLineEdit->setPlaceholderText("Kullanıcı Adını Giriniz");
     }
 
     {
         auto container = layout->addWidget(cpp14::make_unique<WContainerWidget>());
         container->addStyleClass(Bootstrap::Grid::col_full_12);
         container->setContentAlignment(AlignmentFlag::Center);
-        auto backBtn = container->addWidget(cpp14::make_unique<WPushButton>("Ana Sayfa"));
+        mPasswordLineEdit = container->addWidget(cpp14::make_unique<WLineEdit>());
+        mPasswordLineEdit->setPlaceholderText("Şifrenizi Giriniz");
+        mPasswordLineEdit->setEchoMode(EchoMode::Password);
+    }
+
+    {
+        auto container = layout->addWidget(cpp14::make_unique<WContainerWidget>());
+        container->addStyleClass(Bootstrap::Grid::col_full_12);
+        container->setContentAlignment(AlignmentFlag::Center);
+        auto backBtn = container->addWidget(cpp14::make_unique<WPushButton>("Giriş"));
         backBtn->addStyleClass(Bootstrap::Button::Primary);
         backBtn->clicked().connect([=](){
-           _ClickMainMenu.emit(NoClass());
+
+
+            auto filter = document{};
+
+            try {
+                filter.append(kvp("username",mUserNameLineEdit->text().toUTF8()));
+            } catch (bsoncxx::exception &e) {
+
+            }
+
+            try {
+                filter.append(kvp("password",mPasswordLineEdit->text().toUTF8()));
+            } catch (bsoncxx::exception &e) {
+
+            }
+
+
+           _LoginSucces.emit(NoClass());
         });
     }
 
@@ -60,4 +87,9 @@ LoginWidget::LoginWidget(mongocxx::database *_db)
 Signal<NoClass> &LoginWidget::ClickMainMenu()
 {
     return _ClickMainMenu;
+}
+
+Signal<NoClass> &LoginWidget::LoginSucces()
+{
+    return _LoginSucces;
 }

@@ -8,4 +8,4 @@ public:
     UserClass();
 };
 
-#endif // USERCLASS_H
+#endif // USERCLASS_

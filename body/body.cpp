@@ -50,5 +50,10 @@ void Body::initMain()
 void Body::initLogin()
 {
     clear();
-    addWidget(cpp14::make_unique<LoginWidget>(this->db()))->ClickMainMenu().connect(this,&Body::initMain);
+    addWidget(cpp14::make_unique<LoginWidget>(this->db()))->LoginSucces().connect(this,&Body::initAdminPanel);
+}
+
+void Body::initAdminPanel()
+{
+    clear();
 }
