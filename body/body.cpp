@@ -3,6 +3,7 @@
 #include "customwidgets/slider.h"
 #include "customwidgets/reservationwidget.h"
 #include "customwidgets/loginwidget.h"
+#include "admin/adminpanel.h"
 
 Body::Body(mongocxx::database *_db)
     :DBClass (_db)
@@ -56,4 +57,5 @@ void Body::initLogin()
 void Body::initAdminPanel()
 {
     clear();
+    addWidget(cpp14::make_unique<AdminPanel>(this->db()));
 }

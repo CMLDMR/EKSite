@@ -6,11 +6,23 @@
 
 #include "base/dbclass.h"
 #include "base/containerwidget.h"
+#include "base/userclass.h"
 
-class AdminPanel : public ContainerWidget
+class AdminPanel : public ContainerWidget , public DBClass , public UserClass
 {
 public:
-    AdminPanel();
+    AdminPanel(mongocxx::database* _db);
+
+
+    void initMainPage();
+
+    void initVillaPage();
+
+
+private:
+    ContainerWidget* rContainer;
+
+
 };
 
 #endif // ADMINPANEL_H

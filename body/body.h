@@ -4,6 +4,7 @@
 #include "wtinclude.h"
 
 #include <base/dbclass.h>
+#include <base/containerwidget.h>
 
 using namespace Wt;
 
