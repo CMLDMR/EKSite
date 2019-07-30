@@ -1,11 +1,21 @@
 #ifndef VILLAADMINPAGE_H
 #define VILLAADMINPAGE_H
 
+#include "base/containerwidget.h"
+#include "base/dbclass.h"
 
-class VillaAdminPage : public ContainerWidget
+class VillaAdminPage : public ContainerWidget , public DBClass
 {
 public:
-    VillaAdminPage();
+    VillaAdminPage(mongocxx::database* _db);
+
+
+private:
+    ContainerWidget* rContainer;
+
+private:
+    ContainerWidget* VillaDetailContainer;
+    ContainerWidget* VillaList;
 };
 
 #endif // VILLAADMINPAGE_H
