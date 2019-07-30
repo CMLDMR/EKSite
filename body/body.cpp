@@ -25,27 +25,27 @@ void Body::initMain()
     }
 
 
-    auto container = addWidget(cpp14::make_unique<WContainerWidget>());
-    container->setMaximumSize(1024,WLength::Auto);
+//    auto container = addWidget(cpp14::make_unique<WContainerWidget>());
+//    container->setMaximumSize(1024,WLength::Auto);
 
-    container->addStyleClass(Bootstrap::Grid::container_fluid);
+//    container->addStyleClass(Bootstrap::Grid::container_fluid);
 
-    auto rContainer = container->addWidget(cpp14::make_unique<WContainerWidget>());
-    rContainer->addStyleClass(Bootstrap::Grid::row);
+//    auto rContainer = container->addWidget(cpp14::make_unique<WContainerWidget>());
+//    rContainer->addStyleClass(Bootstrap::Grid::row);
 
-    {
-        auto rrContainer = rContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-        rrContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6+Bootstrap::Grid::Medium::col_md_6+Bootstrap::Grid::Small::col_sm_6+Bootstrap::Grid::ExtraSmall::col_xs_12);
-//            rrContainer->setHeight(400);
-        auto _rezervationContaner = rrContainer->addWidget(cpp14::make_unique<ReservationWidget>(this->db()));
-    }
+//    {
+//        auto rrContainer = rContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+//        rrContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6+Bootstrap::Grid::Medium::col_md_6+Bootstrap::Grid::Small::col_sm_6+Bootstrap::Grid::ExtraSmall::col_xs_12);
+////            rrContainer->setHeight(400);
+//        auto _rezervationContaner = rrContainer->addWidget(cpp14::make_unique<ReservationWidget>(this->db()));
+//    }
 
 
-    for( int i = 0 ; i < 12 ; i++ )
-    {
-        auto ilan = rContainer->addWidget(cpp14::make_unique<IlanContainer>());
-        ilan->addStyleClass(Bootstrap::Grid::Large::col_lg_3+Bootstrap::Grid::Medium::col_md_3+Bootstrap::Grid::Small::col_sm_4+Bootstrap::Grid::ExtraSmall::col_xs_6);
-    }
+//    for( int i = 0 ; i < 12 ; i++ )
+//    {
+//        auto ilan = rContainer->addWidget(cpp14::make_unique<IlanContainer>());
+//        ilan->addStyleClass(Bootstrap::Grid::Large::col_lg_3+Bootstrap::Grid::Medium::col_md_3+Bootstrap::Grid::Small::col_sm_4+Bootstrap::Grid::ExtraSmall::col_xs_6);
+//    }
 }
 
 void Body::initLogin()

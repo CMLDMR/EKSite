@@ -1,5 +1,7 @@
 #include "villaadminpage.h"
 
+#include "villaaddpage.h"
+
 VillaAdminPage::VillaAdminPage(mongocxx::database *_db)
     :DBClass (_db)
 {
@@ -9,9 +11,9 @@ VillaAdminPage::VillaAdminPage(mongocxx::database *_db)
 
     // MENU 1: Yeni Villa Ekle
     {
-        auto container = rContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-        container->addStyleClass(Bootstrap::Grid::Large::col_lg_6);
-        auto layout = container->setLayout(cpp14::make_unique<WHBoxLayout>());
+        mYeniVilla = rContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+        mYeniVilla->addStyleClass(Bootstrap::Grid::Large::col_lg_6);
+        auto layout = mYeniVilla->setLayout(cpp14::make_unique<WHBoxLayout>());
         layout->addStretch(1);
 
         auto bContainer = layout->addWidget(cpp14::make_unique<ContainerWidget>());
@@ -30,9 +32,9 @@ VillaAdminPage::VillaAdminPage(mongocxx::database *_db)
 
     // MENU 2: Villalar
     {
-        auto container = rContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-        container->addStyleClass(Bootstrap::Grid::Large::col_lg_6);
-        auto layout = container->setLayout(cpp14::make_unique<WHBoxLayout>());
+        mVillalarContainer = rContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+        mVillalarContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6);
+        auto layout = mVillalarContainer->setLayout(cpp14::make_unique<WHBoxLayout>());
         layout->addStretch(1);
 
         auto bContainer = layout->addWidget(cpp14::make_unique<ContainerWidget>());
@@ -51,6 +53,30 @@ VillaAdminPage::VillaAdminPage(mongocxx::database *_db)
 
     // CONTENT STACKWIDGET
     {
+        stackedWidget = rContainer->addWidget(cpp14::make_unique<WStackedWidget>());
+        stackedWidget->addStyleClass(Bootstrap::ImageShape::img_thumbnail
+                                     +Bootstrap::Grid::col_full_12);
+        stackedWidget->setAttributeValue(Style::style,Style::background::color::rgb(this->getRandom(150),this->getRandom(150),this->getRandom(150)));
+
+        {
+            auto mVillaAddPage = cpp14::make_unique<VillaAddPage>(this->db());
+
+            stackedWidget->addWidget(std::move(mVillaAddPage));
+        }
+
+        {
+            auto mVillaAddPage = cpp14::make_unique<VillaAddPage>(this->db());
+
+            stackedWidget->addWidget(std::move(mVillaAddPage));
+        }
 
     }
+
+    mYeniVilla->clicked().connect([=](){
+        stackedWidget->setCurrentIndex(0,WAnimation(AnimationEffect::Fade,TimingFunction::EaseInOut,1000));
+    });
+
+    mVillalarContainer->clicked().connect([=](){
+        stackedWidget->setCurrentIndex(1,WAnimation(AnimationEffect::Fade,TimingFunction::EaseInOut,1000));
+    });
 }

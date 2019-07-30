@@ -26,8 +26,10 @@
 #include <Wt/WMessageBox.h>
 #include <Wt/WPushButton.h>
 #include <Wt/WServer.h>
-
+#include <Wt/WFileUpload.h>
 #include <Wt/WBootstrapTheme.h>
+#include <Wt/WProgressBar.h>
+#include <Wt/WTextEdit.h>
 
 #include <Wt/WTheme.h>
 #include <iostream>

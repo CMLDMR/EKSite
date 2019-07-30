@@ -16,6 +16,11 @@ private:
 private:
     ContainerWidget* VillaDetailContainer;
     ContainerWidget* VillaList;
+
+    WStackedWidget* stackedWidget;
+
+    WContainerWidget* mVillalarContainer;
+    WContainerWidget* mYeniVilla;
 };
 
 #endif // VILLAADMINPAGE_H

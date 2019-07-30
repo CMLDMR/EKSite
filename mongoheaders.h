@@ -24,6 +24,7 @@
 #include <mongocxx/stdx.hpp>
 #include <mongocxx/gridfs/bucket.hpp>
 #include <mongocxx/pipeline.hpp>
+#include <mongocxx/exception/gridfs_exception.hpp>
 
 
 using bsoncxx::builder::basic::document;
