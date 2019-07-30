@@ -27,6 +27,7 @@ CONFIG += no_keywords
 
 SOURCES += \
         admin/adminpanel.cpp \
+        admin/villaaddpage.cpp \
         admin/villaadminpage.cpp \
         base/containerwidget.cpp \
         base/dbclass.cpp \
@@ -43,6 +44,7 @@ SOURCES += \
 
 HEADERS += \
     admin/adminpanel.h \
+    admin/villaaddpage.h \
     admin/villaadminpage.h \
     base/containerwidget.h \
     base/dbclass.h \
