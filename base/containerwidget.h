@@ -16,6 +16,13 @@ public:
     };
 
     void setContainerType(ContainerType type);
+
+    void setRandomBackGroundColor(int beginColor = 150 , int endColor = 255);
+
+
+private:
+
+    int getRandomRGB(int beginColor = 0 , int endColor = 0);
 };
 
 #endif // CONTAINERWIDGET_H
