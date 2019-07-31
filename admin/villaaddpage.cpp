@@ -113,6 +113,15 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
     }
 
     {
+        auto container = rContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+        container->addStyleClass( Bootstrap::Grid::col_full_12 );
+        container->setMargin( 5 , Side::Top|Side::Bottom );
+
+        mVillaYayinda = container->addWidget(cpp14::make_unique<WCheckBox>("Yayında"));
+    }
+
+
+    {
         mFotoContainer = rContainer->addWidget(cpp14::make_unique<ContainerWidget>());
         mFotoContainer->addStyleClass(Bootstrap::Grid::col_full_12);
         mFotoContainer->setContentAlignment(AlignmentFlag::Center);
@@ -272,6 +281,7 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
     {
         auto container = rContainer->addWidget(cpp14::make_unique<ContainerWidget>());
         container->setContentAlignment(AlignmentFlag::Center);
+        container->addStyleClass(Bootstrap::Grid::col_full_12);
 
         auto saveBtn = container->addWidget(cpp14::make_unique<WPushButton>("Kaydet"));
         saveBtn->addStyleClass(Bootstrap::Button::Primary);
@@ -279,6 +289,16 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
         saveBtn->clicked().connect(this,&VillaAddPage::SaveVilla);
 
     }
+
+}
+
+void VillaAddPage::LoadVilla(const std::string &villaOid)
+{
+
+    auto villaItem = VillaItem::Load_Villa(Coll,bsoncxx::oid{villaOid});
+
+    mVillaAdiLineEdit->setText(villaItem.villaName());
+
 
 }
 
@@ -293,6 +313,7 @@ void VillaAddPage::SaveVilla()
     villaItem.setVillaKonum(mVillaKonumuLineEdit->text().toUTF8());
     villaItem.setVillaHavuz(mHavuzComboBox->currentText().toUTF8());
     villaItem.setVillaAciklama(mVillaAciklama->text().toUTF8());
+    villaItem.setVillaYayinda(mVillaYayinda->isChecked());
 
     for( auto item : fileList )
     {

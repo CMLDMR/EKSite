@@ -9,6 +9,8 @@ class VillaAddPage : public ContainerWidget , public DBClass
 public:
     VillaAddPage(mongocxx::database* _db);
 
+    void LoadVilla( const std::string &villaOid);
+
 private:
     WFileUpload* mFileUploader;
     WContainerWidget* mFotoContainer;
@@ -24,6 +26,7 @@ private:
     WComboBox* mIlComboBox;
     WComboBox* mIlceComboBox;
     WTextEdit* mVillaAciklama;
+    WCheckBox* mVillaYayinda;
 
     mongocxx::collection Coll;
 

@@ -29,6 +29,7 @@ SOURCES += \
         admin/adminpanel.cpp \
         admin/villaaddpage.cpp \
         admin/villaadminpage.cpp \
+        admin/villalistpage.cpp \
         base/containerwidget.cpp \
         base/dbclass.cpp \
         base/userclass.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     admin/adminpanel.h \
     admin/villaaddpage.h \
     admin/villaadminpage.h \
+    admin/villalistpage.h \
     base/containerwidget.h \
     base/dbclass.h \
     base/userclass.h \

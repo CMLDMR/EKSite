@@ -1,6 +1,8 @@
 #include "villaadminpage.h"
-
 #include "villaaddpage.h"
+#include "villalistpage.h"
+
+
 
 VillaAdminPage::VillaAdminPage(mongocxx::database *_db)
     :DBClass (_db)
@@ -58,28 +60,16 @@ VillaAdminPage::VillaAdminPage(mongocxx::database *_db)
                                      +Bootstrap::Grid::col_full_12);
         stackedWidget->setAttributeValue(Style::style,Style::background::color::rgb(this->getRandom(150),this->getRandom(150),this->getRandom(150)));
 
-        {
-//            auto mVillaAddPage = cpp14::make_unique<VillaAddPage>(this->db());
-
-//            stackedWidget->addWidget(std::move(mVillaAddPage));
-
-
-            stackedWidget->addWidget(cpp14::make_unique<VillaAddPage>(this->db()));
-        }
-
-        {
-            auto mVillaAddPage = cpp14::make_unique<VillaAddPage>(this->db());
-
-            stackedWidget->addWidget(std::move(mVillaAddPage));
-        }
-
+        stackedWidget->addWidget(cpp14::make_unique<VillaAddPage>(this->db()));
+        stackedWidget->addWidget(cpp14::make_unique<VillaListPage>(this->db()));
     }
 
     mYeniVilla->clicked().connect([=](){
-        stackedWidget->setCurrentIndex(0,WAnimation(AnimationEffect::Fade,TimingFunction::EaseInOut,1000));
+        stackedWidget->setCurrentIndex(0,WAnimation(AnimationEffect::SlideInFromLeft,TimingFunction::EaseInOut,250));
     });
 
     mVillalarContainer->clicked().connect([=](){
-        stackedWidget->setCurrentIndex(1,WAnimation(AnimationEffect::Fade,TimingFunction::EaseInOut,1000));
+        stackedWidget->setCurrentIndex(1,WAnimation(AnimationEffect::SlideInFromLeft,TimingFunction::EaseInOut,250));
+        static_cast<VillaListPage*>(stackedWidget->widget(1))->initVillaList();
     });
 }

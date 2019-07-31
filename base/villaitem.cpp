@@ -28,8 +28,6 @@ VillaItem VillaItem::Load_Villa(mongocxx::collection &collection, bsoncxx::oid _
     return item;
 }
 
-
-
 document VillaItem::villaDocument()
 {
     auto insDoc = document{};
@@ -90,6 +88,12 @@ document VillaItem::villaDocument()
         return document{};
     }
 
+    try {
+        insDoc.append(kvp(VILLAYAYINDA,this->villaYayinda()));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << e.what() << std::endl;
+        return document{};
+    }
 
 
     return insDoc;
@@ -388,21 +392,15 @@ bool VillaItem::setImgOidList(const QVector<bsoncxx::types::value> &oidList)
     }
 }
 
-
 bsoncxx::oid VillaItem::villaOid() const
 {
     return mVillaOid;
 }
 
-
 mongocxx::collection &VillaItem::collection()
 {
     return mCollection;
 }
-
-
-
-
 
 VillaItem VillaItem::operator=(VillaItem &item)
 {
@@ -417,8 +415,6 @@ VillaItem VillaItem::operator=(VillaItem &item)
     _item.setVillaOid(item.villaOid());
     return _item;
 }
-
-
 
 bool VillaItem::operator==(VillaItem &item)
 {

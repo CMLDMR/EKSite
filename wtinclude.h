@@ -30,6 +30,7 @@
 #include <Wt/WBootstrapTheme.h>
 #include <Wt/WProgressBar.h>
 #include <Wt/WTextEdit.h>
+#include <Wt/WCheckBox.h>
 
 #include <Wt/WTheme.h>
 #include <iostream>
