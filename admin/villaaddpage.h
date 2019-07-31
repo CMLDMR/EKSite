@@ -16,6 +16,18 @@ private:
 
 
     QVector<std::string> fileList;
+
+    WLineEdit* mVillaAdiLineEdit;
+    WLineEdit* mVillaKonumuLineEdit;
+    WComboBox* mKisiAdetComboBox;
+    WComboBox* mHavuzComboBox;
+    WComboBox* mIlComboBox;
+    WComboBox* mIlceComboBox;
+
+    mongocxx::collection Coll;
+
+
+    void SaveVilla();
 };
 
 #endif // VILLAADDPAGE_H

@@ -59,9 +59,12 @@ VillaAdminPage::VillaAdminPage(mongocxx::database *_db)
         stackedWidget->setAttributeValue(Style::style,Style::background::color::rgb(this->getRandom(150),this->getRandom(150),this->getRandom(150)));
 
         {
-            auto mVillaAddPage = cpp14::make_unique<VillaAddPage>(this->db());
+//            auto mVillaAddPage = cpp14::make_unique<VillaAddPage>(this->db());
 
-            stackedWidget->addWidget(std::move(mVillaAddPage));
+//            stackedWidget->addWidget(std::move(mVillaAddPage));
+
+
+            stackedWidget->addWidget(cpp14::make_unique<VillaAddPage>(this->db()));
         }
 
         {

@@ -32,6 +32,7 @@ SOURCES += \
         base/containerwidget.cpp \
         base/dbclass.cpp \
         base/userclass.cpp \
+        base/villaitem.cpp \
         body/body.cpp \
         body/footer.cpp \
         body/header.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     base/containerwidget.h \
     base/dbclass.h \
     base/userclass.h \
+    base/villaitem.h \
     body/body.h \
     body/footer.h \
     body/header.h \
