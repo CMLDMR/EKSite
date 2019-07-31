@@ -62,7 +62,7 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
 
         mKisiAdetComboBox = container->addWidget(cpp14::make_unique<WComboBox>());
 
-        for( int  i = 1 ; i < 15 ; i++ )
+        for( int  i = 1 ; i <= 15 ; i++ )
         {
             mKisiAdetComboBox->addItem(WString("{1} Kişi").arg(i));
         }
@@ -263,8 +263,8 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
         container->addStyleClass(Bootstrap::Grid::col_full_12);
         container->setMargin(10,AllSides);
 
-        auto saveBtn = container->addWidget(cpp14::make_unique<WTextEdit>());
-        saveBtn->setHeight(350);
+        mVillaAciklama = container->addWidget(cpp14::make_unique<WTextEdit>());
+        mVillaAciklama->setHeight(350);
 
     }
 
@@ -285,4 +285,20 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
 void VillaAddPage::SaveVilla()
 {
     auto villaItem = VillaItem::Create_EmptyVilla(Coll);
+
+    villaItem.setVillaKisiAdet(mKisiAdetComboBox->currentIndex()+1);
+    villaItem.setVillaName(mVillaAdiLineEdit->text().toUTF8());
+    villaItem.setVillaIlce(mIlceComboBox->currentText().toUTF8());
+    villaItem.setVillaIl(mIlComboBox->currentText().toUTF8());
+    villaItem.setVillaKonum(mVillaKonumuLineEdit->text().toUTF8());
+    villaItem.setVillaHavuz(mHavuzComboBox->currentText().toUTF8());
+    villaItem.setVillaAciklama(mVillaAciklama->text().toUTF8());
+
+    for( auto item : fileList )
+    {
+        auto val = this->uploadfile(item.c_str());
+        villaItem.appendImgOid(val);
+    }
+
+
 }

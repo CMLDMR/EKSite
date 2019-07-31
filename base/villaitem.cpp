@@ -176,6 +176,57 @@ bool VillaItem::setVillaKisiAdet(int villaKisiAdet)
     }
 }
 
+string VillaItem::villaAciklama()
+{
+    try {
+        auto val = this->find_one(this->villaFilter().view());
+        if( val.has_value() )
+        {
+            try {
+                return val.value().view()[VILLAACIKLAMA].get_utf8().value.to_string();
+            } catch (bsoncxx::exception &e) {
+                std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+                return "";
+            }
+        }else{
+            return "";
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return "";
+    }
+}
+
+bool VillaItem::setVillaAciklama(const string &villaAciklama)
+{
+    auto setDoc = document{};
+
+    try {
+        setDoc.append(kvp("$set",make_document(kvp(VILLAACIKLAMA,villaAciklama))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+}
+
 QVector<std::string> VillaItem::villaImgOidList()
 {
     QVector<std::string> imglist;

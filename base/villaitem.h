@@ -35,6 +35,9 @@ public:
     int villaKisiAdet();
     bool setVillaKisiAdet(int villaKisiAdet);
 
+    std::string villaAciklama();
+    bool setVillaAciklama(const std::string &villaAciklama);
+
 
     QVector<std::string> villaImgOidList();
     bool appendImgOid( const bsoncxx::types::value &value );

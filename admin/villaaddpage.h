@@ -23,6 +23,7 @@ private:
     WComboBox* mHavuzComboBox;
     WComboBox* mIlComboBox;
     WComboBox* mIlceComboBox;
+    WTextEdit* mVillaAciklama;
 
     mongocxx::collection Coll;
 
