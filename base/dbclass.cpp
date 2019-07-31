@@ -95,7 +95,7 @@ const std::string DBClass::downloadFile(const std::string &oid, const bool &forc
             downloader = this->db()->gridfs_bucket().open_download_stream(bsoncxx::types::value(bsoncxx::types::b_oid{bsoncxx::oid{oid}}));
         } catch (mongocxx::gridfs_exception &e) {
             std::cout << "ERROR: " << __LINE__ << " " << __FILE__ << " " << e.what() << std::endl;
-            return "img/error.png";
+            return "img/error.jpg";
         }
 
 

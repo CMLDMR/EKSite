@@ -73,9 +73,13 @@ void VillaListPage::initVillaList()
                 YayindaContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
                 if( villaItem.villaYayinda() )
                 {
+                    YayindaContainer->setRandomBackGroundColor(110,120);
                     auto Nametext = YayindaContainer->addWidget(cpp14::make_unique<WText>("Yayında"));
+                    Nametext->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
                 }else{
+                    YayindaContainer->setRandomBackGroundColor(210,220);
                     auto Nametext = YayindaContainer->addWidget(cpp14::make_unique<WText>("Değil"));
+//                    Nametext->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
                 }
 
                 auto NameContainer = iContainer->addWidget(cpp14::make_unique<ContainerWidget>());
@@ -143,7 +147,8 @@ void VillaListPage::initVilla(const std::string &villaOid)
 {
     rContainer->clear();
 
-    addWidget(cpp14::make_unique<VillaAddPage>(this->db()))->LoadVilla(villaOid);
+    auto container = rContainer->addWidget(cpp14::make_unique<VillaAddPage>(this->db()));
+    container->LoadVilla(villaOid);
 }
 
 Signal<std::string> &VillaListPage::ClickVilla()

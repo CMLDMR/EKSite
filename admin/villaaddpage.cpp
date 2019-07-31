@@ -3,7 +3,8 @@
 #include "base/villaitem.h"
 
 VillaAddPage::VillaAddPage(mongocxx::database *_db)
-    :DBClass (_db)
+    :DBClass (_db),
+      mKaydet(true)
 {
 
 
@@ -164,8 +165,6 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
             mFileUploader->enable();
             mFileUploader->setHidden(false);
 
-
-
         });
 
 
@@ -225,7 +224,6 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
                         fContainer->setHeight(90);
                         fContainer->setMinimumSize(160,90);
                         fContainer->setMaximumSize(160,90);
-                        //                            fContainer->setId("fCOntainer");
                         fContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
                         fContainer->setAttributeValue(Style::style,Style::background::url(newFileName.toStdString())
                                                       +Style::background::size::cover
@@ -294,32 +292,111 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
 
 void VillaAddPage::LoadVilla(const std::string &villaOid)
 {
-
+    mKaydet = false;
     auto villaItem = VillaItem::Load_Villa(Coll,bsoncxx::oid{villaOid});
 
     mVillaAdiLineEdit->setText(villaItem.villaName());
+    mVillaKonumuLineEdit->setText(villaItem.villaKonum());
+    mKisiAdetComboBox->setCurrentIndex(villaItem.villaKisiAdet()-1);
+
+
+    auto index = mHavuzComboBox->findText(villaItem.villaHavuz());
+    mHavuzComboBox->setCurrentIndex(index);
+
+    index = mIlComboBox->findText(villaItem.villaIl());
+    mIlComboBox->setCurrentIndex(index);
+
+    index = mIlComboBox->findText(villaItem.villaIlce());
+    mIlceComboBox->setCurrentIndex(index);
+
+    mVillaAciklama->setText(villaItem.villaAciklama());
+    mVillaYayinda->setChecked(villaItem.villaYayinda());
+
+
+    fileList.clear();
+
+    for( auto imgOid : villaItem.villaImgOidList() ){
+
+
+        auto newFileName = QString::fromStdString(this->downloadFile( imgOid , true ));
+
+        auto rootnewFileName = newFileName;
+        rootnewFileName.prepend("docroot/");
+
+        con << "img Oid: " << imgOid.c_str() << newFileName << rootnewFileName;
+
+
+        fileList.push_back(rootnewFileName.toStdString());
+
+        auto fContainer = mFotoContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+        fContainer->decorationStyle().setBorder(WBorder(BorderStyle::Solid,1,WColor(150,150,150,125)),AllSides);
+        fContainer->setMargin(5,AllSides);
+        fContainer->setWidth(160);
+        fContainer->setHeight(90);
+        fContainer->setMinimumSize(160,90);
+        fContainer->setMaximumSize(160,90);
+        fContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+        fContainer->setAttributeValue(Style::style,Style::background::url(newFileName.toStdString())
+                                      +Style::background::size::cover
+                                      +Style::background::repeat::norepeat
+                                      +Style::background::position::center_center);
+        fContainer->setAttributeValue(Style::dataoid,rootnewFileName.toStdString());
+        fContainer->setPadding(0,AllSides);
+
+        auto cContainer = fContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+        cContainer->setWidth(WLength("100%"));
+
+        cContainer->setMargin(0,AllSides);
+        cContainer->setHeight(20);
+        cContainer->setMaximumSize(WLength::Auto,20);
+        cContainer->setRandomBackGroundColor(50,75,0.75);
+        cContainer->setContentAlignment(AlignmentFlag::Justify|AlignmentFlag::Bottom);
+        auto text = cContainer->addWidget(cpp14::make_unique<WText>("Sil"));
+        text->setAttributeValue(Style::style,Style::font::size::s14px+Style::color::color(Style::color::White::Snow)+Style::font::weight::bold);
+        cContainer->decorationStyle().setCursor(Cursor::PointingHand);
+        cContainer->clicked().connect([=](){
+            for (int i = 0 ; i < fileList.size() ; i++ ) {
+                if( fileList.at(i) == fContainer->attributeValue(Style::dataoid).toUTF8() )
+                {
+                    fileList.removeAt(i);
+                    break;
+                }
+            }
+            mFotoContainer->removeWidget(fContainer);
+        });
+
+    }
+
+
 
 
 }
 
 void VillaAddPage::SaveVilla()
 {
-    auto villaItem = VillaItem::Create_EmptyVilla(Coll);
 
-    villaItem.setVillaKisiAdet(mKisiAdetComboBox->currentIndex()+1);
-    villaItem.setVillaName(mVillaAdiLineEdit->text().toUTF8());
-    villaItem.setVillaIlce(mIlceComboBox->currentText().toUTF8());
-    villaItem.setVillaIl(mIlComboBox->currentText().toUTF8());
-    villaItem.setVillaKonum(mVillaKonumuLineEdit->text().toUTF8());
-    villaItem.setVillaHavuz(mHavuzComboBox->currentText().toUTF8());
-    villaItem.setVillaAciklama(mVillaAciklama->text().toUTF8());
-    villaItem.setVillaYayinda(mVillaYayinda->isChecked());
-
-    for( auto item : fileList )
+    if( mKaydet )
     {
-        auto val = this->uploadfile(item.c_str());
-        villaItem.appendImgOid(val);
+        auto villaItem = VillaItem::Create_EmptyVilla(Coll);
+
+        villaItem.setVillaKisiAdet(mKisiAdetComboBox->currentIndex()+1);
+        villaItem.setVillaName(mVillaAdiLineEdit->text().toUTF8());
+        villaItem.setVillaIlce(mIlceComboBox->currentText().toUTF8());
+        villaItem.setVillaIl(mIlComboBox->currentText().toUTF8());
+        villaItem.setVillaKonum(mVillaKonumuLineEdit->text().toUTF8());
+        villaItem.setVillaHavuz(mHavuzComboBox->currentText().toUTF8());
+        villaItem.setVillaAciklama(mVillaAciklama->text().toUTF8());
+        villaItem.setVillaYayinda(mVillaYayinda->isChecked());
+
+        for( auto item : fileList )
+        {
+            auto val = this->uploadfile(item.c_str());
+            villaItem.appendImgOid(val);
+        }
+    }else{
+
     }
+
 
 
 }

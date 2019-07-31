@@ -31,6 +31,9 @@ private:
     mongocxx::collection Coll;
 
 
+    bool mKaydet;
+
+
     void SaveVilla();
 };
 
