@@ -13,6 +13,8 @@ class VillaItem : public mongocxx::collection
 public:
     static VillaItem Create_EmptyVilla(mongocxx::collection &collection);
 
+    static VillaItem Load_Villa(mongocxx::collection &collection , bsoncxx::oid _villaOid );
+
     document villaDocument();
 
     ~VillaItem();
@@ -37,6 +39,9 @@ public:
 
     std::string villaAciklama();
     bool setVillaAciklama(const std::string &villaAciklama);
+
+    bool villaYayinda();
+    bool setVillaYayinda(const bool &yayinda);
 
 
     QVector<std::string> villaImgOidList();
@@ -64,12 +69,14 @@ public:
     static const std::string VILLAKISI;
     static const std::string VILLAIMGLIST;
     static const std::string VILLAACIKLAMA;
+    static const std::string VILLAYAYINDA;
 
 
 
 
 private:
     VillaItem(mongocxx::collection &_collection);
+    VillaItem(mongocxx::collection &_collection , bsoncxx::oid villaOid );
 
 
     bsoncxx::oid mVillaOid;
