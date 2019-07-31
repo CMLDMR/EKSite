@@ -233,6 +233,43 @@ bool VillaItem::appendImgOid(const bsoncxx::types::value &value)
     }
 }
 
+bool VillaItem::setImgOidList(const QVector<bsoncxx::types::value> &oidList)
+{
+    auto setDoc = document{};
+
+    auto array = bsoncxx::builder::basic::array{};
+
+    for( auto _oid : oidList )
+    {
+        array.append(_oid);
+    }
+
+
+    try {
+        setDoc.append(kvp("$set",make_document(kvp(VILLAIMGLIST,array))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+
+    }
+}
+
 
 bsoncxx::oid VillaItem::villaOid() const
 {
