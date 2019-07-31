@@ -5,43 +5,47 @@
 #include "mongoheaders.h"
 
 
+#include <QVector>
+
 
 class VillaItem : public mongocxx::collection
 {
 public:
     static VillaItem Create_EmptyVilla(mongocxx::collection &collection);
 
-    document villaView();
+    document villaDocument();
 
     ~VillaItem();
 
+    std::string villaName();
+    bool setVillaName(const std::string &villaName);
 
+    std::string villaKonum();
+    bool setVillaKonum(const std::string &villaKonum);
 
-    std::string villaName() const;
-    void setVillaName(const std::string &villaName);
+    std::string villaHavuz();
+    bool setVillaHavuz(const std::string &villaHavuz);
 
-    std::string villaKonum() const;
-    void setVillaKonum(const std::string &villaKonum);
+    std::string villaIl();
+    bool setVillaIl(const std::string &villaIl);
 
-    std::string villaHavuz() const;
-    void setVillaHavuz(const std::string &villaHavuz);
-
-    std::string villaIl() const;
-    void setVillaIl(const std::string &villaIl);
-
-    std::string villaIlce() const;
-    void setVillaIlce(const std::string &villaIlce);
+    std::string villaIlce();
+    bool setVillaIlce(const std::string &villaIlce);
 
     int villaKisiAdet();
-    void setVillaKisiAdet(int villaKisiAdet);
-
-    VillaItem operator=(const VillaItem &item);
+    bool setVillaKisiAdet(int villaKisiAdet);
 
 
-    bool operator==(const VillaItem &item);
-    bool operator!=(const VillaItem &item);
+    QVector<std::string> villaImgOidList();
+    bool appendImgOid( const bsoncxx::types::value &value );
 
-    const mongocxx::collection &collection() const;
+    VillaItem operator=(VillaItem &item);
+
+
+    bool operator==(VillaItem &item);
+    bool operator!=(VillaItem &item);
+
+    mongocxx::collection &collection();
 
 
     bsoncxx::oid villaOid() const;
@@ -54,6 +58,8 @@ public:
     static const std::string VILLAIL;
     static const std::string VILLAILCE;
     static const std::string VILLAKISI;
+    static const std::string VILLAIMGLIST;
+    static const std::string VILLAACIKLAMA;
 
 
 
@@ -64,15 +70,8 @@ private:
 
     bsoncxx::oid mVillaOid;
 
-    std::string mVillaName;
-    std::string mVillaKonum;
-    std::string mVillaHavuz;
-    std::string mVillaIl;
-    std::string mVillaIlce;
-    int mVillaKisiAdet;
 
-
-    const mongocxx::collection &mCollection;
+    mongocxx::collection &mCollection;
 
     document villaFilter();
 };

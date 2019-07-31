@@ -1,7 +1,6 @@
 #include "villaitem.h"
 #include <iostream>
 
-
 using namespace std;
 
 
@@ -12,6 +11,8 @@ const std::string VillaItem::VILLAHAVUZ = "VILLAHAVUZ";
 const std::string VillaItem::VILLAIL = "VILLAIL";
 const std::string VillaItem::VILLAILCE = "VILLAILCE";
 const std::string VillaItem::VILLAKISI = "VILLAKISI";
+const std::string VillaItem::VILLAIMGLIST = "VILLAIMGLIST";
+const std::string VillaItem::VILLAACIKLAMA = "VILLAACIKLAMA";
 
 
 VillaItem VillaItem::Create_EmptyVilla(mongocxx::collection &collection)
@@ -20,9 +21,23 @@ VillaItem VillaItem::Create_EmptyVilla(mongocxx::collection &collection)
     return item;
 }
 
-document VillaItem::villaView()
+document VillaItem::villaDocument()
 {
     auto insDoc = document{};
+
+    auto imgArray = bsoncxx::builder::basic::array{};
+
+    for( auto item : this->villaImgOidList() )
+    {
+        imgArray.append(bsoncxx::oid{item});
+    }
+
+    try {
+        insDoc.append(kvp(VILLAIMGLIST,imgArray));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << e.what() << std::endl;
+        return document{};
+    }
 
     try {
         insDoc.append(kvp(VILLANAME,this->villaName()));
@@ -66,22 +81,17 @@ document VillaItem::villaView()
         return document{};
     }
 
+
+
     return insDoc;
 }
 
 VillaItem::VillaItem(mongocxx::collection &_collection)
     :mongocxx::collection (_collection)
-    ,mVillaName{""}
-    ,mVillaKonum{""}
-    ,mVillaHavuz{""}
-    ,mVillaIl{""}
-    ,mVillaIlce{""}
-    ,mVillaKisiAdet(0)
     ,mCollection(_collection)
 {
-
     try {
-        auto ins = this->insert_one(this->villaView().view());
+        auto ins = this->insert_one(this->villaDocument().view());
         if( ins.has_value() )
         {
             this->setVillaOid(ins.value().inserted_id().get_oid().value);
@@ -106,9 +116,7 @@ bsoncxx::builder::basic::document VillaItem::villaFilter()
 
 VillaItem::~VillaItem()
 {
-
     std::cout<< "Desturctor Villa Item oid: " << this->villaOid().to_string() << std::endl;
-
 }
 
 void VillaItem::setVillaOid(const bsoncxx::oid &villaOid)
@@ -118,8 +126,6 @@ void VillaItem::setVillaOid(const bsoncxx::oid &villaOid)
 
 int VillaItem::villaKisiAdet()
 {
-
-
     try {
         auto val = this->find_one(this->villaFilter().view());
         if( val.has_value() )
@@ -128,24 +134,105 @@ int VillaItem::villaKisiAdet()
                 return val.value().view()[VILLAKISI].get_int32().value;
             } catch (bsoncxx::exception &e) {
                 std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+                return 0;
             }
 
         }else{
-            return -1;
+            return 0;
         }
     } catch (mongocxx::exception &e) {
         std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
-        return -1;
+        return 0;
+    }
+}
+
+bool VillaItem::setVillaKisiAdet(int villaKisiAdet)
+{
+    auto setDoc = document{};
+
+    try {
+        setDoc.append(kvp("$set",make_document(kvp(VILLAKISI,villaKisiAdet))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
     }
 
-
-    return mVillaKisiAdet;
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
 }
 
-void VillaItem::setVillaKisiAdet(int villaKisiAdet)
+QVector<std::string> VillaItem::villaImgOidList()
 {
-    mVillaKisiAdet = villaKisiAdet;
+    QVector<std::string> imglist;
+    try {
+        auto val = this->find_one(this->villaFilter().view());
+        if( val.has_value() )
+        {
+            try {
+                auto array =  val.value().view()[VILLAIMGLIST].get_array().value;
+
+                for( auto path : array )
+                {
+                    imglist.push_back(path.get_oid().value.to_string());
+                }
+
+            } catch (bsoncxx::exception &e) {
+                std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+            }
+
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+    }
+
+    return imglist;
 }
+
+bool VillaItem::appendImgOid(const bsoncxx::types::value &value)
+{
+
+    auto setDoc = document{};
+
+    try {
+        setDoc.append(kvp("$push",make_document(kvp(VILLAIMGLIST,value))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+
+    }
+}
+
 
 bsoncxx::oid VillaItem::villaOid() const
 {
@@ -153,7 +240,7 @@ bsoncxx::oid VillaItem::villaOid() const
 }
 
 
-const mongocxx::collection& VillaItem::collection() const
+mongocxx::collection &VillaItem::collection()
 {
     return mCollection;
 }
@@ -162,7 +249,7 @@ const mongocxx::collection& VillaItem::collection() const
 
 
 
-VillaItem VillaItem::operator=(const VillaItem &item)
+VillaItem VillaItem::operator=(VillaItem &item)
 {
     VillaItem _item(item.collection());
 
@@ -178,7 +265,7 @@ VillaItem VillaItem::operator=(const VillaItem &item)
 
 
 
-bool VillaItem::operator==(const VillaItem &item)
+bool VillaItem::operator==(VillaItem &item)
 {
     if( this->villaIl() != item.villaIl() )
         return false;
@@ -205,7 +292,7 @@ bool VillaItem::operator==(const VillaItem &item)
 
 }
 
-bool VillaItem::operator!=(const VillaItem &item)
+bool VillaItem::operator!=(VillaItem &item)
 {
     if( this->villaIl() == item.villaIl() )
         return false;
@@ -231,52 +318,263 @@ bool VillaItem::operator!=(const VillaItem &item)
     return true;
 }
 
-std::string VillaItem::villaIlce() const
+std::string VillaItem::villaIlce()
 {
-    return mVillaIlce;
+    try {
+        auto val = this->find_one(this->villaFilter().view());
+        if( val.has_value() )
+        {
+            try {
+                return val.value().view()[VILLAILCE].get_utf8().value.to_string();
+            } catch (bsoncxx::exception &e) {
+                std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+                return "";
+            }
+
+        }else{
+            return "";
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return "";
+    }
+
 }
 
-void VillaItem::setVillaIlce(const std::string &villaIlce)
+bool VillaItem::setVillaIlce(const std::string &villaIlce)
 {
-    mVillaIlce = villaIlce;
+    auto setDoc = document{};
+
+    try {
+        setDoc.append(kvp("$set",make_document(kvp(VILLAILCE,villaIlce))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
 }
 
-std::string VillaItem::villaIl() const
+std::string VillaItem::villaIl()
 {
-    return mVillaIl;
+    try {
+        auto val = this->find_one(this->villaFilter().view());
+        if( val.has_value() )
+        {
+            try {
+                return val.value().view()[VILLAIL].get_utf8().value.to_string();
+            } catch (bsoncxx::exception &e) {
+                std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+                return "";
+            }
+
+        }else{
+            return "";
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return "";
+    }
 }
 
-void VillaItem::setVillaIl(const std::string &villaIl)
+bool VillaItem::setVillaIl(const std::string &villaIl)
 {
-    mVillaIl = villaIl;
+    auto setDoc = document{};
+
+    try {
+        setDoc.append(kvp("$set",make_document(kvp(VILLAIL,villaIl))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
 }
 
-std::string VillaItem::villaHavuz() const
+std::string VillaItem::villaHavuz()
 {
-    return mVillaHavuz;
+    try {
+        auto val = this->find_one(this->villaFilter().view());
+        if( val.has_value() )
+        {
+            try {
+                return val.value().view()[VILLAHAVUZ].get_utf8().value.to_string();
+            } catch (bsoncxx::exception &e) {
+                std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+                return "";
+            }
+
+        }else{
+            return "";
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return "";
+    }
 }
 
-void VillaItem::setVillaHavuz(const std::string &villaHavuz)
+bool VillaItem::setVillaHavuz(const std::string &villaHavuz)
 {
-    mVillaHavuz = villaHavuz;
+    auto setDoc = document{};
+
+    try {
+        setDoc.append(kvp("$set",make_document(kvp(VILLAHAVUZ,villaHavuz))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
 }
 
-std::string VillaItem::villaKonum() const
+std::string VillaItem::villaKonum()
 {
-    return mVillaKonum;
+    try {
+        auto val = this->find_one(this->villaFilter().view());
+        if( val.has_value() )
+        {
+            try {
+                return val.value().view()[VILLAKONUM].get_utf8().value.to_string();
+            } catch (bsoncxx::exception &e) {
+                std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+                return "";
+            }
+
+        }else{
+            return "";
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return "";
+    }
 }
 
-void VillaItem::setVillaKonum(const std::string &villaKonum)
+bool VillaItem::setVillaKonum(const std::string &villaKonum)
 {
-    mVillaKonum = villaKonum;
+    auto setDoc = document{};
+
+    try {
+        setDoc.append(kvp("$set",make_document(kvp(VILLAKONUM,villaKonum))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
 }
 
-std::string VillaItem::villaName() const
+std::string VillaItem::villaName()
 {
-    return mVillaName;
+    try {
+        auto val = this->find_one(this->villaFilter().view());
+        if( val.has_value() )
+        {
+            try {
+                return val.value().view()[VILLANAME].get_utf8().value.to_string();
+            } catch (bsoncxx::exception &e) {
+                std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+                return "";
+            }
+
+        }else{
+            return "";
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return "";
+    }
 }
 
-void VillaItem::setVillaName(const std::string &villaName)
+bool VillaItem::setVillaName(const std::string &villaName)
 {
-    mVillaName = villaName;
+    auto setDoc = document{};
+
+    try {
+        setDoc.append(kvp("$set",make_document(kvp(VILLANAME,villaName))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),setDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
 }
