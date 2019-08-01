@@ -35,6 +35,8 @@ public:
 
     const std::string downloadFile(const std::string &oid , const bool &forceFilename = false);
 
+    const std::string downloadFileName( const std::string &oid );
+
     const bsoncxx::types::value uploadfile( QString filepath );
 
 

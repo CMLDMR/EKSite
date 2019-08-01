@@ -99,6 +99,8 @@ const std::string DBClass::downloadFile(const std::string &oid, const bool &forc
         }
 
 
+
+
         auto file_length = downloader.file_length();
         auto bytes_counter = 0;
 
@@ -151,6 +153,23 @@ const std::string DBClass::downloadFile(const std::string &oid, const bool &forc
         std::cout << "FILE FORCED : " << forceFilename <<" FILE FILL: " << fullFilename.toStdString() <<" TOTHIS FILE: " << file.fileName().toStdString() << std::endl;
 
         return fullFilename.toStdString();
+}
+
+const std::string DBClass::downloadFileName(const std::string &oid)
+{
+
+
+    mongocxx::gridfs::downloader downloader;
+
+    try {
+        downloader = this->db()->gridfs_bucket().open_download_stream(bsoncxx::types::value(bsoncxx::types::b_oid{bsoncxx::oid{oid}}));
+    } catch (mongocxx::gridfs_exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FILE__ << " " << e.what() << std::endl;
+        return "";
+    }
+
+    return downloader.files_document()["filename"].get_utf8().value.to_string();
+
 }
 
 const bsoncxx::types::value DBClass::uploadfile(QString filepath)
