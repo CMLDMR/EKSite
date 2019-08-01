@@ -38,6 +38,7 @@ SOURCES += \
         body/footer.cpp \
         body/header.cpp \
         customwidgets/loginwidget.cpp \
+        customwidgets/placethumpnails.cpp \
         customwidgets/reservationwidget.cpp \
         customwidgets/slider.cpp \
         ilancontainer.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     body/header.h \
     bootstrap.h \
     customwidgets/loginwidget.h \
+    customwidgets/placethumpnails.h \
     customwidgets/reservationwidget.h \
     customwidgets/slider.h \
     ilancontainer.h \

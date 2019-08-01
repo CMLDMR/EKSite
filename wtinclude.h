@@ -31,6 +31,10 @@
 #include <Wt/WProgressBar.h>
 #include <Wt/WTextEdit.h>
 #include <Wt/WCheckBox.h>
+#include <Wt/WDate.h>
+#include <Wt/WDatePicker.h>
+#include <Wt/WTemplate.h>
+#include <Wt/WDateEdit.h>
 
 #include <Wt/WTheme.h>
 #include <iostream>

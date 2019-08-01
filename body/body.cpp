@@ -3,6 +3,7 @@
 #include "customwidgets/slider.h"
 #include "customwidgets/reservationwidget.h"
 #include "customwidgets/loginwidget.h"
+#include "customwidgets/placethumpnails.h"
 #include "admin/adminpanel.h"
 
 Body::Body(mongocxx::database *_db)
@@ -15,9 +16,8 @@ Body::Body(mongocxx::database *_db)
 void Body::initMain()
 {
     clear();
-
     addWidget(cpp14::make_unique<Slider>());
-
+    addWidget(cpp14::make_unique<PlaceThumpnails>(this->db()));
 }
 
 void Body::initLogin()
