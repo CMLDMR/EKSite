@@ -32,7 +32,8 @@ private:
 
 
     bool mKaydet;
-
+    std::string mCurrentVilaOid;
+    std::vector<std::string> mFileWillBeDeleted;
 
     void SaveVilla();
 };

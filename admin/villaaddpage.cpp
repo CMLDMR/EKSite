@@ -79,7 +79,6 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
 
         mHavuzComboBox = container->addWidget(cpp14::make_unique<WComboBox>());
 
-
         mHavuzComboBox->addItem(WString("Havuzlu"));
         mHavuzComboBox->addItem(WString("Ortak Havuzlu"));
         mHavuzComboBox->addItem(WString("Havuzsuz"));
@@ -95,7 +94,6 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
         container->setMargin(5,Side::Top|Side::Bottom);
 
         mIlComboBox = container->addWidget(cpp14::make_unique<WComboBox>());
-
 
         mIlComboBox->addItem(WString("Antalya"));
     }
@@ -133,10 +131,6 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
         container->addStyleClass(Bootstrap::Grid::col_full_12);
 
         container->setMargin(5,Side::Top|Side::Bottom);
-
-        //        auto aciklamaLineEdit = container->addWidget(cpp14::make_unique<WLineEdit>());
-        //        aciklamaLineEdit->setPlaceholderText("Açıklama Ekleyiniz");
-        //        aciklamaLineEdit->addStyleClass(Bootstrap::Grid::col_full_12);
 
         auto fileUploaderContainer = container->addWidget(cpp14::make_unique<WContainerWidget>());
         fileUploaderContainer->setAttributeValue(Style::style,Style::background::color::rgba(this->getRandom(150,170),this->getRandom(170,190),this->getRandom(200,220)));
@@ -293,6 +287,7 @@ VillaAddPage::VillaAddPage(mongocxx::database *_db)
 void VillaAddPage::LoadVilla(const std::string &villaOid)
 {
     mKaydet = false;
+    mCurrentVilaOid = villaOid;
     auto villaItem = VillaItem::Load_Villa(Coll,bsoncxx::oid{villaOid});
 
     mVillaAdiLineEdit->setText(villaItem.villaName());
@@ -314,6 +309,7 @@ void VillaAddPage::LoadVilla(const std::string &villaOid)
 
 
     fileList.clear();
+    mFileWillBeDeleted.clear();
 
     for( auto imgOid : villaItem.villaImgOidList() ){
 
@@ -359,6 +355,7 @@ void VillaAddPage::LoadVilla(const std::string &villaOid)
                 if( fileList.at(i) == fContainer->attributeValue(Style::dataoid).toUTF8() )
                 {
                     fileList.removeAt(i);
+                    mFileWillBeDeleted.push_back(imgOid);
                     break;
                 }
             }
@@ -394,6 +391,66 @@ void VillaAddPage::SaveVilla()
             villaItem.appendImgOid(val);
         }
     }else{
+        auto villaItem = VillaItem::Load_Villa(Coll,bsoncxx::oid{mCurrentVilaOid});
+
+        villaItem.setVillaKisiAdet(mKisiAdetComboBox->currentIndex()+1);
+        villaItem.setVillaName(mVillaAdiLineEdit->text().toUTF8());
+        villaItem.setVillaIlce(mIlceComboBox->currentText().toUTF8());
+        villaItem.setVillaIl(mIlComboBox->currentText().toUTF8());
+        villaItem.setVillaKonum(mVillaKonumuLineEdit->text().toUTF8());
+        villaItem.setVillaHavuz(mHavuzComboBox->currentText().toUTF8());
+        villaItem.setVillaAciklama(mVillaAciklama->text().toUTF8());
+        villaItem.setVillaYayinda(mVillaYayinda->isChecked());
+
+        std::vector <std::string> oldFileList;
+
+        for( auto item : villaItem.villaImgOidList() )
+        {
+            auto filePath = this->downloadFileName(item);
+            oldFileList.push_back(filePath);
+        }
+
+        std::vector<std::string> newfilePath;
+
+        for( auto item : fileList )
+        {
+            QFileInfo fileinfo(item.c_str());
+            bool exist = false;
+
+            for( auto oitem : oldFileList )
+            {
+                if( fileinfo.fileName().toStdString() == oitem )
+                {
+                    exist = true;
+                    break;
+                }
+            }
+
+            if( !exist )
+            {
+                newfilePath.push_back(item.c_str());
+            }
+        }
+
+
+        for( auto item : newfilePath )
+        {
+            auto oidval = this->uploadfile(item.c_str());
+            villaItem.appendImgOid(oidval);
+        }
+
+        for( auto item : mFileWillBeDeleted )
+        {
+            if( villaItem.deleteImgOid(bsoncxx::oid{item}) )
+            {
+                this->deleteGridFSFile(item);
+            }
+        }
+
+
+
+
+
 
     }
 
