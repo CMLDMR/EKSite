@@ -37,6 +37,8 @@ public:
 
     const std::string downloadFileName( const std::string &oid );
 
+    void deleteGridFSFile( const std::string &oid );
+
     const bsoncxx::types::value uploadfile( QString filepath );
 
 

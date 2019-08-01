@@ -172,6 +172,11 @@ const std::string DBClass::downloadFileName(const std::string &oid)
 
 }
 
+void DBClass::deleteGridFSFile(const std::string &oid)
+{
+    this->db()->gridfs_bucket().delete_file(bsoncxx::types::value(bsoncxx::types::b_oid{bsoncxx::oid{oid}}));
+}
+
 const bsoncxx::types::value DBClass::uploadfile(QString filepath)
 {
     QFile file( filepath );
