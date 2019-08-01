@@ -47,6 +47,7 @@ public:
     QVector<std::string> villaImgOidList();
     bool appendImgOid( const bsoncxx::types::value &value );
     bool setImgOidList(const QVector<bsoncxx::types::value> &oidList );
+    bool deleteImgOid( const bsoncxx::oid &fileOid );
 
     VillaItem operator=(VillaItem &item);
 

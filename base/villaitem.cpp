@@ -393,6 +393,42 @@ bool VillaItem::setImgOidList(const QVector<bsoncxx::types::value> &oidList)
     }
 }
 
+bool VillaItem::deleteImgOid(const bsoncxx::oid &fileOid)
+{
+
+    auto popDoc = document{};
+
+    try {
+        popDoc.append(kvp("$pull",make_document(kvp(VILLAIMGLIST,fileOid))));
+    } catch (bsoncxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+    std::cout << bsoncxx::to_json(popDoc.view()) << std::endl;
+
+    try {
+        auto upt = this->update_one(this->villaFilter().view(),popDoc.view());
+        if( upt.has_value() )
+        {
+            if( upt.value().modified_count() )
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    } catch (mongocxx::exception &e) {
+        std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
+        return false;
+    }
+
+
+
+}
+
 bsoncxx::oid VillaItem::villaOid() const
 {
     return mVillaOid;
