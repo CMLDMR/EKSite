@@ -2,6 +2,8 @@
 #define HEADER_H
 
 #include "wtinclude.h"
+#include "base/containerwidget.h"
+
 
 using namespace Wt;
 
@@ -11,13 +13,13 @@ public:
     Header();
 
 
-    Signal<NoClass> &ClickGiris();
+//    Signal<NoClass> &ClickGiris();
 
 private:
-    WContainerWidget* mMenuWidgets;
+//    WContainerWidget* mMenuWidgets;
 
 
-    Signal<NoClass> _ClickGiris;
+//    Signal<NoClass> _ClickGiris;
 
 };
 
