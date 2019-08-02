@@ -41,6 +41,7 @@ SOURCES += \
         customwidgets/placethumpnails.cpp \
         customwidgets/reservationwidget.cpp \
         customwidgets/slider.cpp \
+        customwidgets/villagethumpnails.cpp \
         ilancontainer.cpp \
         main.cpp \
         mainapplication.cpp
@@ -62,6 +63,7 @@ HEADERS += \
     customwidgets/placethumpnails.h \
     customwidgets/reservationwidget.h \
     customwidgets/slider.h \
+    customwidgets/villagethumpnails.h \
     ilancontainer.h \
     inlinestyle.h \
     mainapplication.h \

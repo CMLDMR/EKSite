@@ -1,11 +1,23 @@
 #ifndef VILLAGETHUMPNAILS_H
 #define VILLAGETHUMPNAILS_H
 
+#include "base/containerwidget.h"
+#include "base/dbclass.h"
 
-class villageThumpnails : public ContainerWidget
+class VillageThumpnails : public ContainerWidget , public DBClass
 {
 public:
-    villageThumpnails();
+    VillageThumpnails( mongocxx::database* _db );
+};
+
+
+
+class VillaPage : public ContainerWidget , public DBClass
+{
+public:
+    VillaPage( mongocxx::database* _db ) ;
+
+
 };
 
 #endif // VILLAGETHUMPNAILS_H
