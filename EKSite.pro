@@ -124,3 +124,5 @@ win32: LIBS += -L$$PWD/../../Wt/Wt-4.1.0-msvs2015-x64/lib/ -lwt -lwthttp
 
 INCLUDEPATH += $$PWD/../../Wt/Wt-4.1.0-msvs2015-x64/include
 DEPENDPATH += $$PWD/../../Wt/Wt-4.1.0-msvs2015-x64/include
+
+DISTFILES +=

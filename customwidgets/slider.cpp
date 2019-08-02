@@ -8,7 +8,7 @@ Slider::Slider()
     setMargin(0,Side::Top);
     setPadding(0,AllSides);
     setWidth(WLength("100%"));
-    setHeight(WLength(400));
+    setHeight(WLength(600));
     setPositionScheme(PositionScheme::Relative);
 
     mStack = addWidget(cpp14::make_unique<WStackedWidget>());
@@ -132,14 +132,16 @@ SliderItem::SliderItem(const std::string &imgurl, const std::string &title)
 
     setPositionScheme(PositionScheme::Absolute);
     setWidth(WLength("100%"));
-    setMinimumSize(WLength::Auto,400);
+    setMinimumSize(WLength::Auto,600);
     setAttributeValue(Style::style,Style::background::url(imgurl)+Style::background::size::cover+Style::background::repeat::norepeat+Style::background::position::center_center);
 
-    auto container = addWidget(cpp14::make_unique<WContainerWidget>());
-    container->setPositionScheme(PositionScheme::Absolute);
+    auto layout = setLayout(cpp14::make_unique<WVBoxLayout>());
 
-    container->setOffsets(WLength("50%"),Side::Left);
-    container->setOffsets(WLength("50%"),Side::Top);
+    auto container = layout->addWidget(cpp14::make_unique<WContainerWidget>(),0,AlignmentFlag::Center|AlignmentFlag::Middle);
+//    container->setPositionScheme(PositionScheme::Absolute);
+
+//    container->setOffsets(WLength("50%"),Side::Left);
+//    container->setOffsets(WLength("50%"),Side::Top);
 
     container->setAttributeValue(Style::style,Style::background::color::rgba(55,55,55));
     container->addStyleClass(Bootstrap::ImageShape::img_thumbnail);

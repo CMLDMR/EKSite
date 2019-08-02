@@ -20,18 +20,40 @@ Header::Header()
     }
 
     {
-        auto container = rContainer->addWidget(cpp14::make_unique<ContainerWidget>());
-        container->addStyleClass(Bootstrap::Grid::col_full_12);
-        container->setRandomBackGroundColor(255,255,1);
+        auto _container = rContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+        _container->setId("_container");
+        _container->addStyleClass(Bootstrap::Grid::col_full_12);
+        _container->setRandomBackGroundColor(50,255,1);
+//        _container->setPositionScheme(PositionScheme::Relative);
+        _container->setContentAlignment(AlignmentFlag::Center);
 
+
+        auto __container = _container->addWidget(cpp14::make_unique<ContainerWidget>());
+        __container->setId("__container");
+//        container->addStyleClass(Bootstrap::Grid::col_full_12);
+        __container->setRandomBackGroundColor(50,255,1);
+//        __container->setPositionScheme(PositionScheme::Relative);
+        __container->setContentAlignment(AlignmentFlag::Center);
+
+        auto container = __container->addWidget(cpp14::make_unique<ContainerWidget>());
+        container->setId("container");
+        container->setMaximumSize(1280,WLength::Auto);
+
+//        container->addStyleClass(Bootstrap::Grid::col_full_12);
+        container->setRandomBackGroundColor(50,255,1);
+        container->setPositionScheme(PositionScheme::Relative);
         container->setContentAlignment(AlignmentFlag::Center);
 
         auto nContainer = container->addWidget(cpp14::make_unique<WContainerWidget>());
         nContainer->setWidth(WLength("100%"));
         nContainer->setMaximumSize(1280,WLength::Auto);
-        auto layout = nContainer->setLayout(cpp14::make_unique<WVBoxLayout>());
+        nContainer->setPositionScheme(PositionScheme::Absolute);
+        nContainer->setZIndex(10);
+        nContainer->setMargin(WLength::Auto,AllSides);
 
-        auto navigation = layout->addWidget(cpp14::make_unique<WNavigationBar>(),0,AlignmentFlag::Middle|AlignmentFlag::Justify);
+        nContainer->setOverflow(Overflow::Visible);
+
+        auto navigation = nContainer->addWidget(cpp14::make_unique<WNavigationBar>());
         navigation->setTitle("ERK Reality",
                      "https://www.google.com/search?q=corpy+inc");
         navigation->setResponsive(true);
@@ -45,10 +67,15 @@ Header::Header()
         auto searchResult = Wt::cpp14::make_unique<Wt::WText>("Buy or Sell... Bye!");
         auto searchResult_ = searchResult.get();
 
-        leftMenu_->addItem("Home", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
-        leftMenu_->addItem("Layout", Wt::cpp14::make_unique<Wt::WText>("Layout contents"))
+        leftMenu_->addItem("Konaklama", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
+        leftMenu_->addItem("Satılık", Wt::cpp14::make_unique<Wt::WText>("Layout contents"))
             ->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/layout"));
-        leftMenu_->addItem("Sales", std::move(searchResult));
+        leftMenu_->addItem("Uçuşlar", std::move(searchResult));
+
+        leftMenu_->addItem("Araç Kiralama", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
+        leftMenu_->addItem("Transfer", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
+        leftMenu_->addItem("Ev Sahibi Olun", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
+
 
         // Setup a Right-aligned menu.
         auto rightMenu = Wt::cpp14::make_unique<Wt::WMenu>();
@@ -58,10 +85,10 @@ Header::Header()
         // Create a popup submenu for the Help menu.
         auto popupPtr = Wt::cpp14::make_unique<Wt::WPopupMenu>();
         auto popup = popupPtr.get();
-        popup->addItem("Contents");
-        popup->addItem("Index");
+        popup->addItem("Kullanıcı Sözleşmelesi");
+        popup->addItem("İletişim");
         popup->addSeparator();
-        popup->addItem("About");
+        popup->addItem("Hakkında");
 
         popup->itemSelected().connect([=] (Wt::WMenuItem *item) {
             auto messageBox = popup->addChild(
@@ -78,68 +105,10 @@ Header::Header()
             messageBox->show();
         });
 
-        auto item = Wt::cpp14::make_unique<Wt::WMenuItem>("Help");
+        auto item = Wt::cpp14::make_unique<Wt::WMenuItem>("Hakkında");
         item->setMenu(std::move(popupPtr));
         rightMenu_->addItem(std::move(item));
-
     }
-
-//    mMenuWidgets = addWidget(cpp14::make_unique<WContainerWidget>());
-//    mMenuWidgets->setHeight(WLength("100%"));
-//    mMenuWidgets->setAttributeValue(Style::style,Style::background::color::color(Style::color::Grey::Black));
-//    mMenuWidgets->setMaximumSize(1024,WLength::Auto);
-//    mMenuWidgets->addStyleClass(Bootstrap::Grid::row);
-
-
-//    {
-//        auto container = mMenuWidgets->addWidget(cpp14::make_unique<WContainerWidget>());
-//        container->addStyleClass(Bootstrap::Grid::Large::col_lg_2+Bootstrap::Grid::Medium::col_md_2+Bootstrap::Grid::Small::col_sm_3+Bootstrap::Grid::ExtraSmall::col_xs_4);
-//        container->setHeight(WLength("100%"));
-//        auto layout = container->setLayout(cpp14::make_unique<WVBoxLayout>());
-//        auto _container = layout->addWidget(cpp14::make_unique<WContainerWidget>(),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
-//        _container->setWidth(WLength("100%"));
-//        _container->decorationStyle().setCursor(Cursor::PointingHand);
-//        _container->setMargin(WLength::Auto,Side::Top|Side::Bottom);
-//        auto text = _container->addWidget(cpp14::make_unique<WText>("ERK Reality Show"));
-//        text->setAttributeValue(Style::style,Style::color::rgb("255,255,255")+Style::font::size::s16px);
-//        text->addStyleClass(Bootstrap::Label::info);
-//    }
-
-//    {
-//        auto container = mMenuWidgets->addWidget(cpp14::make_unique<WContainerWidget>());
-//        container->addStyleClass(Bootstrap::Grid::Offset::Large::col_lg_6+Bootstrap::Grid::Offset::Medium::col_md_6+Bootstrap::Grid::Offset::Small::col_sm_3);
-//        container->addStyleClass(Bootstrap::Grid::Large::col_lg_2+Bootstrap::Grid::Medium::col_md_2+Bootstrap::Grid::Small::col_sm_3+Bootstrap::Grid::ExtraSmall::col_xs_4);
-//        container->setHeight(WLength("100%"));
-//        auto layout = container->setLayout(cpp14::make_unique<WVBoxLayout>());
-//        auto _container = layout->addWidget(cpp14::make_unique<WContainerWidget>(),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
-//        _container->setWidth(WLength("100%"));
-//        _container->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-//        _container->decorationStyle().setCursor(Cursor::PointingHand);
-//        _container->setMargin(WLength::Auto,Side::Top|Side::Bottom);
-//        auto text = _container->addWidget(cpp14::make_unique<WText>("Giriş Yap"));
-//        text->setAttributeValue(Style::style,Style::color::rgb("0,0,0"));
-//        _container->clicked().connect(this,[=](){
-//            _ClickGiris.emit(NoClass());
-//        });
-//    }
-
-//    {
-//        auto container = mMenuWidgets->addWidget(cpp14::make_unique<WContainerWidget>());
-//        container->addStyleClass(Bootstrap::Grid::Large::col_lg_2+Bootstrap::Grid::Medium::col_md_2+Bootstrap::Grid::Small::col_sm_3+Bootstrap::Grid::ExtraSmall::col_xs_4);
-//        container->setHeight(WLength("100%"));
-//        auto layout = container->setLayout(cpp14::make_unique<WVBoxLayout>());
-//        auto _container = layout->addWidget(cpp14::make_unique<WContainerWidget>(),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
-//        _container->setWidth(WLength("100%"));
-//        _container->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-//        _container->decorationStyle().setCursor(Cursor::PointingHand);
-//        _container->setMargin(WLength::Auto,Side::Top|Side::Bottom);
-//        auto text = _container->addWidget(cpp14::make_unique<WText>("Üye Ol"));
-//        text->setAttributeValue(Style::style,Style::color::rgb("0,0,0"));
-//    }
-
 }
 
-//Signal<NoClass> &Header::ClickGiris()
-//{
-//    return _ClickGiris;
-//}
+

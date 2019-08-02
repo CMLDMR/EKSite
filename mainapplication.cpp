@@ -40,16 +40,7 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
 
     db = mClient->database("EKSite");
 
-
-
-//    try {
-//        auto ins = this->db.collection("villa").insert_one(make_document(kvp("sd",23)).view());
-
-//        con << ins.value().result().inserted_count();
-
-//    } catch (mongocxx::exception &e) {
-//        con << e.what();
-//    }
+    WApplication::useStyleSheet(WLink("css/mcxx.css"));
 
 
     con << "QUERY DATABASE";
