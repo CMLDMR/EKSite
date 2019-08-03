@@ -32,7 +32,7 @@ void AdminPanel::initMainPage()
         auto container = rContainer->addWidget(cpp14::make_unique<ContainerWidget>());
         container->addStyleClass(Bootstrap::Grid::col_full_12);
 
-        auto text = container->addWidget(cpp14::make_unique<WText>("Admin Panel"));
+        container->addWidget(cpp14::make_unique<WText>("Admin Panel"));
 
     }
 
