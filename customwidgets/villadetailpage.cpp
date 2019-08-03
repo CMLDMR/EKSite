@@ -202,6 +202,43 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
             auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaHavuz())));
         }
 
+        {
+            auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+            sContainer->addStyleClass(Bootstrap::Grid::col_full_12);
+            auto title = sContainer->addWidget(cpp14::make_unique<WPushButton>("Reservasyon Yap"));
+            title->addStyleClass(Bootstrap::Button::Primary);
+        }
+
     }
 
+
+    // Açıklama Alanı
+    {
+        auto fotoContainer = container->addWidget(cpp14::make_unique<ContainerWidget>());
+        fotoContainer->addStyleClass(Bootstrap::Grid::col_full_12);
+
+        auto contentContainer = fotoContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+        contentContainer->setContainerType(ContainerType::ROW);
+        contentContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+        contentContainer->setWidth(WLength("100%"));
+        contentContainer->setMargin(20,Side::Top);
+
+
+        {
+            auto titleContainer = contentContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+            titleContainer->addStyleClass(Bootstrap::Grid::col_full_12);
+            titleContainer->setRandomBackGroundColor(20,25,0.5);
+            auto text = titleContainer->addWidget(cpp14::make_unique<WText>("<h4>Villa Hakkında</h4>"));
+            text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
+
+        }
+
+        {
+            auto titleContainer = contentContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+            titleContainer->addStyleClass(Bootstrap::Grid::col_full_12);
+            titleContainer->setOverflow(Overflow::Hidden);
+            auto text = contentContainer->addWidget(cpp14::make_unique<WText>(mVillaItem->villaAciklama(),TextFormat::UnsafeXHTML));
+        }
+
+    }
 }
