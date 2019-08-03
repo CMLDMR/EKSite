@@ -13,9 +13,11 @@ VillageThumpnails::VillageThumpnails(mongocxx::database *_db , const bsoncxx::oi
     addStyleClass(Bootstrap::Grid::Large::col_lg_3
                   +Bootstrap::Grid::Medium::col_md_3
                   +Bootstrap::Grid::Small::col_sm_4
-                  +Bootstrap::Grid::ExtraSmall::col_xs_6);
-
+                  +Bootstrap::Grid::ExtraSmall::col_xs_6
+                  +Bootstrap::ImageShape::img_thumbnail);
+    setRandomBackGroundColor(200,215);
     decorationStyle().setCursor(Cursor::PointingHand);
+    setMargin(5,Side::Top|Side::Bottom);
 
 
 
@@ -26,7 +28,7 @@ VillageThumpnails::VillageThumpnails(mongocxx::database *_db , const bsoncxx::oi
         container->setOverflow(Overflow::Hidden);
         container->setPositionScheme(PositionScheme::Relative);
         container->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-        container->setHeight(200);
+        container->setHeight(225);
         container->setRandomBackGroundColor(75,125,0.5);
         container->setWidth(WLength("100%"));
         container->clicked().connect([=](){
