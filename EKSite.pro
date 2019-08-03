@@ -41,6 +41,7 @@ SOURCES += \
         customwidgets/placethumpnails.cpp \
         customwidgets/reservationwidget.cpp \
         customwidgets/slider.cpp \
+        customwidgets/villadetailpage.cpp \
         customwidgets/villagethumpnails.cpp \
         ilancontainer.cpp \
         main.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
     customwidgets/placethumpnails.h \
     customwidgets/reservationwidget.h \
     customwidgets/slider.h \
+    customwidgets/villadetailpage.h \
     customwidgets/villagethumpnails.h \
     ilancontainer.h \
     inlinestyle.h \
@@ -109,15 +111,7 @@ INCLUDEPATH += $$PWD/include/mongocxx/v_noabi
 DEPENDPATH  += $$PWD/include/mongocxx/v_noabi
 
 
-#INCLUDEPATH += $$PWD/../../Yonetim-yazilimi/Boost/boost/
-#DEPENDPATH  += $$PWD/../../Yonetim-yazilimi/Boost/boost/
 
-#INCLUDEPATH += $$PWD/../../Yonetim-yazilimi/Comman
-#DEPENDPATH  += $$PWD/../../Yonetim-yazilimi/Comman
-
-
-
-#win32: LIBS += -L$$PWD/../../../local/boost_1_70_0/lib64-msvc-14.1/ -lboost_bzip2-vc141-mt-gd-x64-1_70
 
 INCLUDEPATH += $$PWD/../../../local/boost_1_70_0/
 DEPENDPATH += $$PWD/../../../local/boost_1_70_0/
@@ -128,3 +122,6 @@ INCLUDEPATH += $$PWD/../../Wt/Wt-4.1.0-msvs2015-x64/include
 DEPENDPATH += $$PWD/../../Wt/Wt-4.1.0-msvs2015-x64/include
 
 DISTFILES +=
+
+QMAKE_CXXFLAGS += /wd4251 /wd4275 /wd4267 /wd4189
+
