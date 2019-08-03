@@ -29,6 +29,9 @@ VillageThumpnails::VillageThumpnails(mongocxx::database *_db , const bsoncxx::oi
         container->setHeight(200);
         container->setRandomBackGroundColor(75,125,0.5);
         container->setWidth(WLength("100%"));
+        container->clicked().connect([=](){
+            _ClickVilla.emit(this->villaOid.to_string());
+        });
         {
             auto textContainer = container->addWidget(cpp14::make_unique<ContainerWidget>());
             textContainer->setPositionScheme(PositionScheme::Absolute);
@@ -57,23 +60,6 @@ VillageThumpnails::VillageThumpnails(mongocxx::database *_db , const bsoncxx::oi
                                     Style::font::weight::lighter);
             text->setMargin(3,AllSides);
         }
-
-//        {
-//            auto textContainer = container->addWidget(cpp14::make_unique<ContainerWidget>());
-//            textContainer->setPositionScheme(PositionScheme::Absolute);
-//            textContainer->setOffsets(0,Side::Left);
-//            textContainer->setOffsets(WLength("0%"),Side::Bottom);
-////            textContainer->setWidth(WLength("75%"));
-//            textContainer->setContentAlignment(AlignmentFlag::Center);
-//            textContainer->setRandomBackGroundColor(75,85,0.75);
-////            textContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-//            auto text = textContainer->addWidget(cpp14::make_unique<WText>(WString("{1} Kişilik").arg(mVillaItem->villaKisiAdet())));
-//            text->setAttributeValue(Style::style,Style::font::size::s16px+
-//                                    Style::color::color(Style::color::White::Snow)+
-//                                    Style::font::family::tahoma+
-//                                    Style::font::weight::lighter);
-//            text->setMargin(3,AllSides);
-//        }
 
         container->setMargin(10,Side::Top|Side::Bottom);
 
@@ -104,6 +90,21 @@ VillageThumpnails::VillageThumpnails(mongocxx::database *_db , const bsoncxx::oi
 
 
 
+}
+
+const bsoncxx::oid &VillageThumpnails::VillaOid() const
+{
+    return villaOid;
+}
+
+std::string VillageThumpnails::VillaOidString() const
+{
+    return villaOid.to_string();
+}
+
+Signal<std::string> &VillageThumpnails::ClickVilla()
+{
+    return _ClickVilla;
 }
 
 
@@ -148,7 +149,11 @@ VillaPage::VillaPage(mongocxx::database *_db)
         {
 
             try {
-                rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db(),doc["_id"].get_oid().value));
+                auto container = rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db(),doc["_id"].get_oid().value));
+                container->setAttributeValue(Style::dataoid,doc["_id"].get_oid().value.to_string());
+                container->ClickVilla().connect([=](std::string oid){
+                    _ClickVilla.emit(container->attributeValue(Style::dataoid).toUTF8());
+                });
             } catch (bsoncxx::exception &e) {
                 std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
             }
@@ -160,14 +165,9 @@ VillaPage::VillaPage(mongocxx::database *_db)
         std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
     }
 
+}
 
-//    rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db()));
-//    rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db()));
-//    rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db()));
-//    rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db()));
-
-//    rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db()));
-//    rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db()));
-//    rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db()));
-//    rContainer->addWidget(cpp14::make_unique<VillageThumpnails>(this->db()));
+Signal<std::string> &VillaPage::ClickVilla()
+{
+    return _ClickVilla;
 }
