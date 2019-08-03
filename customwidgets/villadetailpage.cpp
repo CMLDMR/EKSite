@@ -12,7 +12,6 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
     mVillaItem = VillaItem::Load_Villa(&mVillaCollection,bsoncxx::oid{_villaOid});
 
     setPadding(50,Side::Top);
-//    setRandomBackGroundColor(200,225,0.65);
     setRandomBackGroundColorRGB(0,20,185,95,240,255,0.85);
 
     setAttributeValue(Style::style,Style::background::url(this->downloadFile(mVillaItem->villaImgOidList().first()))+
@@ -21,7 +20,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
     setContentAlignment(AlignmentFlag::Center);
 
     auto container = addWidget(cpp14::make_unique<ContainerWidget>());
-    container->setRandomBackGroundColor(240,255,0.90);
+    container->setRandomBackGroundColor(200,225,0.90);
     container->setWidth(WLength("100%"));
     container->setContainerType(ContainerType::ROW);
     container->setMaximumSize(1024,WLength::Auto);
@@ -39,7 +38,8 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
     // FOTO Container
     {
         auto fotoContainer = container->addWidget(cpp14::make_unique<ContainerWidget>());
-        fotoContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_9);
+        fotoContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_9+Bootstrap::ImageShape::img_thumbnail);
+        fotoContainer->setRandomBackGroundColor(240,255,0.90);
 
         auto contentContainer = fotoContainer->addWidget(cpp14::make_unique<ContainerWidget>());
         contentContainer->setContainerType(ContainerType::ROW);
@@ -153,11 +153,53 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
 
         auto contentContainer = fotoContainer->addWidget(cpp14::make_unique<ContainerWidget>());
         contentContainer->setContainerType(ContainerType::ROW);
+        contentContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
 
         {
             auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
             sContainer->addStyleClass(Bootstrap::Grid::col_full_12);
             auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h3>Günlük {1}₺</h3><h6>'den Başlayan Fiyatlarla</h6>").arg(mVillaItem->villaAcilisFiyat())));
+        }
+
+        {
+            auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+            sContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6+
+                                      Bootstrap::Grid::Medium::col_md_6+
+                                      Bootstrap::Grid::Small::col_sm_6+
+                                      Bootstrap::Grid::ExtraSmall::col_xs_6);
+            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaIl())));
+        }
+        {
+            auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+            sContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6+
+                                      Bootstrap::Grid::Medium::col_md_6+
+                                      Bootstrap::Grid::Small::col_sm_6+
+                                      Bootstrap::Grid::ExtraSmall::col_xs_6);
+            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaIlce())));
+        }
+
+        {
+            auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+            sContainer->addStyleClass(Bootstrap::Grid::col_full_12);
+            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaKonum())));
+        }
+
+        {
+            auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+            sContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6+
+                                      Bootstrap::Grid::Medium::col_md_6+
+                                      Bootstrap::Grid::Small::col_sm_6+
+                                      Bootstrap::Grid::ExtraSmall::col_xs_6);
+            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1} Kişi</h5>").arg(mVillaItem->villaKisiAdet())));
+        }
+
+        {
+            auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+            sContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6+
+                                      Bootstrap::Grid::Medium::col_md_6+
+                                      Bootstrap::Grid::Small::col_sm_6+
+                                      Bootstrap::Grid::ExtraSmall::col_xs_6);
+            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaHavuz())));
         }
 
     }
