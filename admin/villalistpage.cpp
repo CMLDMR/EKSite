@@ -49,7 +49,7 @@ void VillaListPage::initVillaList()
         {
             try {
 
-                auto villaItem = VillaItem::Load_Villa(this->villaCollection,doc["_id"].get_oid().value);
+                auto villaItem = VillaItem::Load_Villa(&this->villaCollection,doc["_id"].get_oid().value);
 
                 auto container = rContainer->addWidget(cpp14::make_unique<ContainerWidget>());
                 container->setRandomBackGroundColor(220,230);
@@ -57,7 +57,7 @@ void VillaListPage::initVillaList()
                 container->setMargin(5,Side::Top);
                 container->addStyleClass(Bootstrap::Grid::col_full_12);
                 container->decorationStyle().setCursor(Cursor::PointingHand);
-                container->setAttributeValue(Style::dataoid,villaItem.villaOid().to_string());
+                container->setAttributeValue(Style::dataoid,villaItem->villaOid().to_string());
                 container->clicked().connect([=](){
                     this->initVilla(container->attributeValue(Style::dataoid).toUTF8());
                 });
@@ -71,7 +71,7 @@ void VillaListPage::initVillaList()
                                              +Bootstrap::Grid::Small::col_sm_2
                                              +Bootstrap::Grid::ExtraSmall::col_xs_3);
                 YayindaContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                if( villaItem.villaYayinda() )
+                if( villaItem->villaYayinda() )
                 {
                     YayindaContainer->setRandomBackGroundColor(110,120);
                     auto Nametext = YayindaContainer->addWidget(cpp14::make_unique<WText>("Yayında"));
@@ -88,7 +88,7 @@ void VillaListPage::initVillaList()
                                              +Bootstrap::Grid::Small::col_sm_6
                                              +Bootstrap::Grid::ExtraSmall::col_xs_6);
                 NameContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                auto Nametext = NameContainer->addWidget(cpp14::make_unique<WText>(villaItem.villaName()));
+                auto Nametext = NameContainer->addWidget(cpp14::make_unique<WText>(villaItem->villaName()));
 
                 auto KisiContainer = iContainer->addWidget(cpp14::make_unique<ContainerWidget>());
                 KisiContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_2
@@ -96,7 +96,7 @@ void VillaListPage::initVillaList()
                                              +Bootstrap::Grid::Small::col_sm_4
                                              +Bootstrap::Grid::ExtraSmall::col_xs_3);
                 KisiContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                auto Kisitext = KisiContainer->addWidget(cpp14::make_unique<WText>(WString("{1} Kişi").arg(villaItem.villaKisiAdet())));
+                auto Kisitext = KisiContainer->addWidget(cpp14::make_unique<WText>(WString("{1} Kişi").arg(villaItem->villaKisiAdet())));
 
                 auto KonumContainer = iContainer->addWidget(cpp14::make_unique<ContainerWidget>());
                 KonumContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_3
@@ -104,7 +104,7 @@ void VillaListPage::initVillaList()
                                              +Bootstrap::Grid::Small::col_sm_6
                                              +Bootstrap::Grid::ExtraSmall::col_xs_6);
                 KonumContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                auto Konumtext = KonumContainer->addWidget(cpp14::make_unique<WText>(villaItem.villaKonum()));
+                auto Konumtext = KonumContainer->addWidget(cpp14::make_unique<WText>(villaItem->villaKonum()));
 
                 auto HavuzContainer = iContainer->addWidget(cpp14::make_unique<ContainerWidget>());
                 HavuzContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_3
@@ -112,7 +112,7 @@ void VillaListPage::initVillaList()
                                              +Bootstrap::Grid::Small::col_sm_6
                                              +Bootstrap::Grid::ExtraSmall::col_xs_6);
                 HavuzContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                auto Havuztext = HavuzContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(villaItem.villaHavuz())));
+                auto Havuztext = HavuzContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(villaItem->villaHavuz())));
 
 
 
@@ -124,7 +124,7 @@ void VillaListPage::initVillaList()
                                              +Bootstrap::Grid::Small::col_sm_6
                                              +Bootstrap::Grid::ExtraSmall::col_xs_6);
                 IlContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                auto iltext = IlContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(villaItem.villaIl())));
+                auto iltext = IlContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(villaItem->villaIl())));
 
                 auto IlceContainer = iContainer->addWidget(cpp14::make_unique<ContainerWidget>());
                 IlceContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6
@@ -132,7 +132,7 @@ void VillaListPage::initVillaList()
                                              +Bootstrap::Grid::Small::col_sm_6
                                              +Bootstrap::Grid::ExtraSmall::col_xs_6);
                 IlceContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                auto IlceText = IlceContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(villaItem.villaIlce())));
+                auto IlceText = IlceContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(villaItem->villaIlce())));
 
             } catch (bsoncxx::exception &e) {
 

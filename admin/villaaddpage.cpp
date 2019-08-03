@@ -288,30 +288,30 @@ void VillaAddPage::LoadVilla(const std::string &villaOid)
 {
     mKaydet = false;
     mCurrentVilaOid = villaOid;
-    auto villaItem = VillaItem::Load_Villa(Coll,bsoncxx::oid{villaOid});
+    auto villaItem = VillaItem::Load_Villa(&Coll,bsoncxx::oid{villaOid});
 
-    mVillaAdiLineEdit->setText(villaItem.villaName());
-    mVillaKonumuLineEdit->setText(villaItem.villaKonum());
-    mKisiAdetComboBox->setCurrentIndex(villaItem.villaKisiAdet()-1);
+    mVillaAdiLineEdit->setText(villaItem->villaName());
+    mVillaKonumuLineEdit->setText(villaItem->villaKonum());
+    mKisiAdetComboBox->setCurrentIndex(villaItem->villaKisiAdet()-1);
 
 
-    auto index = mHavuzComboBox->findText(villaItem.villaHavuz());
+    auto index = mHavuzComboBox->findText(villaItem->villaHavuz());
     mHavuzComboBox->setCurrentIndex(index);
 
-    index = mIlComboBox->findText(villaItem.villaIl());
+    index = mIlComboBox->findText(villaItem->villaIl());
     mIlComboBox->setCurrentIndex(index);
 
-    index = mIlComboBox->findText(villaItem.villaIlce());
+    index = mIlComboBox->findText(villaItem->villaIlce());
     mIlceComboBox->setCurrentIndex(index);
 
-    mVillaAciklama->setText(villaItem.villaAciklama());
-    mVillaYayinda->setChecked(villaItem.villaYayinda());
+    mVillaAciklama->setText(villaItem->villaAciklama());
+    mVillaYayinda->setChecked(villaItem->villaYayinda());
 
 
     fileList.clear();
     mFileWillBeDeleted.clear();
 
-    for( auto imgOid : villaItem.villaImgOidList() ){
+    for( auto imgOid : villaItem->villaImgOidList() ){
 
 
         auto newFileName = QString::fromStdString(this->downloadFile( imgOid , true ));
