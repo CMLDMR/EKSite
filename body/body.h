@@ -19,6 +19,8 @@ public:
     void initLogin();
 
     void initAdminPanel();
+
+    void initVillaDetail(const std::string &villaOid );
 };
 
 #endif // BODY_H
