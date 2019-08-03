@@ -4,10 +4,21 @@
 #include "base/containerwidget.h"
 #include "base/dbclass.h"
 
+class VillaItem;
+
 class VillageThumpnails : public ContainerWidget , public DBClass
 {
 public:
-    VillageThumpnails( mongocxx::database* _db );
+    VillageThumpnails( mongocxx::database* _db , const bsoncxx::oid &_villaOid );
+
+
+private:
+    const bsoncxx::oid &villaOid;
+
+
+    mongocxx::collection mVillaCollection;
+
+    VillaItem *mVillaItem;
 };
 
 
