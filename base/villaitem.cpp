@@ -321,7 +321,7 @@ QVector<std::string> VillaItem::villaImgOidList()
         auto val = this->find_one(this->villaFilter().view());
         if( val.has_value() )
         {
-            std::cout << "BSON: " << bsoncxx::to_json(val.value().view()) << std::endl;
+            std::cout << "BSON: " << bsoncxx::to_json(val.value().view()) << "\n" << std::endl;
             try {
                 auto array =  val.value().view()[VILLAIMGLIST].get_array().value;
 
