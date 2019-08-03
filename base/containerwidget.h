@@ -24,6 +24,8 @@ public:
 
     void setRandomBackGroundColor(int beginColor = 150 , int endColor = 255 , double alpha = 1.0);
 
+    void setRandomBackGroundColorRGB( int bRed = 150 , int eRed = 255 , int bGreen = 150 , int eGreen = 150 , int bBlue = 150 , int eBlue = 255 , double alpha = 0.5 );
+
     void showMessage( std::string title , std::string msg , std::string btnText = "OK");
     void showMessage( std::string title , std::string msg , bsoncxx::exception &e , Wt::Icon icon = Icon::Warning);
     void showMessage( std::string title , std::string msg , mongocxx::exception &e , Wt::Icon icon = Icon::Warning);

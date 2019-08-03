@@ -56,6 +56,34 @@ void ContainerWidget::setRandomBackGroundColor(int beginColor, int endColor, dou
 
 }
 
+void ContainerWidget::setRandomBackGroundColorRGB(int bRed, int eRed, int bGreen, int eGreen, int bBlue, int eBlue, double alpha)
+{
+    auto StyleString = QString::fromStdString(this->attributeValue(Style::style).toUTF8());
+
+//    std::cout << "STYLE: " << StyleString.toStdString() << std::endl;
+
+    if( StyleString.contains("background") ){
+
+        int firstIndex = StyleString.indexOf("background");
+
+        int firstIndexAfter = StyleString.indexOf(";",firstIndex);
+
+        StyleString.remove(firstIndex,firstIndexAfter-firstIndex);
+
+        setAttributeValue(Style::style,StyleString.toStdString()+Style::background::color::rgba(this->getRandomRGB(bRed,eRed)
+                                                                                 ,this->getRandomRGB(bGreen,eGreen)
+                                                                                 ,this->getRandomRGB(bBlue,eBlue)
+                                                                                 ,alpha));
+
+    }else{
+        setAttributeValue(Style::style,StyleString.toStdString()+Style::background::color::rgba(this->getRandomRGB(bRed,eRed)
+                                                                                 ,this->getRandomRGB(bGreen,eGreen)
+                                                                                 ,this->getRandomRGB(bBlue,eBlue)
+                                                                                 ,alpha));
+    }
+    StyleString = QString::fromStdString(this->attributeValue(Style::style).toUTF8());
+}
+
 void ContainerWidget::showMessage( std::string title, std::string msg, std::string btnText )
 {
     auto messageBox = this->addChild(
