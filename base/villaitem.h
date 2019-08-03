@@ -8,10 +8,12 @@
 #include <QVector>
 
 
-class VillaItem : public mongocxx::collection
+class VillaItem : private mongocxx::collection
 {
 public:
     static VillaItem Create_EmptyVilla(mongocxx::collection &collection);
+
+    static VillaItem* Load_Villa(mongocxx::collection *collection , bsoncxx::oid _villaOid );
 
     static VillaItem Load_Villa(mongocxx::collection &collection , bsoncxx::oid _villaOid );
 
@@ -39,6 +41,10 @@ public:
 
     std::string villaAciklama();
     bool setVillaAciklama(const std::string &villaAciklama);
+
+    /// TODO: Implentation Edilmedim.
+    int villaAcilisFiyat();
+    bool setVillaAcilisFiyat( const int &acilisFiyat );
 
     bool villaYayinda();
     bool setVillaYayinda(const bool &yayinda);

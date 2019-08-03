@@ -22,6 +22,12 @@ VillaItem VillaItem::Create_EmptyVilla(mongocxx::collection &collection)
     return item;
 }
 
+VillaItem* VillaItem::Load_Villa(mongocxx::collection *collection, bsoncxx::oid _villaOid)
+{
+    VillaItem *item = new VillaItem(*collection,_villaOid);
+    return item;
+}
+
 VillaItem VillaItem::Load_Villa(mongocxx::collection &collection, bsoncxx::oid _villaOid)
 {
     VillaItem item(collection,_villaOid);
@@ -245,6 +251,16 @@ bool VillaItem::setVillaAciklama(const string &villaAciklama)
         std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
         return false;
     }
+}
+
+int VillaItem::villaAcilisFiyat()
+{
+    return 1000;
+}
+
+bool VillaItem::setVillaAcilisFiyat(const int &acilisFiyat)
+{
+    return true;
 }
 
 bool VillaItem::villaYayinda()
