@@ -2,7 +2,7 @@
 #include "base/villaitem.h"
 
 
-
+#include <QDate>
 
 
 VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_villaOid)
@@ -240,5 +240,75 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
             auto text = contentContainer->addWidget(cpp14::make_unique<WText>(mVillaItem->villaAciklama(),TextFormat::UnsafeXHTML));
         }
 
+    }
+
+
+
+    // Reservasyon Takvimi
+    {
+        auto fotoContainer = container->addWidget(cpp14::make_unique<ContainerWidget>());
+        fotoContainer->addStyleClass(Bootstrap::Grid::col_full_12);
+
+        auto contentContainer = fotoContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+        contentContainer->setContainerType(ContainerType::ROW);
+        contentContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+        contentContainer->setWidth(WLength("100%"));
+        contentContainer->setMargin(20,Side::Top);
+
+//        contentContainer->setHeight(450);
+
+
+        {
+            auto titleContainer = contentContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+            titleContainer->addStyleClass(Bootstrap::Grid::col_full_12);
+//            titleContainer->setRandomBackGroundColor(20,25,0.5);
+            auto text = titleContainer->addWidget(cpp14::make_unique<WText>("<h4>Reservasyon Takvimi</h4>"));
+            text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
+            titleContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_primary);
+            titleContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+        }
+
+        {
+            auto titleContainer = contentContainer->addWidget(cpp14::make_unique<ContainerWidget>());
+            titleContainer->addStyleClass(Bootstrap::Grid::col_full_12);
+            titleContainer->setOverflow(Overflow::Hidden);
+
+
+
+            for( auto ay = 1 ; ay <= 12 ; ay++ )
+            {
+                auto ayContainer = titleContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+                ayContainer->setWidth(WLength("100%"));
+
+                auto layout = ayContainer->setLayout(cpp14::make_unique<WHBoxLayout>());
+
+                QDate date(QDate::currentDate().year(),ay,1);
+
+                {
+                    auto _dContainer = layout->addWidget(cpp14::make_unique<WContainerWidget>(),0,AlignmentFlag::Center);
+                    _dContainer->setMargin( 2 , Side::Left );
+                    _dContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_info);
+                    _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+                    _dContainer->setWidth( 150 );
+                    _dContainer->setMaximumSize( 150 , WLength::Auto );
+                    _dContainer->setMinimumSize( 150 , WLength::Auto );
+                    auto text = _dContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(date.toString("MMMM").toStdString())));
+                    text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
+                }
+
+                for( auto day = 1 ; day <= date.daysInMonth() ; day++ )
+                {
+                    auto _dContainer = layout->addWidget(cpp14::make_unique<WContainerWidget>(),0,AlignmentFlag::Center);
+                    _dContainer->setMargin(2,Side::Left);
+                    _dContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_primary);
+                    _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+                    _dContainer->setWidth( 50 );
+                    _dContainer->setMaximumSize( 50 , WLength::Auto );
+                    _dContainer->setMinimumSize( 50 , WLength::Auto );
+                    auto text = _dContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(day)));
+                    text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
+                }
+            }
+        }
     }
 }

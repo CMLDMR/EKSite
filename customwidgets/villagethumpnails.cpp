@@ -118,17 +118,27 @@ VillaPage::VillaPage(mongocxx::database *_db)
     setMargin(30,Side::Top|Side::Bottom);
     setContentAlignment(AlignmentFlag::Center);
 
+    {
+        auto _rContainer = addWidget(cpp14::make_unique<ContainerWidget>());
+        _rContainer->setContainerType(ContainerType::ROW);
+        _rContainer->setMaximumSize(1120,WLength::Auto);
+
+
+        auto container = _rContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+        container->addStyleClass(Bootstrap::Grid::col_full_12);
+        container->setContentAlignment(AlignmentFlag::Left);
+        auto text = container->addWidget(cpp14::make_unique<WText>("Villalar"));
+        text->setAttributeValue(Style::style,Style::font::size::s20px
+                                +Style::font::family::tahoma
+                                +Style::color::color(Style::color::Grey::Black)
+                                +Style::font::weight::lighter);
+    }
 
     auto rContainer = addWidget(cpp14::make_unique<ContainerWidget>());
     rContainer->setContainerType(ContainerType::ROW);
     rContainer->setMaximumSize(1024,WLength::Auto);
 
-    {
-        auto container = rContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-        container->addStyleClass(Bootstrap::Grid::col_full_12);
-        container->setContentAlignment(AlignmentFlag::Center);
-        auto text = container->addWidget(cpp14::make_unique<WText>("<h3>Villalar</h3>"));
-    }
+
 
 
     auto projectDoc = document{};
