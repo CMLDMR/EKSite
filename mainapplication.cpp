@@ -57,6 +57,7 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
     auto footer = root()->addWidget(cpp14::make_unique<Footer>());
 
     footer->ClickAdmin().connect(body,&Body::initLogin);
+    footer->setMargin(50,Side::Top);
 
 
 }
