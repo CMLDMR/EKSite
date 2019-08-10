@@ -86,7 +86,7 @@ RezervationDialog::RezervationDialog(mongocxx::database *_db)
         container->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
         container->setMargin(5,Side::Top|Side::Bottom);
         mEmailLineEdit = container->addWidget(cpp14::make_unique<WLineEdit>());
-        mEmailLineEdit->setPlaceholderText("eMail Giriniz (İsteğe Bağlı)");
+        mEmailLineEdit->setPlaceholderText("e-Mail Giriniz (İsteğe Bağlı)");
     }
 
 
@@ -159,7 +159,5 @@ void RezervationDialog::setKisiSayisi(int kisiSayisi)
 
 void RezervationDialog::Save()
 {
-
-
-
+    wApp->instance()->root()->removeChild(this);
 }
