@@ -32,6 +32,7 @@ SOURCES += \
         admin/villalistpage.cpp \
         base/containerwidget.cpp \
         base/dbclass.cpp \
+        base/itembase.cpp \
         base/rezerveitem.cpp \
         base/tcitem.cpp \
         base/userclass.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
     admin/villalistpage.h \
     base/containerwidget.h \
     base/dbclass.h \
+    base/itembase.h \
     base/rezerveitem.h \
     base/tcitem.h \
     base/userclass.h \
