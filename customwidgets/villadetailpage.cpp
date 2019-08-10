@@ -255,14 +255,10 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
         contentContainer->setWidth(WLength("100%"));
         contentContainer->setMargin(20,Side::Top);
 
-//        contentContainer->setHeight(450);
-
-
         {
             auto titleContainer = contentContainer->addWidget(cpp14::make_unique<ContainerWidget>());
             titleContainer->addStyleClass(Bootstrap::Grid::col_full_12);
-//            titleContainer->setRandomBackGroundColor(20,25,0.5);
-            auto text = titleContainer->addWidget(cpp14::make_unique<WText>("<h4>Reservasyon Takvimi</h4>"));
+            auto text = titleContainer->addWidget(cpp14::make_unique<WText>(WString("<h4>Reservasyon Takvimi {1}</h4>").arg(QDate::currentDate().year())));
             text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
             titleContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_primary);
             titleContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
@@ -272,6 +268,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
             auto titleContainer = contentContainer->addWidget(cpp14::make_unique<ContainerWidget>());
             titleContainer->addStyleClass(Bootstrap::Grid::col_full_12);
             titleContainer->setOverflow(Overflow::Hidden);
+            titleContainer->setContentAlignment(AlignmentFlag::Left);
 
 
 
@@ -279,34 +276,38 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
             {
                 auto ayContainer = titleContainer->addWidget(cpp14::make_unique<WContainerWidget>());
                 ayContainer->setWidth(WLength("100%"));
-
-                auto layout = ayContainer->setLayout(cpp14::make_unique<WHBoxLayout>());
+                ayContainer->setMargin(15,Side::Top);
 
                 QDate date(QDate::currentDate().year(),ay,1);
 
                 {
-                    auto _dContainer = layout->addWidget(cpp14::make_unique<WContainerWidget>(),0,AlignmentFlag::Center);
+                    auto _dContainer = ayContainer->addWidget(cpp14::make_unique<WContainerWidget>());
                     _dContainer->setMargin( 2 , Side::Left );
                     _dContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_info);
                     _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                    _dContainer->setWidth( 150 );
-                    _dContainer->setMaximumSize( 150 , WLength::Auto );
-                    _dContainer->setMinimumSize( 150 , WLength::Auto );
+                    _dContainer->setWidth( WLength("6%") );
+                    _dContainer->setMinimumSize(57,WLength::Auto);
                     auto text = _dContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(date.toString("MMMM").toStdString())));
-                    text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
+                    text->setAttributeValue(Style::style,Style::color::color(Style::color::Grey::DarkSlateGray));
                 }
 
                 for( auto day = 1 ; day <= date.daysInMonth() ; day++ )
                 {
-                    auto _dContainer = layout->addWidget(cpp14::make_unique<WContainerWidget>(),0,AlignmentFlag::Center);
+                    auto _dContainer = ayContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+                    _dContainer->setContentAlignment(AlignmentFlag::Center);
                     _dContainer->setMargin(2,Side::Left);
                     _dContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_primary);
                     _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                    _dContainer->setWidth( 50 );
-                    _dContainer->setMaximumSize( 50 , WLength::Auto );
-                    _dContainer->setMinimumSize( 50 , WLength::Auto );
+                    _dContainer->setWidth( WLength("2.80%") );
+                    _dContainer->setMinimumSize(25,WLength::Auto);
                     auto text = _dContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(day)));
                     text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
+                    if( QDate::currentDate().toJulianDay() > QDate(QDate::currentDate().year(),ay,day).toJulianDay() )
+                    {
+                        _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Red::Salmon));
+                    }else{
+                        _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Green::Teal));
+                    }
                 }
             }
         }
