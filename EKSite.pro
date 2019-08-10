@@ -40,6 +40,7 @@ SOURCES += \
         customwidgets/loginwidget.cpp \
         customwidgets/placethumpnails.cpp \
         customwidgets/reservationwidget.cpp \
+        customwidgets/rezervationdialog.cpp \
         customwidgets/slider.cpp \
         customwidgets/villadetailpage.cpp \
         customwidgets/villagethumpnails.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
     customwidgets/loginwidget.h \
     customwidgets/placethumpnails.h \
     customwidgets/reservationwidget.h \
+    customwidgets/rezervationdialog.h \
     customwidgets/slider.h \
     customwidgets/villadetailpage.h \
     customwidgets/villagethumpnails.h \
