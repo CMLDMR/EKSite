@@ -159,5 +159,24 @@ void RezervationDialog::setKisiSayisi(int kisiSayisi)
 
 void RezervationDialog::Save()
 {
+
+//    auto tcItem = TC::TCItem::Create_TC(this->db(),
+//                                        "",
+//                                        this->mTelefonNumarasiLineEdit->text().toUTF8(),
+//                                        this->mAdSoyadLineEdit->text().toUTF8(),
+//                                        "",
+//                                        this->mEmailLineEdit->text().toUTF8());
+
+
+
+    auto list = TC::TCItem::GetList(this->db(),document{}.view());
+
+    for( auto item : list )
+    {
+        std::cout << "Loaded: " << bsoncxx::to_json(item->View()) << std::endl;
+    }
+
+
+
     wApp->instance()->root()->removeChild(this);
 }

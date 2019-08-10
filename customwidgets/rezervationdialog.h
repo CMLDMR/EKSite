@@ -1,7 +1,7 @@
 #ifndef REZERVATIONDIALOG_H
 #define REZERVATIONDIALOG_H
 
-#include "base/dbclass.h"
+#include "base/tcitem.h"
 #include "base/containerwidget.h"
 
 class RezervationDialog : public WDialog , public DBClass
