@@ -61,8 +61,6 @@ QVector<TC::TCItem*> TC::TCItem::GetList(mongocxx::database *_db, const bsoncxx:
     } catch (mongocxx::exception &e) {
         std::cout << "ERROR: " << __LINE__ << " " << __FUNCTION__ << " " << e.what() << std::endl;
     }
-
-
     return list;
 }
 

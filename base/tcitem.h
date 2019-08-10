@@ -24,7 +24,7 @@ public:
                                       const std::string &adres,
                                       const std::string &email);
 
-    static QVector<TCItem*> GetList(mongocxx::database* _db , const bsoncxx::document::view &filter );
+    static QVector<TCItem*> GetList(mongocxx::database* _db , const bsoncxx::document::view &filter = bsoncxx::document::view() );
 
 
 private:
