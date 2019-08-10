@@ -290,7 +290,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
 
 
             auto _container = res_Container->addWidget(cpp14::make_unique<WContainerWidget>());
-            _container->addStyleClass(Bootstrap::Grid::Large::col_lg_4);
+            _container->addStyleClass(Bootstrap::Grid::Large::col_lg_3);
             _container->setHeight(WLength("100%"));
             auto layout = _container->setLayout(cpp14::make_unique<WVBoxLayout>());
 
@@ -299,7 +299,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
 
 
             auto __container = res_Container->addWidget(cpp14::make_unique<WContainerWidget>());
-            __container->addStyleClass(Bootstrap::Grid::Large::col_lg_4);
+            __container->addStyleClass(Bootstrap::Grid::Large::col_lg_3);
             __container->setHeight(WLength("100%"));
             auto layout_ = __container->setLayout(cpp14::make_unique<WVBoxLayout>());
 
@@ -308,15 +308,32 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
 
 
 
+
             auto ___container = res_Container->addWidget(cpp14::make_unique<WContainerWidget>());
-            ___container->addStyleClass(Bootstrap::Grid::Large::col_lg_4);
+            ___container->addStyleClass(Bootstrap::Grid::Large::col_lg_3);
             ___container->setHeight(WLength("100%"));
             auto layout__ = ___container->setLayout(cpp14::make_unique<WVBoxLayout>());
 
-            auto rzBtn = layout__->addWidget(cpp14::make_unique<WPushButton>("Rezerve Yap"),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
+            auto kisiSayisiCombo = layout__->addWidget(cpp14::make_unique<WComboBox>(),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
+
+            for( int i = 1 ; i <= mVillaItem->villaKisiAdet() ; i++ )
+            {
+                kisiSayisiCombo->addItem(WString("{1} Kişi").arg(i));
+            }
+
+
+            auto ____container = res_Container->addWidget(cpp14::make_unique<WContainerWidget>());
+            ____container->addStyleClass(Bootstrap::Grid::Large::col_lg_3);
+            ____container->setHeight(WLength("100%"));
+            auto layout___ = ____container->setLayout(cpp14::make_unique<WVBoxLayout>());
+
+            auto rzBtn = layout___->addWidget(cpp14::make_unique<WPushButton>("Rezerve Yap"),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
             rzBtn->addStyleClass(Bootstrap::Button::Primary);
             rzBtn->clicked().connect([=](){
                 auto rezerveDialog = wApp->instance()->root()->addChild(cpp14::make_unique<RezervationDialog>(this->db()));
+                rezerveDialog->setEndJulianDate(dateEditCikis->date().toJulianDay());
+                rezerveDialog->setBeginJulianDate(dateEditGiris->date().toJulianDay());
+                rezerveDialog->setKisiSayisi(kisiSayisiCombo->currentIndex()+1);
                 rezerveDialog->show();
             });
 
