@@ -1,7 +1,7 @@
 #include "villadetailpage.h"
 #include "base/villaitem.h"
 
-
+#include "rezervationdialog.h"
 #include <QDate>
 
 
@@ -271,45 +271,136 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
             titleContainer->setContentAlignment(AlignmentFlag::Left);
 
 
+            auto res_Container = titleContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+            res_Container->setWidth(WLength("100%"));
+            res_Container->setMargin(25,Side::Top|Side::Bottom);
+            res_Container->setContentAlignment(AlignmentFlag::Center);
+            res_Container->addStyleClass(Bootstrap::Grid::row);
+            res_Container->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+            res_Container->setAttributeValue(Style::style,Style::background::color::rgba(this->getRandom(100),this->getRandom(100),this->getRandom(100)));
+
+            {
+                auto container = res_Container->addWidget(cpp14::make_unique<WContainerWidget>());
+                container->addStyleClass(Bootstrap::Grid::col_full_12);
+                container->setContentAlignment(AlignmentFlag::Center);
+                container->addStyleClass(Bootstrap::ContextualBackGround::bg_primary);
+
+                auto text = container->addWidget(cpp14::make_unique<WText>("Rezervasyon Yap"));
+            }
+
+
+            auto _container = res_Container->addWidget(cpp14::make_unique<WContainerWidget>());
+            _container->addStyleClass(Bootstrap::Grid::Large::col_lg_4);
+            _container->setHeight(WLength("100%"));
+            auto layout = _container->setLayout(cpp14::make_unique<WVBoxLayout>());
+
+            auto dateEditGiris = layout->addWidget(cpp14::make_unique<WDateEdit>(),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
+            dateEditGiris->setPlaceholderText("Giriş Tarihi Seçiniz");
+
+
+            auto __container = res_Container->addWidget(cpp14::make_unique<WContainerWidget>());
+            __container->addStyleClass(Bootstrap::Grid::Large::col_lg_4);
+            __container->setHeight(WLength("100%"));
+            auto layout_ = __container->setLayout(cpp14::make_unique<WVBoxLayout>());
+
+            auto dateEditCikis = layout_->addWidget(cpp14::make_unique<WDateEdit>(),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
+            dateEditCikis->setPlaceholderText("Çıkış Tarihi Seçiniz");
+
+
+
+            auto ___container = res_Container->addWidget(cpp14::make_unique<WContainerWidget>());
+            ___container->addStyleClass(Bootstrap::Grid::Large::col_lg_4);
+            ___container->setHeight(WLength("100%"));
+            auto layout__ = ___container->setLayout(cpp14::make_unique<WVBoxLayout>());
+
+            auto rzBtn = layout__->addWidget(cpp14::make_unique<WPushButton>("Rezerve Yap"),0,AlignmentFlag::Justify|AlignmentFlag::Middle);
+            rzBtn->addStyleClass(Bootstrap::Button::Primary);
+            rzBtn->clicked().connect([=](){
+                auto rezerveDialog = wApp->instance()->root()->addChild(cpp14::make_unique<RezervationDialog>(this->db()));
+                rezerveDialog->show();
+            });
+
+            auto ay_Container = titleContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+            ay_Container->setWidth(WLength("100%"));
+            ay_Container->setMargin(15,Side::Top);
+
+            {
+                auto container = ay_Container->addWidget(cpp14::make_unique<WContainerWidget>());
+                container->addStyleClass(Bootstrap::Grid::container_fluid);
+                container->setWidth(WLength("100%"));
+
+                auto _dContainer = container->addWidget(cpp14::make_unique<WContainerWidget>());
+                _dContainer->setMargin( 2 , Side::Left );
+                _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+                _dContainer->setWidth( WLength("1%") );
+                _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Green::Teal));
+                _dContainer->addWidget(cpp14::make_unique<WText>(" "));
+                auto text = container->addWidget(cpp14::make_unique<WText>("Rezerve Edilebilir"));
+
+            }
+
+            {
+                auto container = ay_Container->addWidget(cpp14::make_unique<WContainerWidget>());
+                container->addStyleClass(Bootstrap::Grid::container_fluid);
+                container->setWidth(WLength("100%"));
+
+                auto _dContainer = container->addWidget(cpp14::make_unique<WContainerWidget>());
+                _dContainer->setMargin( 2 , Side::Left );
+                _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+                _dContainer->setWidth( WLength("1%") );
+                _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Red::Salmon));
+                _dContainer->addWidget(cpp14::make_unique<WText>(" "));
+                auto text = container->addWidget(cpp14::make_unique<WText>("Rezerve Edilemez"));
+
+            }
+
+
 
             for( auto ay = 1 ; ay <= 12 ; ay++ )
             {
-                auto ayContainer = titleContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-                ayContainer->setWidth(WLength("100%"));
-                ayContainer->setMargin(15,Side::Top);
-
-                QDate date(QDate::currentDate().year(),ay,1);
-
+                if( QDate::currentDate().month() <= ay )
                 {
-                    auto _dContainer = ayContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-                    _dContainer->setMargin( 2 , Side::Left );
-                    _dContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_info);
-                    _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                    _dContainer->setWidth( WLength("6%") );
-                    _dContainer->setMinimumSize(57,WLength::Auto);
-                    auto text = _dContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(date.toString("MMMM").toStdString())));
-                    text->setAttributeValue(Style::style,Style::color::color(Style::color::Grey::DarkSlateGray));
-                }
+                    auto ayContainer = ay_Container->addWidget(cpp14::make_unique<WContainerWidget>());
+                    ayContainer->setWidth(WLength("100%"));
+                    ayContainer->setMargin(15,Side::Top);
 
-                for( auto day = 1 ; day <= date.daysInMonth() ; day++ )
-                {
-                    auto _dContainer = ayContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-                    _dContainer->setContentAlignment(AlignmentFlag::Center);
-                    _dContainer->setMargin(2,Side::Left);
-                    _dContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_primary);
-                    _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
-                    _dContainer->setWidth( WLength("2.80%") );
-                    _dContainer->setMinimumSize(25,WLength::Auto);
-                    auto text = _dContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(day)));
-                    text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
-                    if( QDate::currentDate().toJulianDay() > QDate(QDate::currentDate().year(),ay,day).toJulianDay() )
+                    QDate date(QDate::currentDate().year(),ay,1);
+
                     {
-                        _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Red::Salmon));
-                    }else{
-                        _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Green::Teal));
+                        auto _dContainer = ayContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+                        _dContainer->setMargin( 2 , Side::Left );
+                        _dContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_info);
+                        _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+                        _dContainer->setWidth( WLength("6%") );
+                        _dContainer->setMinimumSize(57,WLength::Auto);
+                        auto text = _dContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(date.toString("MMMM").toStdString())));
+                        text->setAttributeValue(Style::style,Style::color::color(Style::color::Grey::DarkSlateGray));
+                    }
+
+                    for( auto day = 1 ; day <= date.daysInMonth() ; day++ )
+                    {
+                        auto _dContainer = ayContainer->addWidget(cpp14::make_unique<WContainerWidget>());
+                        _dContainer->setContentAlignment(AlignmentFlag::Center);
+                        _dContainer->setMargin(2,Side::Left);
+                        _dContainer->addStyleClass(Bootstrap::ContextualBackGround::bg_primary);
+                        _dContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
+                        _dContainer->setWidth( WLength("2.80%") );
+                        _dContainer->setMinimumSize(25,WLength::Auto);
+                        auto text = _dContainer->addWidget(cpp14::make_unique<WText>(WString("{1}").arg(day)));
+                        text->setAttributeValue(Style::style,Style::color::color(Style::color::White::Snow));
+                        if( QDate::currentDate().toJulianDay() > QDate(QDate::currentDate().year(),ay,day).toJulianDay() )
+                        {
+                            _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Red::Salmon));
+                        }else{
+                            _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Green::Teal));
+                        }
                     }
                 }
+
             }
+
+
+
         }
     }
 }
