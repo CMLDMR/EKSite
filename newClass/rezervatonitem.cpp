@@ -9,6 +9,28 @@ eCore::RezervationItem::RezervationItem() : eCore::Item(Collection)
     this->clear();
 }
 
+eCore::RezervationItem::RezervationItem(const eCore::RezervationItem &other) : eCore::Item(other.Collection)
+{
+    this->setDocumentView(other.view());
+}
+
+eCore::RezervationItem::RezervationItem(eCore::RezervationItem &&other) : eCore::Item(other.Collection)
+{
+    this->setDocumentView(other.view());
+}
+
+eCore::RezervationItem &eCore::RezervationItem::operator=(const eCore::RezervationItem &other)
+{
+    this->setDocumentView(other.view());
+    return *this;
+}
+
+eCore::RezervationItem &eCore::RezervationItem::operator=(eCore::RezervationItem &&other)
+{
+    this->setDocumentView(other.view());
+    return *this;
+}
+
 eCore::RezervationItem &eCore::RezervationItem::setBeginJulianDate(const int64_t beginDate)
 {
     this->append(RezervationKey::beginDate,beginDate);
@@ -41,7 +63,7 @@ int64_t eCore::RezervationItem::endJulianDate() const
     return -1;
 }
 
-eCore::RezervationItem eCore::RezervationItem::setVillaOid(const std::string &villaOid)
+eCore::RezervationItem& eCore::RezervationItem::setVillaOid(const std::string &villaOid)
 {
     this->append(RezervationKey::villaOid,bsoncxx::oid{villaOid});
     return *this;
@@ -57,7 +79,7 @@ std::string eCore::RezervationItem::villaOid() const
     return "";
 }
 
-eCore::RezervationItem eCore::RezervationItem::setMusteriOid(const std::string &musteriOid)
+eCore::RezervationItem& eCore::RezervationItem::setMusteriOid(const std::string &musteriOid)
 {
     this->append(RezervationKey::musteriOid,bsoncxx::oid{musteriOid});
     return *this;
@@ -73,7 +95,7 @@ std::string eCore::RezervationItem::musteriOid() const
     return "";
 }
 
-eCore::RezervationItem eCore::RezervationItem::setKisiSayisi(int32_t kisiSayisi)
+eCore::RezervationItem& eCore::RezervationItem::setKisiSayisi(int32_t kisiSayisi)
 {
     this->append(RezervationKey::kisiSayisi,kisiSayisi);
     return *this;
@@ -108,3 +130,21 @@ std::string eCore::RezervationItem::saat() const
     }
     return "";
 }
+
+eCore::RezervationItem &eCore::RezervationItem::setOnay(const bool &onay)
+{
+    this->append(RezervationKey::onayli,onay);
+    return *this;
+}
+
+bool eCore::RezervationItem::onay() const
+{
+    auto val = this->element(RezervationKey::onayli);
+    if( val )
+    {
+        return val.value().get_bool().value;
+    }
+    return false;
+}
+
+

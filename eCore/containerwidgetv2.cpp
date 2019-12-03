@@ -1,8 +1,10 @@
 #include "containerwidgetv2.h"
+#include <random>
+
+#include <QString>
 
 
-
-ContainerWidgetV2::ContainerWidgetV2()
+eCore::ContainerWidgetV2::ContainerWidgetV2()
     :WContainerWidget()
 {
     addStyleClass(Bootstrap::Grid::container_fluid);
@@ -18,22 +20,50 @@ ContainerWidgetV2::ContainerWidgetV2()
 
 }
 
-WContainerWidget *ContainerWidgetV2::Header()
+WContainerWidget *eCore::ContainerWidgetV2::Header()
 {
     return mHeader;
 }
 
-WContainerWidget *ContainerWidgetV2::Content()
+WContainerWidget *eCore::ContainerWidgetV2::Content()
 {
     return mContent;
 }
 
-WContainerWidget *ContainerWidgetV2::Footer()
+WContainerWidget *eCore::ContainerWidgetV2::Footer()
 {
     return mFooter;
 }
 
-void ContainerWidgetV2::showMessage(std::string title, std::string msg, std::string btnText, Icon icon)
+void eCore::ContainerWidgetV2::setRandomBackGroundColor(int beginColor, int endColor, double alpha)
+{
+    auto StyleString = QString::fromStdString(this->attributeValue(Style::style).toUTF8());
+
+//    std::cout << "STYLE: " << StyleString.toStdString() << std::endl;
+
+    if( StyleString.contains("background") ){
+
+        int firstIndex = StyleString.indexOf("background");
+
+        int firstIndexAfter = StyleString.indexOf(";",firstIndex);
+
+        StyleString.remove(firstIndex,firstIndexAfter-firstIndex);
+
+        setAttributeValue(Style::style,StyleString.toStdString()+Style::background::color::rgba(this->getRandomRGB(beginColor,endColor)
+                                                                                 ,this->getRandomRGB(beginColor,endColor)
+                                                                                 ,this->getRandomRGB(beginColor,endColor)
+                                                                                 ,alpha));
+
+    }else{
+        setAttributeValue(Style::style,StyleString.toStdString()+Style::background::color::rgba(this->getRandomRGB(beginColor,endColor)
+                                                                                 ,this->getRandomRGB(beginColor,endColor)
+                                                                                 ,this->getRandomRGB(beginColor,endColor)
+                                                                                 ,alpha));
+    }
+    StyleString = QString::fromStdString(this->attributeValue(Style::style).toUTF8());
+}
+
+void eCore::ContainerWidgetV2::showMessage(std::string title, std::string msg, std::string btnText, Icon icon)
 {
     auto messageBox = this->addChild(
                    Wt::cpp14::make_unique<Wt::WMessageBox>
@@ -54,8 +84,15 @@ void ContainerWidgetV2::showMessage(std::string title, std::string msg, std::str
            messageBox->show();
 }
 
-void ContainerWidgetV2::init()
+void eCore::ContainerWidgetV2::init()
 {
 
+}
+
+int eCore::ContainerWidgetV2::getRandomRGB(int beginColor, int endColor)
+{
+    std::random_device rd;
+    std::uniform_int_distribution<int> dist( beginColor , endColor );
+    return dist(rd);
 }
 

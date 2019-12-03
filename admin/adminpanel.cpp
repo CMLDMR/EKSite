@@ -93,5 +93,5 @@ void AdminPanel::initVillaPage()
 void AdminPanel::initRezervationPage()
 {
     rContainer->clear();
-    rContainer->addWidget(cpp14::make_unique<RezervationManager>(new eCore::DB(this->db())));
+    rContainer->addWidget(cpp14::make_unique<Rezervation::RezervationManager>(new eCore::DB(this->db())));
 }

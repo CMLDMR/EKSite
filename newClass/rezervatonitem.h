@@ -14,7 +14,7 @@ static const std::string kisiSayisi{"kisiSayisi"};
 static const std::string musteriOid{"musteriOid"};
 static const std::string villaOid{"villaOid"};
 static const std::string onayli{"onayli"};
-} // namespace Key
+} // namespace RezervationKey
 
 class RezervationItem : public eCore::Item
 {
@@ -24,23 +24,32 @@ public:
 
     RezervationItem();
 
+    RezervationItem( const RezervationItem& other );
+    RezervationItem( RezervationItem&& other );
+
+    RezervationItem& operator=( const RezervationItem& other );
+    RezervationItem& operator=( RezervationItem&& other );
+
     RezervationItem& setBeginJulianDate( const std::int64_t beginDate );
      std::int64_t beginJulianDate() const;
 
     RezervationItem &setEndJulianDate( const std::int64_t endDate );
      std::int64_t endJulianDate() const;
 
-     RezervationItem setVillaOid( const std::string& villaOid );
+     RezervationItem& setVillaOid( const std::string& villaOid );
      std::string villaOid() const;
 
-     RezervationItem setMusteriOid( const std::string& musteriOid );
+     RezervationItem& setMusteriOid( const std::string& musteriOid );
      std::string musteriOid() const;
 
-     RezervationItem setKisiSayisi( std::int32_t kisiSayisi );
+     RezervationItem& setKisiSayisi( std::int32_t kisiSayisi );
      std::int32_t kisiSayisi() const;
 
      std::string tarih() const;
      std::string saat() const;
+
+     RezervationItem& setOnay( const bool& onay );
+     bool onay() const;
 };
 }
 

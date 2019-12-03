@@ -4,12 +4,18 @@
 #include "eCore/listitem.h"
 #include "rezervatonitem.h"
 
-class RezervationList :  public eCore::ListItem<eCore::RezervationItem> /*, public eCore::ContainerWidget*/
+namespace Rezervation {
+
+class RezervationList :  public eCore::ListItem<eCore::RezervationItem>
 {
 public:
-    RezervationList(DB *_db) : eCore::ListItem<eCore::RezervationItem>(_db) /*, eCore::ContainerWidget() */{}
+    RezervationList(DB *_db) : eCore::ListItem<eCore::RezervationItem>(_db) {}
 
     virtual void onList(const QVector<eCore::RezervationItem> &mlist) override;
 };
+
+}
+
+
 
 #endif // REZERVATIONLIST_H

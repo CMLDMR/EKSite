@@ -6,6 +6,9 @@
 #include "bootstrap.h"
 #include "inlinestyle.h"
 
+
+namespace eCore {
+
 class ContainerWidgetV2 : public WContainerWidget
 {
 public:
@@ -17,6 +20,9 @@ public:
     WContainerWidget *Content() ;
 
     WContainerWidget *Footer() ;
+
+    void setRandomBackGroundColor(int beginColor = 150 , int endColor = 255 , double alpha = 1.0);
+
 
 
 
@@ -30,7 +36,14 @@ private:
     WContainerWidget* mContent;
     WContainerWidget* mFooter;
 
+    int getRandomRGB(int beginColor = 0 , int endColor = 255);
+
+
 };
+
+}
+
+
 
 
 
