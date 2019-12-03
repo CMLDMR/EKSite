@@ -3,6 +3,7 @@
 
 #include "admin/villaadminpage.h"
 
+#include "newClass/rezervationmanager.h"
 
 
 AdminPanel::AdminPanel(mongocxx::database *_db)
@@ -78,6 +79,8 @@ void AdminPanel::initMainPage()
         layout->addStretch(1);
         auto text = layout->addWidget(cpp14::make_unique<WText>("Reservasyonlar"));
         layout->addStretch(1);
+
+        container->clicked().connect(this,&AdminPanel::initRezervationPage);
     }
 }
 
@@ -85,4 +88,10 @@ void AdminPanel::initVillaPage()
 {
     rContainer->clear();
     rContainer->addWidget(cpp14::make_unique<VillaAdminPage>(this->db()));
+}
+
+void AdminPanel::initRezervationPage()
+{
+    rContainer->clear();
+    rContainer->addWidget(cpp14::make_unique<RezervationManager>(new eCore::DB(this->db())));
 }

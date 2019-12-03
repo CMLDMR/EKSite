@@ -55,7 +55,7 @@ Header::Header()
 
         auto navigation = nContainer->addWidget(cpp14::make_unique<WNavigationBar>());
         navigation->setTitle("ERK Reality",
-                     "http://127.0.0.1.80");
+                     "http://127.0.0.1:80");
         navigation->setResponsive(true);
         navigation->removeStyleClass("navbar-default");
 

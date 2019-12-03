@@ -18,6 +18,8 @@ public:
 
     void initVillaPage();
 
+    void initRezervationPage();
+
 
 private:
     ContainerWidget* rContainer;

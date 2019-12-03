@@ -47,9 +47,16 @@ SOURCES += \
         customwidgets/slider.cpp \
         customwidgets/villadetailpage.cpp \
         customwidgets/villagethumpnails.cpp \
+        eCore/containerwidgetv2.cpp \
+        eCore/db.cpp \
+        eCore/item.cpp \
+        eCore/listitem.cpp \
         ilancontainer.cpp \
         main.cpp \
-        mainapplication.cpp
+        mainapplication.cpp \
+        newClass/rezervationlist.cpp \
+        newClass/rezervationmanager.cpp \
+        newClass/rezervatonitem.cpp
 
 HEADERS += \
     admin/adminpanel.h \
@@ -74,10 +81,17 @@ HEADERS += \
     customwidgets/slider.h \
     customwidgets/villadetailpage.h \
     customwidgets/villagethumpnails.h \
+    eCore/containerwidgetv2.h \
+    eCore/db.h \
+    eCore/item.h \
+    eCore/listitem.h \
     ilancontainer.h \
     inlinestyle.h \
     mainapplication.h \
     mongoheaders.h \
+    newClass/rezervationlist.h \
+    newClass/rezervationmanager.h \
+    newClass/rezervatonitem.h \
     wtinclude.h
 
 FORMS +=
