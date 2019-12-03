@@ -19,7 +19,7 @@ void Body::initMain()
 {
     clear();
     addWidget(cpp14::make_unique<Slider>());
-    addWidget(cpp14::make_unique<PlaceThumpnails>(this->db()));
+//    addWidget(cpp14::make_unique<PlaceThumpnails>(this->db()));
     addWidget(cpp14::make_unique<VillaPage>(this->db()))->ClickVilla().connect(this,&Body::initVillaDetail);
 }
 
