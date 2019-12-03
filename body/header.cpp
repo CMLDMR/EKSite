@@ -55,59 +55,59 @@ Header::Header()
 
         auto navigation = nContainer->addWidget(cpp14::make_unique<WNavigationBar>());
         navigation->setTitle("ERK Reality",
-                     "https://www.google.com/search?q=corpy+inc");
+                     "http://127.0.0.1.80");
         navigation->setResponsive(true);
         navigation->removeStyleClass("navbar-default");
 
 
-        // Setup a Left-aligned menu.
-        auto leftMenu = Wt::cpp14::make_unique<Wt::WMenu>();
-        auto leftMenu_ = navigation->addMenu(std::move(leftMenu));
+//        // Setup a Left-aligned menu.
+//        auto leftMenu = Wt::cpp14::make_unique<Wt::WMenu>();
+//        auto leftMenu_ = navigation->addMenu(std::move(leftMenu));
 
-        auto searchResult = Wt::cpp14::make_unique<Wt::WText>("Buy or Sell... Bye!");
-        auto searchResult_ = searchResult.get();
+//        auto searchResult = Wt::cpp14::make_unique<Wt::WText>("Buy or Sell... Bye!");
+//        auto searchResult_ = searchResult.get();
 
-        leftMenu_->addItem("Konaklama", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
-        leftMenu_->addItem("Satılık", Wt::cpp14::make_unique<Wt::WText>("Layout contents"))
-            ->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/layout"));
-        leftMenu_->addItem("Uçuşlar", std::move(searchResult));
+//        leftMenu_->addItem("Konaklama", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
+//        leftMenu_->addItem("Satılık", Wt::cpp14::make_unique<Wt::WText>("Layout contents"))
+//            ->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/layout"));
+//        leftMenu_->addItem("Uçuşlar", std::move(searchResult));
 
-        leftMenu_->addItem("Araç Kiralama", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
-        leftMenu_->addItem("Transfer", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
-        leftMenu_->addItem("Ev Sahibi Olun", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
+//        leftMenu_->addItem("Araç Kiralama", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
+//        leftMenu_->addItem("Transfer", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
+//        leftMenu_->addItem("Ev Sahibi Olun", Wt::cpp14::make_unique<Wt::WText>("There is no better place!"));
 
 
-        // Setup a Right-aligned menu.
-        auto rightMenu = Wt::cpp14::make_unique<Wt::WMenu>();
-        auto rightMenu_ = navigation->addMenu(std::move(rightMenu), Wt::AlignmentFlag::Right);
-        rightMenu_->setMargin(15,Side::Right);
+//        // Setup a Right-aligned menu.
+//        auto rightMenu = Wt::cpp14::make_unique<Wt::WMenu>();
+//        auto rightMenu_ = navigation->addMenu(std::move(rightMenu), Wt::AlignmentFlag::Right);
+//        rightMenu_->setMargin(15,Side::Right);
 
-        // Create a popup submenu for the Help menu.
-        auto popupPtr = Wt::cpp14::make_unique<Wt::WPopupMenu>();
-        auto popup = popupPtr.get();
-        popup->addItem("Kullanıcı Sözleşmelesi");
-        popup->addItem("İletişim");
-        popup->addSeparator();
-        popup->addItem("Hakkında");
+//        // Create a popup submenu for the Help menu.
+//        auto popupPtr = Wt::cpp14::make_unique<Wt::WPopupMenu>();
+//        auto popup = popupPtr.get();
+//        popup->addItem("Kullanıcı Sözleşmelesi");
+//        popup->addItem("İletişim");
+//        popup->addSeparator();
+//        popup->addItem("Hakkında");
 
-        popup->itemSelected().connect([=] (Wt::WMenuItem *item) {
-            auto messageBox = popup->addChild(
-                    Wt::cpp14::make_unique<Wt::WMessageBox>
-                    ("Help",
-                     Wt::WString("<p>Showing Help: {1}</p>").arg(item->text()),
-                     Wt::Icon::Information,
-                     Wt::StandardButton::Ok));
+//        popup->itemSelected().connect([=] (Wt::WMenuItem *item) {
+//            auto messageBox = popup->addChild(
+//                    Wt::cpp14::make_unique<Wt::WMessageBox>
+//                    ("Help",
+//                     Wt::WString("<p>Showing Help: {1}</p>").arg(item->text()),
+//                     Wt::Icon::Information,
+//                     Wt::StandardButton::Ok));
 
-            messageBox->buttonClicked().connect([=] {
-                popup->removeChild(messageBox);
-            });
+//            messageBox->buttonClicked().connect([=] {
+//                popup->removeChild(messageBox);
+//            });
 
-            messageBox->show();
-        });
+//            messageBox->show();
+//        });
 
-        auto item = Wt::cpp14::make_unique<Wt::WMenuItem>("Hakkında");
-        item->setMenu(std::move(popupPtr));
-        rightMenu_->addItem(std::move(item));
+//        auto item = Wt::cpp14::make_unique<Wt::WMenuItem>("Hakkında");
+//        item->setMenu(std::move(popupPtr));
+//        rightMenu_->addItem(std::move(item));
     }
 }
 
