@@ -22,8 +22,12 @@ public:
     RezervationListWidget(const eCore::RezervationItem &item);
 
 
+    Signal<bool> &RezervationStatusChanged();
+
 private:
     const eCore::RezervationItem rItem;
+
+    Signal<bool> _rezervationStatusChanged;
 };
 
 }

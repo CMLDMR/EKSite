@@ -1,8 +1,8 @@
 #include "mainapplication.h"
 #include <Wt/WOverlayLoadingIndicator.h>
-#include "body.h"
-#include "header.h"
-#include "footer.h"
+#include "body/body.h"
+#include "body/header.h"
+#include "body/footer.h"
 #include "../url.h"
 #include <mongocxx/pool.hpp>
 

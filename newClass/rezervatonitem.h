@@ -31,25 +31,25 @@ public:
     RezervationItem& operator=( RezervationItem&& other );
 
     RezervationItem& setBeginJulianDate( const std::int64_t beginDate );
-     std::int64_t beginJulianDate() const;
+    std::int64_t beginJulianDate() const;
 
     RezervationItem &setEndJulianDate( const std::int64_t endDate );
-     std::int64_t endJulianDate() const;
+    std::int64_t endJulianDate() const;
 
-     RezervationItem& setVillaOid( const std::string& villaOid );
-     std::string villaOid() const;
+    RezervationItem& setVillaOid( const std::string& villaOid );
+    std::string villaOid() const;
 
-     RezervationItem& setMusteriOid( const std::string& musteriOid );
-     std::string musteriOid() const;
+    RezervationItem& setMusteriOid( const std::string& musteriOid );
+    std::string musteriOid() const;
 
-     RezervationItem& setKisiSayisi( std::int32_t kisiSayisi );
-     std::int32_t kisiSayisi() const;
+    RezervationItem& setKisiSayisi( std::int32_t kisiSayisi );
+    std::int32_t kisiSayisi() const;
 
-     std::string tarih() const;
-     std::string saat() const;
+    std::string tarih() const;
+    std::string saat() const;
 
-     RezervationItem& setOnay( const bool& onay );
-     bool onay() const;
+    RezervationItem& setOnay( const bool& onay );
+    bool onay() const;
 };
 }
 

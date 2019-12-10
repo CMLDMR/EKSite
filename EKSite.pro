@@ -112,24 +112,24 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #INCLUDEPATH += $$PWD/../../Yonetim-yazilimi/Server/WebServer/Wt-4.0.0-msvs2015-Windows-x64-SDK/include
 #DEPENDPATH += $$PWD/../../Yonetim-yazilimi/Server/WebServer/Wt-4.0.0-msvs2015-Windows-x64-SDK/include
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/ -lbsoncxx
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/ -lbsoncxxd
-else:unix: LIBS += -L$$PWD/lib/ -lbsoncxx
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/ -lbsoncxx
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/ -lbsoncxxd
+#else:unix: LIBS += -L$$PWD/lib/ -lbsoncxx
 
-INCLUDEPATH += $$PWD/include/bsoncxx/v_noabi
-DEPENDPATH += $$PWD/include/bsoncxx/v_noabi
+#INCLUDEPATH += $$PWD/include/bsoncxx/v_noabi
+#DEPENDPATH += $$PWD/include/bsoncxx/v_noabi
 
-INCLUDEPATH += $$PWD/Body
-DEPENDPATH += $$PWD/Body
+#INCLUDEPATH += $$PWD/Body
+#DEPENDPATH += $$PWD/Body
 
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/ -lmongocxx
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/ -lmongocxxd
-else:unix: LIBS += -L$$PWD/lib/ -lmongocxx
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/ -lmongocxx
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/ -lmongocxxd
+#else:unix: LIBS += -L$$PWD/lib/ -lmongocxx
 
-INCLUDEPATH += $$PWD/include/mongocxx/v_noabi
-DEPENDPATH  += $$PWD/include/mongocxx/v_noabi
+#INCLUDEPATH += $$PWD/include/mongocxx/v_noabi
+#DEPENDPATH  += $$PWD/include/mongocxx/v_noabi
 
 
 
@@ -146,3 +146,15 @@ DISTFILES +=
 
 QMAKE_CXXFLAGS += /wd4251 /wd4275 /wd4267 /wd4189
 
+
+
+
+
+
+win32: LIBS += -L$$PWD/../EKSite1/lib/lib/ -lbsoncxx -lmongocxx
+
+INCLUDEPATH += $$PWD/../EKSite1/lib/include/bsoncxx/v_noabi
+DEPENDPATH += $$PWD/../EKSite1/lib/include/bsoncxx/v_noabi
+
+INCLUDEPATH += $$PWD/../EKSite1/lib/include/mongocxx/v_noabi
+DEPENDPATH += $$PWD/../EKSite1/lib/include/mongocxx/v_noabi
