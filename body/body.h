@@ -4,14 +4,15 @@
 #include "wtinclude.h"
 
 #include <base/dbclass.h>
-#include <base/containerwidget.h>
+#include <eCore/containerwidgetv2.h>
+#include "eCore/db.h"
 
 using namespace Wt;
 
-class Body : public WContainerWidget , public DBClass
+class Body : public eCore::ContainerWidget , public eCore::DB
 {
 public:
-    Body(mongocxx::database* _db);
+    Body(DB* _db );
 
 
     void initMain();

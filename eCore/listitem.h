@@ -13,7 +13,7 @@ template <typename T>
 class ListItem : public DB
 {
 public:
-    ListItem(DB* db) : DB(db),__limit(20),__skip(0){}
+    ListItem(DB* db ) : DB(db),__limit(20),__skip(0){}
 
     inline const T &itemAt(const QString &byOid)
     {
@@ -135,6 +135,7 @@ public:
         if( __skip > __limit )
         {
             __skip -= __limit;
+            if( __skip < 0 ) __skip = 0;
             return this->UpdateList (filter);
         }else{
             if( __skip > 0 )

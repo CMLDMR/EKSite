@@ -25,6 +25,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++14 console
 CONFIG += no_keywords
 
+
+#QMAKE_CXXFLAGS += -Wno-c++98-compat
+
 SOURCES += \
         admin/adminpanel.cpp \
         admin/villaaddpage.cpp \
@@ -51,7 +54,8 @@ SOURCES += \
         eCore/db.cpp \
         eCore/item.cpp \
         eCore/listitem.cpp \
-        ilancontainer.cpp \
+        eCore/villaitemv2.cpp \
+        eCore/villamanager.cpp \
         main.cpp \
         mainapplication.cpp \
         newClass/rezervationlist.cpp \
@@ -85,7 +89,8 @@ HEADERS += \
     eCore/db.h \
     eCore/item.h \
     eCore/listitem.h \
-    ilancontainer.h \
+    eCore/villaitemv2.h \
+    eCore/villamanager.h \
     inlinestyle.h \
     mainapplication.h \
     mongoheaders.h \

@@ -4,6 +4,7 @@
 
 #include "wtinclude.h"
 #include "base/dbclass.h"
+#include "eCore/db.h"
 
 using namespace Wt;
 
@@ -18,9 +19,13 @@ public:
 
 
 
+    void initConfigration();
+
     mongocxx::client* mClient;
 
     mongocxx::database db;
+
+    eCore::DB* mDB;
 
 
 };

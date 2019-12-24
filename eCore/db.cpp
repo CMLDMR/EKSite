@@ -12,15 +12,7 @@ static int DBConnectionCount = 0;
 
 eCore::DB::DB()
 {
-//    std::cout << "New Connect: Connection Count: " << ++DBConnectionCount << std::endl;
-//    mConstructWithNewClient = true;
-//    try {
-//        mClient = new mongocxx::client(mongocxx::uri(_url));
-//    } catch (mongocxx::exception &e) {
-//        std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
-//        std::cout << str << std::endl;
-//    }
-//    _mDB = mClient->database (DB__);
+
 }
 
 eCore::DB::DB(const DB &db)
@@ -30,12 +22,7 @@ eCore::DB::DB(const DB &db)
     mConstructWithNewClient = false;
 }
 
-eCore::DB::DB(eCore::DB &&other)
-    :mDB(other.mDB)
-{
-    std::cout << "DB::DB(DB &&db): " << DBConnectionCount << std::endl;
-    mConstructWithNewClient = false;
-}
+
 
 eCore::DB::DB(mongocxx::database *_db)
     :mDB( _db )
@@ -44,27 +31,20 @@ eCore::DB::DB(mongocxx::database *_db)
     mConstructWithNewClient = false;
 }
 
-eCore::DB::DB(DB *_db) : mDB(_db->db ())
+eCore::DB::DB(DB *_db) : mDB(_db->mDB)
 {
+
+
     std::cout << "DB::DB(DB *_db): " << DBConnectionCount << std::endl;
     mConstructWithNewClient = false;
 }
 
-eCore::DB::DB(const DB *_db) : mDB( _db->getDB ()->mDB )
-{
 
-}
 
 
 
 eCore::DB::~DB()
 {
-    std::cout << "-DB Destructor- Delete Client: " << mConstructWithNewClient << std::endl;
-    if( mConstructWithNewClient )
-    {
-        std::cout << "Delete DB Connection, CurrentConnection Count: " <<  --DBConnectionCount << std::endl;
-//        delete mClient;
-    }
     std::cout << "DB Destructor End" << std::endl;
 }
 
@@ -75,19 +55,7 @@ eCore::DB &eCore::DB::operator=(const DB &otherDB)
     return *this;
 }
 
-eCore::DB &eCore::DB::operator=(eCore::DB &&otherDB)
-{
-    std::cout << "DB &DB::operator=(const DB &otherDB): " << DBConnectionCount << std::endl;
-    mDB = otherDB.mDB;
-    return *this;
-}
 
-eCore::DB &eCore::DB::operator=(mongocxx::database *_db)
-{
-    std::cout << "DB &DB::operator=(const DB &otherDB): " << DBConnectionCount << std::endl;
-    mDB = _db;
-    return *this;
-}
 
 
 

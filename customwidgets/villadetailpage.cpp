@@ -12,7 +12,6 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
     mVillaItem = VillaItem::Load_Villa(&mVillaCollection,bsoncxx::oid{_villaOid});
 
     setPadding(50,Side::Top);
-    setRandomBackGroundColorRGB(0,20,185,95,240,255,0.85);
 
     setAttributeValue(Style::style,Style::background::url(this->downloadFile(mVillaItem->villaImgOidList().first()))+
                       Style::background::size::cover+
@@ -22,7 +21,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
     auto container = addWidget(cpp14::make_unique<ContainerWidget>());
     container->setRandomBackGroundColor(200,225,0.90);
     container->setWidth(WLength("100%"));
-    container->setContainerType(ContainerType::ROW);
+    container->addStyleClass(Bootstrap::Grid::row);
     container->setMaximumSize(1024,WLength::Auto);
     container->setPadding(15,Side::Top);
 
@@ -30,8 +29,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
         auto titleContainer = container->addWidget(cpp14::make_unique<ContainerWidget>());
         titleContainer->addStyleClass(Bootstrap::Grid::col_full_12);
         titleContainer->setContentAlignment(AlignmentFlag::Center);
-        auto text = titleContainer->addWidget(cpp14::make_unique<WText>("<h3>"+mVillaItem->villaName()+"</h3>"));
-
+        titleContainer->addWidget(cpp14::make_unique<WText>("<h3>"+mVillaItem->villaName()+"</h3>"));
     }
 
 
@@ -42,7 +40,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
         fotoContainer->setRandomBackGroundColor(240,255,0.90);
 
         auto contentContainer = fotoContainer->addWidget(cpp14::make_unique<ContainerWidget>());
-        contentContainer->setContainerType(ContainerType::ROW);
+        contentContainer->addStyleClass(Bootstrap::Grid::row);
         for( auto item : mVillaItem->villaImgOidList() )
         {
 
@@ -152,13 +150,13 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
         fotoContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_3);
 
         auto contentContainer = fotoContainer->addWidget(cpp14::make_unique<ContainerWidget>());
-        contentContainer->setContainerType(ContainerType::ROW);
+        contentContainer->addStyleClass(Bootstrap::Grid::row);
         contentContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
 
         {
             auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
             sContainer->addStyleClass(Bootstrap::Grid::col_full_12);
-            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h3>Günlük {1}₺</h3><h6>'den Başlayan Fiyatlarla</h6>").arg(mVillaItem->villaAcilisFiyat())));
+            sContainer->addWidget(cpp14::make_unique<WText>(WString("<h3>Günlük {1}₺</h3><h6>'den Başlayan Fiyatlarla</h6>").arg(mVillaItem->villaAcilisFiyat())));
         }
 
         {
@@ -167,7 +165,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
                                       Bootstrap::Grid::Medium::col_md_6+
                                       Bootstrap::Grid::Small::col_sm_6+
                                       Bootstrap::Grid::ExtraSmall::col_xs_6);
-            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaIl())));
+            sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaIl())));
         }
         {
             auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
@@ -175,13 +173,13 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
                                       Bootstrap::Grid::Medium::col_md_6+
                                       Bootstrap::Grid::Small::col_sm_6+
                                       Bootstrap::Grid::ExtraSmall::col_xs_6);
-            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaIlce())));
+            sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaIlce())));
         }
 
         {
             auto sContainer = contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
             sContainer->addStyleClass(Bootstrap::Grid::col_full_12);
-            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaKonum())));
+            sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaKonum())));
         }
 
         {
@@ -190,7 +188,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
                                       Bootstrap::Grid::Medium::col_md_6+
                                       Bootstrap::Grid::Small::col_sm_6+
                                       Bootstrap::Grid::ExtraSmall::col_xs_6);
-            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1} Kişi</h5>").arg(mVillaItem->villaKisiAdet())));
+            sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1} Kişi</h5>").arg(mVillaItem->villaKisiAdet())));
         }
 
         {
@@ -199,7 +197,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
                                       Bootstrap::Grid::Medium::col_md_6+
                                       Bootstrap::Grid::Small::col_sm_6+
                                       Bootstrap::Grid::ExtraSmall::col_xs_6);
-            auto title = sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaHavuz())));
+            sContainer->addWidget(cpp14::make_unique<WText>(WString("<h5>{1}</h5>").arg(mVillaItem->villaHavuz())));
         }
 
         {
@@ -218,7 +216,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
         fotoContainer->addStyleClass(Bootstrap::Grid::col_full_12);
 
         auto contentContainer = fotoContainer->addWidget(cpp14::make_unique<ContainerWidget>());
-        contentContainer->setContainerType(ContainerType::ROW);
+        contentContainer->addStyleClass(Bootstrap::Grid::row);
         contentContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
         contentContainer->setWidth(WLength("100%"));
         contentContainer->setMargin(20,Side::Top);
@@ -237,7 +235,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
             auto titleContainer = contentContainer->addWidget(cpp14::make_unique<ContainerWidget>());
             titleContainer->addStyleClass(Bootstrap::Grid::col_full_12);
             titleContainer->setOverflow(Overflow::Hidden);
-            auto text = contentContainer->addWidget(cpp14::make_unique<WText>(mVillaItem->villaAciklama(),TextFormat::UnsafeXHTML));
+            contentContainer->addWidget(cpp14::make_unique<WText>(mVillaItem->villaAciklama(),TextFormat::UnsafeXHTML));
         }
 
     }
@@ -250,7 +248,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
         fotoContainer->addStyleClass(Bootstrap::Grid::col_full_12);
 
         auto contentContainer = fotoContainer->addWidget(cpp14::make_unique<ContainerWidget>());
-        contentContainer->setContainerType(ContainerType::ROW);
+        contentContainer->addStyleClass(Bootstrap::Grid::row);
         contentContainer->addStyleClass(Bootstrap::ImageShape::img_thumbnail);
         contentContainer->setWidth(WLength("100%"));
         contentContainer->setMargin(20,Side::Top);
@@ -284,8 +282,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
                 container->addStyleClass(Bootstrap::Grid::col_full_12);
                 container->setContentAlignment(AlignmentFlag::Center);
                 container->addStyleClass(Bootstrap::ContextualBackGround::bg_primary);
-
-                auto text = container->addWidget(cpp14::make_unique<WText>("Rezervasyon Yap"));
+                container->addWidget(cpp14::make_unique<WText>("Rezervasyon Yap"));
             }
 
 
@@ -352,7 +349,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
                 _dContainer->setWidth( WLength("1%") );
                 _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Green::Teal));
                 _dContainer->addWidget(cpp14::make_unique<WText>(" "));
-                auto text = container->addWidget(cpp14::make_unique<WText>("Rezerve Edilebilir"));
+                container->addWidget(cpp14::make_unique<WText>("Rezerve Edilebilir"));
 
             }
 
@@ -367,7 +364,7 @@ VillaDetailPage::VillaDetailPage(mongocxx::database *_db, const std::string &_vi
                 _dContainer->setWidth( WLength("1%") );
                 _dContainer->setAttributeValue(Style::style,Style::background::color::color(Style::color::Red::Salmon));
                 _dContainer->addWidget(cpp14::make_unique<WText>(" "));
-                auto text = container->addWidget(cpp14::make_unique<WText>("Rezerve Edilemez"));
+                container->addWidget(cpp14::make_unique<WText>("Rezerve Edilemez"));
 
             }
 

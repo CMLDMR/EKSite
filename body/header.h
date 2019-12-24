@@ -2,25 +2,17 @@
 #define HEADER_H
 
 #include "wtinclude.h"
-#include "base/containerwidget.h"
+#include "eCore/containerwidgetv2.h"
+
+
 
 
 using namespace Wt;
 
-class Header : public WContainerWidget
+class HeaderPage : public eCore::ContainerWidget
 {
 public:
-    Header();
-
-
-//    Signal<NoClass> &ClickGiris();
-
-private:
-//    WContainerWidget* mMenuWidgets;
-
-
-//    Signal<NoClass> _ClickGiris;
-
+    explicit HeaderPage();
 };
 
 #endif // HEADER_H

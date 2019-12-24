@@ -1,7 +1,7 @@
 #include "rezervationmanager.h"
 
 Rezervation::RezervationManager::RezervationManager(eCore::DB *_db)
-    : eCore::ContainerWidgetV2() , RezervationList( _db )
+    : eCore::ContainerWidget() , RezervationList( _db )
 {
 
     this->Header()->clear();
@@ -9,7 +9,7 @@ Rezervation::RezervationManager::RezervationManager(eCore::DB *_db)
     this->Header()->addWidget(cpp14::make_unique<WText>("<h3>Rezervasyonlar</h3>"))->addStyleClass(Bootstrap::ContextualBackGround::bg_primary
                                                                                                    +Bootstrap::Grid::col_full_12);
 
-    auto onayliContainer = this->Header()->addWidget(cpp14::make_unique<ContainerWidgetV2>());
+    auto onayliContainer = this->Header()->addWidget(cpp14::make_unique<ContainerWidget>());
     onayliContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6+
                                    Bootstrap::Grid::Medium::col_md_6+
                                    Bootstrap::Grid::Small::col_sm_6+
@@ -25,7 +25,7 @@ Rezervation::RezervationManager::RezervationManager(eCore::DB *_db)
     });
 
 
-    auto onaysizContainer = this->Header()->addWidget(cpp14::make_unique<ContainerWidgetV2>());
+    auto onaysizContainer = this->Header()->addWidget(cpp14::make_unique<ContainerWidget>());
     onaysizContainer->addStyleClass(Bootstrap::Grid::Large::col_lg_6+
                                     Bootstrap::Grid::Medium::col_md_6+
                                     Bootstrap::Grid::Small::col_sm_6+

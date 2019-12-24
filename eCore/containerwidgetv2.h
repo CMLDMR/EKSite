@@ -9,10 +9,10 @@
 
 namespace eCore {
 
-class ContainerWidgetV2 : public WContainerWidget
+class ContainerWidget : public WContainerWidget
 {
 public:
-    ContainerWidgetV2();
+    ContainerWidget();
 
 
     WContainerWidget *Header() ;
@@ -28,7 +28,6 @@ public:
 
     void showMessage( std::string title , std::string msg , std::string btnText = "Tamam" , Wt::Icon icon = Icon::Warning);
 
-    void init();
 
 
 private:

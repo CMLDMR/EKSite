@@ -1,11 +1,24 @@
 #ifndef VILLAMANAGER_H
 #define VILLAMANAGER_H
 
+#include "eCore/listitem.h"
+#include "eCore/villaitemv2.h"
+#include "eCore/containerwidgetv2.h"
 
-class VillaManager : public eCore::ListItem<VillaItem>
+namespace eCore {
+
+
+class VillaManager : public eCore::ContainerWidget , public eCore::ListItem<VillaItem>
 {
 public:
-    VillaManager();
+    explicit VillaManager(DB* _db );
+
+    void onList(const QVector<eCore::VillaItem> &mlist) override;
 };
+
+
+
+}
+
 
 #endif // VILLAMANAGER_H

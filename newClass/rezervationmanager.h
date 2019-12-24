@@ -6,7 +6,7 @@
 
 namespace Rezervation {
 
-class RezervationManager : public eCore::ContainerWidgetV2 , public RezervationList
+class RezervationManager : public eCore::ContainerWidget , public RezervationList
 {
 public:
     RezervationManager( eCore::DB* _db );
@@ -16,7 +16,7 @@ public:
 };
 
 
-class RezervationListWidget : public eCore::ContainerWidgetV2
+class RezervationListWidget : public eCore::ContainerWidget
 {
 public:
     RezervationListWidget(const eCore::RezervationItem &item);

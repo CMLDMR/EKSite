@@ -4,7 +4,7 @@
 #include <QString>
 
 
-eCore::ContainerWidgetV2::ContainerWidgetV2()
+eCore::ContainerWidget::ContainerWidget()
     :WContainerWidget()
 {
     addStyleClass(Bootstrap::Grid::container_fluid);
@@ -20,26 +20,25 @@ eCore::ContainerWidgetV2::ContainerWidgetV2()
 
 }
 
-WContainerWidget *eCore::ContainerWidgetV2::Header()
+WContainerWidget *eCore::ContainerWidget::Header()
 {
     return mHeader;
 }
 
-WContainerWidget *eCore::ContainerWidgetV2::Content()
+WContainerWidget *eCore::ContainerWidget::Content()
 {
     return mContent;
 }
 
-WContainerWidget *eCore::ContainerWidgetV2::Footer()
+WContainerWidget *eCore::ContainerWidget::Footer()
 {
     return mFooter;
 }
 
-void eCore::ContainerWidgetV2::setRandomBackGroundColor(int beginColor, int endColor, double alpha)
+void eCore::ContainerWidget::setRandomBackGroundColor(int beginColor, int endColor, double alpha)
 {
     auto StyleString = QString::fromStdString(this->attributeValue(Style::style).toUTF8());
 
-//    std::cout << "STYLE: " << StyleString.toStdString() << std::endl;
 
     if( StyleString.contains("background") ){
 
@@ -63,7 +62,7 @@ void eCore::ContainerWidgetV2::setRandomBackGroundColor(int beginColor, int endC
     StyleString = QString::fromStdString(this->attributeValue(Style::style).toUTF8());
 }
 
-void eCore::ContainerWidgetV2::showMessage(std::string title, std::string msg, std::string btnText, Icon icon)
+void eCore::ContainerWidget::showMessage(std::string title, std::string msg, std::string btnText, Icon icon)
 {
     auto messageBox = this->addChild(
                    Wt::cpp14::make_unique<Wt::WMessageBox>
@@ -84,12 +83,9 @@ void eCore::ContainerWidgetV2::showMessage(std::string title, std::string msg, s
            messageBox->show();
 }
 
-void eCore::ContainerWidgetV2::init()
-{
 
-}
 
-int eCore::ContainerWidgetV2::getRandomRGB(int beginColor, int endColor)
+int eCore::ContainerWidget::getRandomRGB(int beginColor, int endColor)
 {
     std::random_device rd;
     std::uniform_int_distribution<int> dist( beginColor , endColor );

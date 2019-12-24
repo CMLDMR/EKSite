@@ -1,12 +1,12 @@
 #ifndef VILLADETAILPAGE_H
 #define VILLADETAILPAGE_H
 
-#include "base/containerwidget.h"
+#include "eCore/containerwidgetv2.h"
 #include "base/dbclass.h"
 
 class VillaItem;
 
-class VillaDetailPage : public ContainerWidget , public DBClass
+class VillaDetailPage : public eCore::ContainerWidget , public DBClass
 {
 public:
     VillaDetailPage(mongocxx::database* _db , const std::string &_villaOid );

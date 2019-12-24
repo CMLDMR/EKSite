@@ -20,20 +20,18 @@ class DB
 {
 public:
     explicit DB();
+    explicit DB( mongocxx::database* _db );
+    explicit DB( DB* _db );
+
     DB( const DB &db);
-    DB( DB&& other );
-    DB( mongocxx::database* _db );
-    DB( DB* _db );
-    DB( const DB* _db );
+
     virtual ~DB();
 
     DB& operator=(const DB& otherDB);
-    DB& operator=( DB&& otherDB );
-    DB& operator=( mongocxx::database* _db );
 
 
 
-    const DB* getDB() const {
+    DB* getDB() {
         return this;
     }
 
@@ -55,11 +53,8 @@ public:
     mongocxx::stdx::optional<mongocxx::cursor> find( const Item &item , const mongocxx::options::find findOptions );
     mongocxx::stdx::optional<mongocxx::cursor> find( const Item &item , const int &limit = 20 , const int &skip = 0  );
     mongocxx::stdx::optional<mongocxx::result::delete_result> deleteItem( const Item &item );
-    ///
-    /// \brief countItem
-    /// \param item
-    /// \return
-    /// return item matched Count else if error return -1
+
+
     int64_t countItem( const Item &item );
 
 private:
@@ -68,8 +63,7 @@ private:
 
 
 private:
-//    mongocxx::database _mDB;
-//    mongocxx::client* mClient;
+
 
     bool mConstructWithNewClient;
     mongocxx::database* mDB;

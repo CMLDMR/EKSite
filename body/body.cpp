@@ -1,5 +1,5 @@
 #include "body.h"
-#include "ilancontainer.h"
+
 #include "customwidgets/slider.h"
 #include "customwidgets/reservationwidget.h"
 #include "customwidgets/loginwidget.h"
@@ -8,19 +8,24 @@
 #include "customwidgets/villagethumpnails.h"
 #include "customwidgets/villadetailpage.h"
 
-Body::Body(mongocxx::database *_db)
-    :DBClass (_db)
+#include "eCore/villamanager.h"
+
+Body::Body(DB *_db)
+    :eCore::ContainerWidget(),
+     eCore::DB(_db)
 {
     setContentAlignment(AlignmentFlag::Center);
+    setMaximumSize(WLength(1280),WLength::Auto);
     this->initMain();
 }
 
 void Body::initMain()
 {
-    clear();
-    addWidget(cpp14::make_unique<Slider>());
+//    addWidget(cpp14::make_unique<Slider>());
 //    addWidget(cpp14::make_unique<PlaceThumpnails>(this->db()));
-    addWidget(cpp14::make_unique<VillaPage>(this->db()))->ClickVilla().connect(this,&Body::initVillaDetail);
+//    this->Content()->addWidget(cpp14::make_unique<VillaPage>(this->db()))->ClickVilla().connect(this,&Body::initVillaDetail);
+
+    this->Content()->addWidget(cpp14::make_unique<eCore::VillaManager>(this->getDB()));
 }
 
 void Body::initLogin()

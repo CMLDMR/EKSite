@@ -9,16 +9,40 @@
 MainApplication::MainApplication(const Wt::WEnvironment &env)
     :WApplication(env)
 {
-    wApp->addMetaHeader(MetaHeaderType::Meta,"Content-Type","text/html; charset=utf-8");
-
-    wApp->addMetaHeader("description","ERK Realty Show","text/html; charset=utf-8");
-
 
     try {
         mClient = new mongocxx::client(mongocxx::uri(_url));
     } catch (mongocxx::exception &e) {
         con << e.what();
     }
+
+    db = mClient->database("EKSite");
+    mDB = new eCore::DB(&db);
+
+
+    this->initConfigration();
+    auto body = root()->addWidget(cpp14::make_unique<Body>(mDB));
+//    auto footer = root()->addWidget(cpp14::make_unique<Footer>());
+//    footer->ClickAdmin().connect(body,&Body::initLogin);
+//    footer->setMargin(50,Side::Top);
+}
+
+MainApplication::~MainApplication()
+{
+
+}
+
+void MainApplication::initConfigration()
+{
+
+    wApp->addMetaHeader(MetaHeaderType::Meta,"Content-Type","text/html; charset=utf-8");
+
+    wApp->addMetaHeader("description","ERK Realty Show","text/html; charset=utf-8");
+
+
+
+
+
 
 
     Wt::WApplication *app = Wt::WApplication::instance();
@@ -38,31 +62,10 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
 
     root()->setContentAlignment(AlignmentFlag::Center);
 
-    db = mClient->database("EKSite");
+
 
     WApplication::useStyleSheet(WLink("css/mcxx.css"));
 
 
-    con << "QUERY DATABASE";
-    try {
-        auto cursor = this->db.collection("villa").find_one(document{}.view());
-    } catch (mongocxx::exception &e) {
-
-    }
-    con << "QUERY DATABASE ENDED";
-
-
-    auto header = root()->addWidget(cpp14::make_unique<Header>());
-    auto body = root()->addWidget(cpp14::make_unique<Body>(&db));
-    auto footer = root()->addWidget(cpp14::make_unique<Footer>());
-
-    footer->ClickAdmin().connect(body,&Body::initLogin);
-    footer->setMargin(50,Side::Top);
-
-
-}
-
-MainApplication::~MainApplication()
-{
 
 }
