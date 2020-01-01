@@ -275,25 +275,25 @@ namespace Style {
             static std::string border(std::string borderText){return std::string{"border-bottom:"+borderText+";"};};
             static std::string border_width(std::string Borderwidth){ return "border-bottom"+Borderwidth;};
             static std::string border_style(std::string Borderstyle){ return "border-bottom"+Borderstyle;};
-            static std::string border_color(std::string rgb,std::string a = "1"){"border-bottom-color:rgb("+rgb+","+a+");";};
+            static std::string border_color(std::string rgb,std::string a = "1"){return "border-bottom-color:rgb("+rgb+","+a+");";};
         }
         namespace right {
             static std::string border(std::string borderText){return std::string{"border-right:"+borderText+";"};};
             static std::string border_width(std::string Borderwidth){ return "border-right"+Borderwidth;};
             static std::string border_style(std::string Borderstyle){ return "border-right"+Borderstyle;};
-            static std::string border_color(std::string rgb,std::string a = "1"){"border-right-color:rgb("+rgb+","+a+");";};
+            static std::string border_color(std::string rgb,std::string a = "1"){return "border-right-color:rgb("+rgb+","+a+");";};
         }
         namespace left {
-            static std::string border(std::string borderText){return std::string{"border-left:"+borderText+";"};};
-            static std::string border_width(std::string Borderwidth){ return "border-left"+Borderwidth;};
-            static std::string border_style(std::string Borderstyle){ return "border-left"+Borderstyle;};
-            static std::string border_color(std::string rgb,std::string a = "1"){"border-left-color:rgb("+rgb+","+a+");";};
+            static const std::string border(const std::string &borderText){return std::string{"border-left:"+borderText+";"};};
+            static const std::string border_width(const std::string & Borderwidth){ return "border-left"+Borderwidth;};
+            static const std::string border_style(const std::string & Borderstyle){ return "border-left"+Borderstyle;};
+            static const std::string border_color(const std::string & rgb,const std::string & a = "1"){return "border-left-color:rgb("+rgb+","+a+");";};
         }
         namespace top {
             static std::string border(std::string borderText){return std::string{"border-top:"+borderText+";"};};
             static std::string border_width(std::string Borderwidth){ return "border-top"+Borderwidth;};
             static std::string border_style(std::string Borderstyle){ return "border-top"+Borderstyle;};
-            static std::string border_color(std::string rgb,std::string a = "1"){"border-top-color:rgb("+rgb+","+a+");";};
+            static std::string border_color(const std::string &rgb, const std::string &a = "1"){return "border-top-color:rgb("+rgb+","+a+");";};
         }
     }
 

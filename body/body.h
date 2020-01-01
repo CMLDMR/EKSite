@@ -1,11 +1,13 @@
 #ifndef BODY_H
 #define BODY_H
 
+#include "eCore/containerwiget.h"
+#include "eCore/db.h"
 
-class body
+class Body : public ContainerWidget , public eCore::DB
 {
 public:
-    body();
+    Body(eCore::DB* _db);
 };
 
 #endif // BODY_H

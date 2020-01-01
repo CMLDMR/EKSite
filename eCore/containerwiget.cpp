@@ -189,7 +189,7 @@ void ContainerWidget::showPopUpMessage(const std::string &msg, const std::string
 
     auto container = wApp->root ()->addWidget (cpp14::make_unique<WContainerWidget>());
     container->setPositionScheme (PositionScheme::Fixed);
-    container->addStyleClass ("boxShadow");
+    container->addStyleClass ("boxShadow boxRadius");
 
     if( infoType == "info" )
     {
@@ -244,7 +244,7 @@ void ContainerWidget::removeTitleBar()
 
 
 
-FileUploaderWidget::FileUploaderWidget(mongocxx::database *_db, const std::string &title)
+FileUploaderWidget::FileUploaderWidget(const std::string &title)
 {
 
     mIsUploaded = false;

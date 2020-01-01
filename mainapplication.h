@@ -3,8 +3,7 @@
 
 
 #include "wtinclude.h"
-#include <eCore/db.h>
-#include <body/mainpage.h>
+#include "eCore/db.h"
 
 using namespace Wt;
 

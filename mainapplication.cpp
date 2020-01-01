@@ -3,8 +3,8 @@
 #include "../url.h"
 
 
-#include <eCore/containerwiget.h>
-#include <body/mainpage.h>
+#include "eCore/containerwiget.h"
+#include "body/body.h"
 
 
 MainApplication::MainApplication(const Wt::WEnvironment &env)
@@ -24,9 +24,9 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
     this->initConfigration();
     auto body = root()->addWidget(cpp14::make_unique<ContainerWidget>());
 
-    root ()->addWidget (cpp14::make_unique<MainPage>(mDB));
+    root ()->addWidget (cpp14::make_unique<Body>(mDB));
 
-    body->showPopUpMessage (WString("Test Mesajı").toUTF8 ());
+    body->showPopUpMessage (WString("sd sdfg dfg dfg ").toUTF8 (),"msg");
 
 }
 
@@ -38,7 +38,7 @@ MainApplication::~MainApplication()
 void MainApplication::initConfigration()
 {
 
-//    wApp->addMetaHeader(MetaHeaderType::Meta,"Content-Type","text/html; charset=utf-8");
+    wApp->addMetaHeader(MetaHeaderType::Meta,"Content-Type","text/html; charset=utf-8");
 
     wApp->addMetaHeader("description","ERK Realty Show","text/html; charset=utf-8");
 

@@ -46,6 +46,7 @@ public:
     }
 
 
+
     virtual void errorOccured( const std::string& errorText );
 
     QVector<QString> getMahalleler() ;

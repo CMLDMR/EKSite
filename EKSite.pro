@@ -29,17 +29,22 @@ CONFIG += no_keywords
 #QMAKE_CXXFLAGS += -Wno-c++98-compat
 
 SOURCES += \
-    body/mainpage.cpp \
+    admin/admin.cpp \
+    admin/yenivilla.cpp \
+    body/body.cpp \
     eCore/containerwiget.cpp \
     eCore/db.cpp \
     eCore/item.cpp \
     eCore/listitem.cpp \
-        main.cpp \
-        mainapplication.cpp \
+    main.cpp \
+    mainapplication.cpp \
+    villa/villa.cpp
 
 
 HEADERS += \
-    body/mainpage.h \
+    admin/admin.h \
+    admin/yenivilla.h \
+    body/body.h \
     bootstrap.h \
     eCore/containerwiget.h \
     eCore/db.h \
@@ -48,6 +53,7 @@ HEADERS += \
     inlinestyle.h \
     mainapplication.h \
     mongoheaders.h \
+    villa/villa.h \
     wtinclude.h
 
 FORMS +=

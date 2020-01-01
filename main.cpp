@@ -1,7 +1,5 @@
 #include "mainapplication.h"
 #include <mongocxx/instance.hpp>
-#include "../url.h"
-#include "mongocxx/pool.hpp"
 #include <QApplication>
 
 ///https://www.flaticon.com/packs/essential-collection
