@@ -29,74 +29,25 @@ CONFIG += no_keywords
 #QMAKE_CXXFLAGS += -Wno-c++98-compat
 
 SOURCES += \
-        admin/adminpanel.cpp \
-        admin/villaaddpage.cpp \
-        admin/villaadminpage.cpp \
-        admin/villalistpage.cpp \
-        base/containerwidget.cpp \
-        base/dbclass.cpp \
-        base/itembase.cpp \
-        base/rezerveitem.cpp \
-        base/tcitem.cpp \
-        base/userclass.cpp \
-        base/villaitem.cpp \
-        body/body.cpp \
-        body/footer.cpp \
-        body/header.cpp \
-        customwidgets/loginwidget.cpp \
-        customwidgets/placethumpnails.cpp \
-        customwidgets/reservationwidget.cpp \
-        customwidgets/rezervationdialog.cpp \
-        customwidgets/slider.cpp \
-        customwidgets/villadetailpage.cpp \
-        customwidgets/villagethumpnails.cpp \
-        eCore/containerwidgetv2.cpp \
-        eCore/db.cpp \
-        eCore/item.cpp \
-        eCore/listitem.cpp \
-        eCore/villaitemv2.cpp \
-        eCore/villamanager.cpp \
+    body/mainpage.cpp \
+    eCore/containerwiget.cpp \
+    eCore/db.cpp \
+    eCore/item.cpp \
+    eCore/listitem.cpp \
         main.cpp \
         mainapplication.cpp \
-        newClass/rezervationlist.cpp \
-        newClass/rezervationmanager.cpp \
-        newClass/rezervatonitem.cpp
+
 
 HEADERS += \
-    admin/adminpanel.h \
-    admin/villaaddpage.h \
-    admin/villaadminpage.h \
-    admin/villalistpage.h \
-    base/containerwidget.h \
-    base/dbclass.h \
-    base/itembase.h \
-    base/rezerveitem.h \
-    base/tcitem.h \
-    base/userclass.h \
-    base/villaitem.h \
-    body/body.h \
-    body/footer.h \
-    body/header.h \
+    body/mainpage.h \
     bootstrap.h \
-    customwidgets/loginwidget.h \
-    customwidgets/placethumpnails.h \
-    customwidgets/reservationwidget.h \
-    customwidgets/rezervationdialog.h \
-    customwidgets/slider.h \
-    customwidgets/villadetailpage.h \
-    customwidgets/villagethumpnails.h \
-    eCore/containerwidgetv2.h \
+    eCore/containerwiget.h \
     eCore/db.h \
     eCore/item.h \
     eCore/listitem.h \
-    eCore/villaitemv2.h \
-    eCore/villamanager.h \
     inlinestyle.h \
     mainapplication.h \
     mongoheaders.h \
-    newClass/rezervationlist.h \
-    newClass/rezervationmanager.h \
-    newClass/rezervatonitem.h \
     wtinclude.h
 
 FORMS +=
@@ -111,55 +62,23 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 
-#win32: LIBS += -L$$PWD/../../Yonetim-yazilimi/Server/WebServer/Wt-4.0.0-msvs2015-Windows-x64-SDK/lib/ -lwt
-#win32: LIBS += -L$$PWD/../../Yonetim-yazilimi/Server/WebServer/Wt-4.0.0-msvs2015-Windows-x64-SDK/lib/ -lwthttp
-
-#INCLUDEPATH += $$PWD/../../Yonetim-yazilimi/Server/WebServer/Wt-4.0.0-msvs2015-Windows-x64-SDK/include
-#DEPENDPATH += $$PWD/../../Yonetim-yazilimi/Server/WebServer/Wt-4.0.0-msvs2015-Windows-x64-SDK/include
-
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/ -lbsoncxx
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/ -lbsoncxxd
-#else:unix: LIBS += -L$$PWD/lib/ -lbsoncxx
-
-#INCLUDEPATH += $$PWD/include/bsoncxx/v_noabi
-#DEPENDPATH += $$PWD/include/bsoncxx/v_noabi
-
-#INCLUDEPATH += $$PWD/Body
-#DEPENDPATH += $$PWD/Body
-
-
-
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/ -lmongocxx
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/ -lmongocxxd
-#else:unix: LIBS += -L$$PWD/lib/ -lmongocxx
-
-#INCLUDEPATH += $$PWD/include/mongocxx/v_noabi
-#DEPENDPATH  += $$PWD/include/mongocxx/v_noabi
-
-
-
-
-INCLUDEPATH += $$PWD/../../../local/boost_1_70_0/
-DEPENDPATH += $$PWD/../../../local/boost_1_70_0/
-
-win32: LIBS += -L$$PWD/../../Wt/Wt-4.1.0-msvs2015-x64/lib/ -lwt -lwthttp
-
-INCLUDEPATH += $$PWD/../../Wt/Wt-4.1.0-msvs2015-x64/include
-DEPENDPATH += $$PWD/../../Wt/Wt-4.1.0-msvs2015-x64/include
-
 DISTFILES +=
 
 QMAKE_CXXFLAGS += /wd4251 /wd4275 /wd4267 /wd4189
 
+INCLUDEPATH += C:/boost/boost
+DEPENDPATH += C:/boost/boost
 
 
+win32: LIBS += -LC:/Mongo/msvc2017x64/lib/ -lbsoncxx -lmongocxx
 
+INCLUDEPATH += C:/Mongo/msvc2017x64/include/bsoncxx/v_noabi
+DEPENDPATH += C:/Mongo/msvc2017x64/include/bsoncxx/v_noabi
 
+INCLUDEPATH += C:/Mongo/msvc2017x64/include/mongocxx/v_noabi
+DEPENDPATH += C:/Mongo/msvc2017x64/include/mongocxx/v_noabi
 
-win32: LIBS += -L$$PWD/../EKSite1/lib/lib/ -lbsoncxx -lmongocxx
+win32: LIBS += -LC:/Wt-4.1.2-msvs2017-x64/lib/ -lwt -lwthttp
 
-INCLUDEPATH += $$PWD/../EKSite1/lib/include/bsoncxx/v_noabi
-DEPENDPATH += $$PWD/../EKSite1/lib/include/bsoncxx/v_noabi
-
-INCLUDEPATH += $$PWD/../EKSite1/lib/include/mongocxx/v_noabi
-DEPENDPATH += $$PWD/../EKSite1/lib/include/mongocxx/v_noabi
+INCLUDEPATH += C:/Wt-4.1.2-msvs2017-x64/include
+DEPENDPATH += C:/Wt-4.1.2-msvs2017-x64/include

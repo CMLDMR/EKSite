@@ -1,9 +1,11 @@
 #ifndef CONTAINERWIGET_H
 #define CONTAINERWIGET_H
 
-#include "SerikBelediyesiWebSayfasi/BaseClass/wtheaders.h"
+#include "wtinclude.h"
 #include <random>
-#include "SerikBelediyesiWebSayfasi/BaseClass/dbclass.h"
+#include "eCore/db.h"
+#include "inlinestyle.h"
+#include "bootstrap.h"
 
 #include <QString>
 
@@ -91,7 +93,7 @@ private:
 
 
 
-class FileUploaderWidget : public ContainerWidget , public DBClass
+class FileUploaderWidget : public ContainerWidget
 {
 public:
     explicit FileUploaderWidget( mongocxx::database* _db , const std::string &title = "PDF Cevap Yükle" );

@@ -35,6 +35,7 @@
 #include <Wt/WDatePicker.h>
 #include <Wt/WTemplate.h>
 #include <Wt/WDateEdit.h>
+#include <Wt/WTimer.h>
 
 #include <Wt/WTheme.h>
 #include <iostream>

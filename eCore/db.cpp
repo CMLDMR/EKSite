@@ -1,18 +1,26 @@
 #include "db.h"
-
-#include "db.h"
 #include <QFile>
 #include <QByteArray>
 #include <QFileInfo>
 #include <fstream>
 #include <QDir>
-#include "item.h"
+//#include "item.h"
+
+
 
 static int DBConnectionCount = 0;
 
 eCore::DB::DB()
 {
-
+//    std::cout << "New Connect: Connection Count: " << ++DBConnectionCount << std::endl;
+//    mConstructWithNewClient = true;
+//    try {
+//        mClient = new mongocxx::client(mongocxx::uri(_url));
+//    } catch (mongocxx::exception &e) {
+//        std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
+//        std::cout << str << std::endl;
+//    }
+//    _mDB = mClient->database (DB__);
 }
 
 eCore::DB::DB(const DB &db)
@@ -22,7 +30,12 @@ eCore::DB::DB(const DB &db)
     mConstructWithNewClient = false;
 }
 
-
+eCore::DB::DB(eCore::DB &&other)
+    :mDB(other.mDB)
+{
+    std::cout << "DB::DB(DB &&db): " << DBConnectionCount << std::endl;
+    mConstructWithNewClient = false;
+}
 
 eCore::DB::DB(mongocxx::database *_db)
     :mDB( _db )
@@ -31,20 +44,26 @@ eCore::DB::DB(mongocxx::database *_db)
     mConstructWithNewClient = false;
 }
 
-eCore::DB::DB(DB *_db) : mDB(_db->mDB)
+eCore::DB::DB(DB *_db) : mDB(_db->db ())
 {
-
-
     std::cout << "DB::DB(DB *_db): " << DBConnectionCount << std::endl;
     mConstructWithNewClient = false;
 }
 
+eCore::DB::DB(const DB *_db) : mDB( _db->getDB ()->mDB )
+{
 
+}
 
 
 
 eCore::DB::~DB()
 {
+    std::cout << "-DB Destructor- Delete Client: " << mConstructWithNewClient << std::endl;
+    if( mConstructWithNewClient )
+    {
+        std::cout << "Delete DB Connection, CurrentConnection Count: " <<  --DBConnectionCount << std::endl;
+    }
     std::cout << "DB Destructor End" << std::endl;
 }
 
@@ -55,9 +74,53 @@ eCore::DB &eCore::DB::operator=(const DB &otherDB)
     return *this;
 }
 
+eCore::DB &eCore::DB::operator=(eCore::DB &&otherDB)
+{
+    std::cout << "DB &DB::operator=(const DB &otherDB): " << DBConnectionCount << std::endl;
+    mDB = otherDB.mDB;
+    return *this;
+}
+
+eCore::DB &eCore::DB::operator=(mongocxx::database *_db)
+{
+    std::cout << "DB &DB::operator=(const DB &otherDB): " << DBConnectionCount << std::endl;
+    mDB = _db;
+    return *this;
+}
+
+void eCore::DB::errorOccured(const std::string &errorText)
+{
+
+}
+
+QVector<QString> eCore::DB::getMahalleler()
+{
+
+    QVector<QString> list;
 
 
+    FindOptions options;
 
+    options.setSkip (0);
+    options.setLimit (0);
+    options.setSort (Item("none").append("Mahalleler",-1));
+
+    auto cursor = this->find (std::move(Item("Mahalleler")),options);
+    if( cursor )
+    {
+        for( auto doc : cursor.value () )
+        {
+            try {
+                list.append (doc["Mahalle"].get_utf8 ().value.to_string().c_str ());
+            } catch (bsoncxx::exception &e) {
+                std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() ;
+                this->setLastError (str.c_str ());
+            }
+        }
+    }
+    return list;
+
+}
 
 
 
@@ -75,7 +138,8 @@ std::string eCore::DB::downloadFile(const QString &fileOid, bool forceFilename)
     try {
         doc.append(bsoncxx::builder::basic::kvp("key",bsoncxx::oid{fileOid.toStdString ()}));
     } catch (bsoncxx::exception& e) {
-        std::cout << __LINE__ << " Error: " << e.what() << std::endl;
+        std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() ;
+        this->setLastError (str.c_str ());
         return "NULL";
     }
 
@@ -87,7 +151,8 @@ std::string eCore::DB::downloadFile(const QString &fileOid, bool forceFilename)
         downloader = bucket.open_download_stream(roid);
 
     } catch (bsoncxx::exception &e) {
-        std::cout << __LINE__ << " Error: " << e.what() << std::endl;
+        std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() ;
+        this->setLastError (str.c_str ());
         return "";
     }
 
@@ -118,8 +183,6 @@ std::string eCore::DB::downloadFile(const QString &fileOid, bool forceFilename)
     if( QFile::exists(fullFilename) )
     {
         return fullFilename.toStdString ();
-    }else{
-        std::cout << "FILE NOT FOUND: " << fullFilename.toStdString() << std::endl;
     }
 
     auto buffer_size = std::min(file_length, static_cast<std::int64_t>(downloader.chunk_size()));
@@ -132,21 +195,15 @@ std::string eCore::DB::downloadFile(const QString &fileOid, bool forceFilename)
 
     if( out.is_open() )
     {
-
         while ( auto length_read = downloader.read(buffer.get(), static_cast<std::size_t>(buffer_size)) ) {
-
             auto bufferPtr = buffer.get();
             out.write(reinterpret_cast<char*>(bufferPtr),length_read);
-
             bytes_counter += static_cast<std::int32_t>( length_read );
-
         }
-
         out.close();
-    }
-
-    else{
-        std::cout << "Error Can Not Open File: " <<fullFilename.toStdString() << std::endl;
+    }else{
+        std::string str = "Error Can Not Open File: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + fullFilename.toStdString() ;
+        this->setLastError (str.c_str ());
     }
 
     return fullFilename.toStdString ();
@@ -161,7 +218,8 @@ std::string eCore::DB::downloadFileWeb(const QString &fileOid, bool forceFilenam
     try {
         doc.append(bsoncxx::builder::basic::kvp("key",bsoncxx::oid{fileOid.toStdString ()}));
     } catch (bsoncxx::exception& e) {
-        std::cout << __LINE__ << " Error: " << e.what() << std::endl;
+        std::string str = "Error: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() ;
+        this->setLastError (str.c_str ());
         return "NULL";
     }
 
@@ -172,7 +230,8 @@ std::string eCore::DB::downloadFileWeb(const QString &fileOid, bool forceFilenam
         auto roid = bsoncxx::types::value(doc.view()["key"].get_oid());
         downloader = bucket.open_download_stream(roid);
     } catch (bsoncxx::exception &e) {
-        std::cout << __LINE__ << " Error: " << e.what() << std::endl;
+        std::string str = "Error: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() ;
+        this->setLastError (str.c_str ());
         return "img/404-header.png";
     }
 
@@ -205,8 +264,6 @@ std::string eCore::DB::downloadFileWeb(const QString &fileOid, bool forceFilenam
     if( QFile::exists("docroot/"+fullFilename) )
     {
         return fullFilename.toStdString ();
-    }else{
-        std::cout << "FILE NOT FOUND: " << fullFilename.toStdString() << std::endl;
     }
 
     auto buffer_size = std::min(file_length, static_cast<std::int64_t>(downloader.chunk_size()));
@@ -219,19 +276,15 @@ std::string eCore::DB::downloadFileWeb(const QString &fileOid, bool forceFilenam
 
     if( out.is_open() )
     {
-
         while ( auto length_read = downloader.read(buffer.get(), static_cast<std::size_t>(buffer_size)) ) {
-
             auto bufferPtr = buffer.get();
             out.write(reinterpret_cast<char*>(bufferPtr),length_read);
-
             bytes_counter += static_cast<std::int32_t>( length_read );
-
         }
-
         out.close();
     }else{
-        std::cout << "Error Can Not Open File: " <<fullFilename.toStdString() << std::endl;
+        std::string str = "Error Can Not Open File: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + fullFilename.toStdString() ;
+        this->setLastError (str.c_str ());
     }
 
     return fullFilename.toStdString ();
@@ -252,14 +305,14 @@ bsoncxx::types::value eCore::DB::uploadfile(QString filepath)
         auto res = uploader.close();
         return res.id();
     }else{
-        std::cout << "Can not open File " << filepath.toStdString () << std::endl;
+        std::string str = "Error Can Not Open File: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + filepath.toStdString() ;
+        this->setLastError (str.c_str ());
     }
 }
 
 bsoncxx::types::value eCore::DB::uploadfile(QString filepath) const
 {
     auto bucket = mDB->gridfs_bucket ();
-
     mongocxx::gridfs::uploader uploader;
     QFile file( filepath );
     if( file.open( QIODevice::ReadOnly ) )
@@ -273,8 +326,26 @@ bsoncxx::types::value eCore::DB::uploadfile(QString filepath) const
         auto res = uploader.close();
         return res.id();
     }else{
-        std::cout << "Can not open File " << filepath.toStdString () << std::endl;
+        std::string str = "Error Can Not Open File: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + filepath.toStdString() ;
+        const_cast<eCore::DB*>(this)->setLastError (str.c_str ());
         return uploader.close ().id ();
+    }
+}
+
+bool eCore::DB::deleteGridFS(const QString &fileOid)
+{
+    bsoncxx::types::value id(bsoncxx::types::b_oid{bsoncxx::oid{fileOid.toStdString ()}});
+    try {
+        mDB->gridfs_bucket ().delete_file (id);
+        return true;
+    } catch (mongocxx::gridfs_exception &e) {
+        std::string str = "ERROR GridFS Exception: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
+        this->setLastError (str.c_str ());
+        return false;
+    } catch ( mongocxx::bulk_write_exception &e) {
+        std::string str = "ERROR bulk_write_exception: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
+        this->setLastError (str.c_str ());
+        return false;
     }
 }
 
@@ -286,7 +357,7 @@ mongocxx::stdx::optional<mongocxx::result::insert_one> eCore::DB::insertItem(con
         return ins;
     } catch (mongocxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return mongocxx::stdx::nullopt;
     }
 }
@@ -300,7 +371,7 @@ mongocxx::stdx::optional<mongocxx::result::update> eCore::DB::updateItem(const I
         filter.append (kvp("_id",item.view ()["_id"].get_oid ().value));
     } catch (bsoncxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return boost::none;
     }
 
@@ -315,7 +386,7 @@ mongocxx::stdx::optional<mongocxx::result::update> eCore::DB::updateItem(const I
                 doc.append (kvp(element.key (),element.get_value ()));
             } catch (bsoncxx::exception &e) {
                 std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
-                std::cout << str << std::endl;
+                this->setLastError (str.c_str ());
                 _errorOccured = true;
                 break;
             }
@@ -332,7 +403,7 @@ mongocxx::stdx::optional<mongocxx::result::update> eCore::DB::updateItem(const I
         setDoc.append (kvp("$set",doc));
     } catch (bsoncxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return boost::none;
     }
 
@@ -342,7 +413,7 @@ mongocxx::stdx::optional<mongocxx::result::update> eCore::DB::updateItem(const I
         return upt;
     } catch (mongocxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return mongocxx::stdx::nullopt;
     }
 
@@ -356,7 +427,7 @@ mongocxx::stdx::optional<bsoncxx::document::value> eCore::DB::findOneItem(const 
         return value;
     } catch (mongocxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() + " Collection: " + item.getCollection ();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return mongocxx::stdx::nullopt;
     }
 }
@@ -372,7 +443,7 @@ mongocxx::stdx::optional<bsoncxx::document::value> eCore::DB::findOneItem(const 
         return value;
     } catch (mongocxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() + " Collection: " + item.getCollection ();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return mongocxx::stdx::nullopt;
     }
 }
@@ -384,7 +455,7 @@ mongocxx::stdx::optional<mongocxx::cursor> eCore::DB::find(const Item &item, con
         return std::move(cursor);
     } catch (mongocxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() +" Collection: " + item.getCollection ();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return mongocxx::stdx::nullopt;
     }
 }
@@ -396,15 +467,84 @@ mongocxx::stdx::optional<mongocxx::cursor> eCore::DB::find(const eCore::Item &it
     findOptions.limit (limit);
     findOptions.skip (skip);
 
+    Item sortItem(item.getCollection ());
+    sortItem.append("_id",-1);
+
+    findOptions.sort (sortItem.view ());
+
+
     try {
         auto cursor = this->db ()->collection (item.getCollection ()).find (item.view (),findOptions);
         return std::move(cursor);
     } catch (mongocxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() +" Collection: " + item.getCollection ();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return mongocxx::stdx::nullopt;
     }
 }
+
+mongocxx::stdx::optional<mongocxx::cursor> eCore::DB::find(const eCore::Item &item, const eCore::FindOptions &options)
+{
+    mongocxx::options::find findOptions;
+    auto doc = document{};
+
+    if( options.limit () != 0 )
+    {
+        findOptions.limit (options.limit ());
+    }
+
+    findOptions.skip (options.skip ());
+
+    doc.clear ();
+    if( !options.projection ().view ().empty () )
+    {
+        auto __view = options.element ("projection");
+        if( __view )
+        {
+            for( auto __item : __view.value ().get_document ().value)
+            {
+                try {
+                    doc.append (kvp(__item.key ().to_string(),__item.get_value ()));
+                } catch (bsoncxx::exception &e) {
+                    std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
+                    this->setLastError (str.c_str ());
+                }
+            }
+            findOptions.projection (doc.view ());
+        }
+    }
+
+    doc.clear ();
+    if( !options.sort ().view ().empty () )
+    {
+        auto __view = options.element ("sort");
+        if( __view )
+        {
+            for( auto __item : __view.value ().get_document ().value)
+            {
+                try {
+                    doc.append (kvp(__item.key ().to_string(),__item.get_value ()));
+                } catch (bsoncxx::exception &e) {
+                    std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
+                    this->setLastError (str.c_str ());
+                }
+            }
+            findOptions.sort (doc.view ());
+        }
+    }
+
+
+    try {
+        auto cursor = this->db ()->collection (item.getCollection ()).find (item.view (),findOptions);
+        return std::move(cursor);
+    } catch (mongocxx::exception &e) {
+        std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what() +" Collection: " + item.getCollection ();
+        this->setLastError (str.c_str ());
+        return mongocxx::stdx::nullopt;
+    }
+}
+
+
 
 mongocxx::stdx::optional<mongocxx::result::delete_result> eCore::DB::deleteItem(const Item &item)
 {
@@ -413,7 +553,7 @@ mongocxx::stdx::optional<mongocxx::result::delete_result> eCore::DB::deleteItem(
         return del;
     } catch (mongocxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return mongocxx::stdx::nullopt;
     }
 }
@@ -423,11 +563,26 @@ mongocxx::stdx::optional<mongocxx::result::delete_result> eCore::DB::deleteItem(
 std::int64_t eCore::DB::countItem(const Item &item)
 {
     try {
-        auto count = this->db ()->collection (item.getCollection ()).count( item.view () );
+        auto count = this->db ()->collection (item.getCollection ()).count_documents (item.view ());
         return count;
     } catch (mongocxx::exception &e) {
         std::string str = "ERROR: " + std::to_string(__LINE__) + " " + __FUNCTION__ + " " + e.what();
-        std::cout << str << std::endl;
+        this->setLastError (str.c_str ());
         return -1;
     }
 }
+
+QString eCore::DB::getLastError()
+{
+    auto str = mLastError;
+    mLastError = "";
+    return str;
+}
+
+void eCore::DB::setLastError(const QString &lastError)
+{
+    mLastError = lastError;
+    errorOccured (lastError.toStdString ());
+}
+
+

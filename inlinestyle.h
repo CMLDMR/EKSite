@@ -9,11 +9,13 @@
 namespace Style {
     static const std::string style{"style"};
     static const std::string dataoid{"data-oid"};
+    static const std::string userdata1{"userData1"};
+    static const std::string userdata2{"userData2"};
     static const std::string customData{"customDatas"};
     namespace color {
-        static const std::string rgb(std::string rgb){return std::string{"color:rgb("+rgb+");"};};
-        static const std::string rgba(std::string rgba){return std::string{"color:rgba("+rgba+");"};};
-        static const std::string color(std::string color){return std::string{"color:"+color+";"};};
+        static const std::string rgb(const std::string &rgb){return std::string{"color:rgb("+rgb+");"};};
+        static const std::string rgba(const std::string &rgba){return std::string{"color:rgba("+rgba+");"};};
+        static const std::string color(const std::string &color){return std::string{"color:"+color+";"};};
         namespace Pink {
             static const std::string Pink {"Pink ;"};
             static const std::string LightPink {"LightPink ;"};
@@ -23,6 +25,7 @@ namespace Style {
             static const std::string MediumVioletRed {"MediumVioletRed ;"};
         }
         namespace Purple {
+            static const std::string LightSkyBlue {"lightskyblue ;"};
             static const std::string Lavender {"Lavender ;"};
             static const std::string Thistle  {"Thistle ;"};
             static const std::string Plum  {"Plum ;"};
@@ -33,6 +36,7 @@ namespace Style {
             static const std::string MediumOrchid  {"MediumOrchid ;"};
             static const std::string DarkOrchid  {"DarkOrchid ;"};
             static const std::string DarkViolet  {"DarkViolet ;"};
+            static const std::string DodgerBlue  {"DodgerBlue ;"};
             static const std::string BlueViolet  {"BlueViolet ;"};
             static const std::string DarkMagenta   {"DarkMagenta ;"};
             static const std::string Purple   {"Purple ;"};
@@ -42,6 +46,8 @@ namespace Style {
             static const std::string DarkSlateBlue   {"DarkSlateBlue ;"};
             static const std::string RebeccaPurple   {"RebeccaPurple ;"};
             static const std::string Indigo {"Indigo ;"};
+            static const std::string MidnightBlue{"MidnightBlue;"};
+            static const std::string RoyalBlue{"RoyalBlue;"};
         }
         namespace Red {
             static const std::string LightSalmon  {"LightSalmon ;"};
@@ -60,6 +66,7 @@ namespace Style {
             static const std::string Coral    {"Coral ;"};
             static const std::string Tomato    {"Tomato ;"};
             static const std::string OrangeRed     {"OrangeRed ;"};
+            static const std::string GoldenRod     {"GoldenRod ;"};
         }
         namespace Yellow {
             static const std::string Gold{"Gold;"};
@@ -156,6 +163,8 @@ namespace Style {
             static const std::string s12px{"font-size:12px;"};
             static const std::string s11px{"font-size:11px;"};
             static const std::string s10px{"font-size:10px;"};
+            static const std::string s9px{"font-size:9px;"};
+            static const std::string s8px{"font-size:8px;"};
         }
         namespace family {
             static const std::string tahoma{"font-family:tahoma;"};
@@ -184,10 +193,10 @@ namespace Style {
             static const std::string initial{"background-size:initial;"};
             static const std::string cover{"background-size:cover;"};
             static const std::string auto_{"background-size:auto;"};
-            static const std::string length(std::string inpixel){return std::string{"background-size:"+inpixel+"px;"};};
-            static const std::string length(std::string inpixel1,std::string inpixel2){return std::string{"background-size:"+inpixel1+"px "+inpixel2+"px;"};};
-            static const std::string percentage(std::string inper){return std::string{"background-size:"+inper+";"};};
-            static const std::string percentage(std::string inper1,std::string inper2){return std::string{"background-size:"+inper1+" "+inper2+";"};};
+            static const std::string length(const std::string &inpixel){return std::string{"background-size:"+inpixel+"px;"};};
+            static const std::string length(const std::string &inpixel1,const std::string &inpixel2){return std::string{"background-size:"+inpixel1+"px "+inpixel2+"px;"};};
+            static const std::string percentage(const std::string &inper){return std::string{"background-size:"+inper+";"};};
+            static const std::string percentage(const std::string &inper1,const std::string &inper2){return std::string{"background-size:"+inper1+" "+inper2+";"};};
         }
         namespace repeat {
             static const std::string repeat{"background-repeat:repeat;"};
@@ -235,20 +244,20 @@ namespace Style {
             static const std::string center_top{"background-position:center top;"};
             static const std::string center_center{"background-position:center center;"};
             static const std::string center_bottom{"background-position:center bottom;"};
-            static const std::string pos(std::string xpos,std::string ypos){return std::string{"background-position:"+xpos+" "+xpos+";"};};
-            static const std::string percentage(std::string per1,std::string per2){return std::string{"background-position:"+per1+"% "+per2+"%;"};};
+            static const std::string pos(const std::string &xpos , const std::string &ypos){return std::string{"background-position:"+xpos+" "+ypos+";"};};
+            static const std::string percentage(const std::string &per1 , const std::string &per2){return std::string{"background-position:"+per1+"% "+per2+"%;"};};
         }
     }
 
     namespace Border {
-        static std::string border(std::string borderText){return std::string{"border:"+borderText+";"};};
-        static std::string borderRardius(std::string radius1, std::string radius2 = "0" ,std::string radius3 = "0" , std::string radius4 = "0")
+        static std::string border(const std::string &borderText){return std::string{"border:"+borderText+";"};};
+        static std::string borderRardius(const std::string &radius1, const std::string &radius2 = "0" , const std::string &radius3 = "0" , const std::string &radius4 = "0")
         {return std::string{"border-radius:"+radius1+"px "+radius2+"px "+radius3+"px "+radius4+"px;"};};
         namespace width {
             static std::string medium{"-width:medium;"};
             static std::string thin{"-width:thin;"};
             static std::string thick{"-width:thick;"};
-            static std::string length(std::string inpixel){return std::string{"-width:"+inpixel+"px;"};};
+            static std::string length(const std::string &inpixel){return std::string{"-width:"+inpixel+"px;"};};
         }
         namespace style {
             static std::string none{"-style:none;"};

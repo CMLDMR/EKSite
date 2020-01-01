@@ -3,8 +3,8 @@
 
 
 #include "wtinclude.h"
-#include "base/dbclass.h"
-#include "eCore/db.h"
+#include <eCore/db.h>
+#include <body/mainpage.h>
 
 using namespace Wt;
 
@@ -13,7 +13,7 @@ using namespace Wt;
 class MainApplication : public WApplication
 {
 public:
-    MainApplication(const WEnvironment& env);
+    explicit MainApplication(const WEnvironment& env);
     ~MainApplication();
     std::shared_ptr<Wt::WBootstrapTheme> p_wtTheme;
 

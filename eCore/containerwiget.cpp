@@ -1,4 +1,4 @@
-#include "containerwiget.h"
+#include "eCore/containerwiget.h"
 
 #include <QFile>
 #include <QFileInfo>
@@ -245,7 +245,6 @@ void ContainerWidget::removeTitleBar()
 
 
 FileUploaderWidget::FileUploaderWidget(mongocxx::database *_db, const std::string &title)
-    :DBClass (_db)
 {
 
     mIsUploaded = false;

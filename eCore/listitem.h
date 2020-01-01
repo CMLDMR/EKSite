@@ -1,8 +1,8 @@
 #ifndef LISTITEM_H
 #define LISTITEM_H
 
-
 #include "db.h"
+#include "item.h"
 
 
 namespace eCore {
@@ -13,7 +13,7 @@ template <typename T>
 class ListItem : public DB
 {
 public:
-    ListItem(DB* db ) : DB(db),__limit(20),__skip(0){}
+    ListItem(DB* db) : DB(db),__limit(20),__skip(0){}
 
     inline const T &itemAt(const QString &byOid)
     {
@@ -52,7 +52,7 @@ public:
         return __mlist;
     }
 
-    inline QVector<T>& UpdateList(const T& filter  ){
+    inline QVector<T>& UpdateList(const T& filter = T() ){
         __mlist.clear ();
         __count = this->countItem (filter);
         auto cursor = this->find ( filter , __limit , __skip );
@@ -69,6 +69,30 @@ public:
         return __mlist;
     }
 
+    inline QVector<T>& UpdateList( const T& filter , const eCore::FindOptions& options )
+    {
+
+        __mlist.clear ();
+        __count = this->countItem (filter);
+
+        __limit = options.limit ();
+        __skip = options.skip ();
+
+        auto cursor = this->find ( filter , options  );
+        if( cursor )
+        {
+            for( auto item : cursor.value() )
+            {
+                T _item;
+                _item.setDocumentView(item);
+                __mlist.append (_item);
+            }
+        }
+        this->__onlist (__mlist);
+        return __mlist;
+
+    }
+
     inline bool UpdateItem( const T& item ){
         auto result = DB::updateItem (item);
         if( result )
@@ -83,6 +107,8 @@ public:
         }
         return false;
     }
+
+
 
     inline std::string InsertItem( const T& item ){
         auto result = DB::insertItem (item);
@@ -111,6 +137,8 @@ public:
             {
                 remove (item);
                 return true;
+            }else{
+                return false;
             }
         }
         return false;
@@ -135,7 +163,6 @@ public:
         if( __skip > __limit )
         {
             __skip -= __limit;
-            if( __skip < 0 ) __skip = 0;
             return this->UpdateList (filter);
         }else{
             if( __skip > 0 )
@@ -158,13 +185,24 @@ public:
     inline int totalCount () const { return __count; }
 
 
-    virtual void onList( const QVector<T>  &mlist ) = 0;
+    virtual void onList( const QVector<T>  *mlist ) = 0;
+
+    const QVector<T> &List() const
+    {
+        return __mlist;
+    }
+
+
+    virtual void errorOccured(const std::string &errorText) override
+    {
+
+    }
 
 private:
     QVector<T> __mlist;
 
-    void __onlist( const QVector<T> &mlist ){
-        this->onList (mlist);
+    void __onlist( QVector<T> &mlist ){
+        this->onList (&mlist);
     }
 
     void replace( const T& item ){
@@ -198,10 +236,16 @@ private:
     int __skip = 0;
     int __count = 0;
 
+
+
 };
 
 
 
 }
+
+
+
+
 
 #endif // LISTITEM_H

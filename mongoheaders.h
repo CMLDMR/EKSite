@@ -25,6 +25,8 @@
 #include <mongocxx/gridfs/bucket.hpp>
 #include <mongocxx/pipeline.hpp>
 #include <mongocxx/exception/gridfs_exception.hpp>
+#include <mongocxx/exception/query_exception.hpp>
+#include <mongocxx/exception/bulk_write_exception.hpp>
 
 
 using bsoncxx::builder::basic::document;
@@ -32,7 +34,6 @@ using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::array;
 using bsoncxx::builder::basic::make_document;
 using bsoncxx::builder::basic::make_array;
-
 
 
 #endif // MONGOHEADERS_H
