@@ -10,6 +10,7 @@ Admin::Admin(eCore::DB* _db)
     auto ekle = Header ()->addWidget (cpp14::make_unique<WPushButton>("Yeni Villa Ekle"));
 
     ekle->clicked ().connect ([=](){
+        Header ()->clear ();
         Content ()->clear ();
         Content ()->addWidget (cpp14::make_unique<YeniVilla>());
     });

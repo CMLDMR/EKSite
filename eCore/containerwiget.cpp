@@ -6,7 +6,7 @@
 
 
 
-ContainerWidget::ContainerWidget(const std::string &title, ContainerWidget::ContentType _contentType)
+ContainerWidget::ContainerWidget(const std::string &title)
     :mTitle(title)
 {
     addStyleClass(Bootstrap::Grid::container_fluid);
@@ -22,42 +22,11 @@ ContainerWidget::ContainerWidget(const std::string &title, ContainerWidget::Cont
         mTitleBar->addStyleClass (Bootstrap::ContextualBackGround::bg_primary+"boxShadow" );
     }
 
-    if( _contentType == Horizontal )
-    {
-        auto __container = addWidget (cpp14::make_unique<WContainerWidget>());
-        __container->addStyleClass (Bootstrap::Grid::row);
+    mHeaderContainer = addWidget(cpp14::make_unique<WContainerWidget>());
+    mHeaderContainer->addStyleClass(Bootstrap::Grid::row);
 
-        auto _headerContainer = __container->addWidget (cpp14::make_unique<WContainerWidget>());
-        _headerContainer->addStyleClass (Bootstrap::Grid::Large::col_lg_2+
-                                         Bootstrap::Grid::Medium::col_md_2+
-                                         Bootstrap::Grid::Small::col_sm_3+
-                                         Bootstrap::Grid::ExtraSmall::col_xs_12);
-
-        mHeaderContainer = _headerContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-        mHeaderContainer->addStyleClass(Bootstrap::Grid::row);
-
-        auto _contentContainer = __container->addWidget (cpp14::make_unique<WContainerWidget>());
-        _contentContainer->addStyleClass (Bootstrap::Grid::Large::col_lg_10+
-                                          Bootstrap::Grid::Medium::col_md_10+
-                                          Bootstrap::Grid::Small::col_sm_9+
-                                          Bootstrap::Grid::ExtraSmall::col_xs_12);
-
-
-        mContentContainer = _contentContainer->addWidget(cpp14::make_unique<WContainerWidget>());
-        mContentContainer->addStyleClass(Bootstrap::Grid::row);
-
-
-
-
-
-    }else{
-
-        mHeaderContainer = addWidget(cpp14::make_unique<WContainerWidget>());
-        mHeaderContainer->addStyleClass(Bootstrap::Grid::row);
-
-        mContentContainer = addWidget(cpp14::make_unique<WContainerWidget>());
-        mContentContainer->addStyleClass(Bootstrap::Grid::row);
-    }
+    mContentContainer = addWidget(cpp14::make_unique<WContainerWidget>());
+    mContentContainer->addStyleClass(Bootstrap::Grid::row);
 
     mFootContainer = addWidget(cpp14::make_unique<WContainerWidget>());
     mFootContainer->addStyleClass(Bootstrap::Grid::row);

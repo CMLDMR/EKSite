@@ -12,12 +12,9 @@
 class ContainerWidget : public WContainerWidget
 {
 public:
-    enum ContentType{
-        Horizontal,
-        Vertical
-    };
 
-    ContainerWidget(const std::string &title = "" , ContentType _contentType = Vertical );
+
+    ContainerWidget(const std::string &title = "" );
 
     WContainerWidget* Header();
     WContainerWidget* Content();

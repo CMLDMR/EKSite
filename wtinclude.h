@@ -36,6 +36,8 @@
 #include <Wt/WTemplate.h>
 #include <Wt/WDateEdit.h>
 #include <Wt/WTimer.h>
+#include <Wt/WLabel.h>
+#include <Wt/WSpinBox.h>
 
 #include <Wt/WTheme.h>
 #include <iostream>

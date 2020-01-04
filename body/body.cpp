@@ -11,6 +11,7 @@ Body::Body(DB *_db)
 
 
     girisText->clicked ().connect ([=](){
+        this->Footer ()->clear ();
         Content ()->clear ();
         auto adminPage = Content ()->addWidget (cpp14::make_unique<Admin>(this->getDB ()));
         adminPage->addStyleClass (Bootstrap::Grid::col_full_12);

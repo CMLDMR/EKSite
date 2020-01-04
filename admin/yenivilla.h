@@ -3,14 +3,23 @@
 
 #include "eCore/containerwiget.h"
 #include "villa/villa.h"
+#include "eCore/db.h"
 
-class YeniVilla : public ContainerWidget
+class YeniVilla : public ContainerWidget , public VillaItem
 {
 public:
-    YeniVilla();
-
+    YeniVilla(eCore::DB* _db);
 
     WContainerWidget* mFotoContainerWidget;
+
+    Signal<NoClass> &ClickBack();
+
+private:
+    Signal<NoClass> _ClickBack;
+
+    WContainerWidget* ekFotoContainer;
+
+    eCore::DB* mDB;
 };
 
 #endif // YENIVILLA_H
