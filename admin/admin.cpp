@@ -12,7 +12,17 @@ Admin::Admin(eCore::DB* _db)
     ekle->clicked ().connect ([=](){
         Header ()->clear ();
         Content ()->clear ();
-        Content ()->addWidget (cpp14::make_unique<YeniVilla>());
+        auto yeniVillaWidget = Content ()->addWidget (cpp14::make_unique<YeniVilla>(this->getDB ()));
+        yeniVillaWidget->ClickBack ().connect (this,&Admin::initVillalar);
     });
 
+    this->initVillalar ();
+
+}
+
+void Admin::initVillalar()
+{
+    Content ()->clear ();
+    auto villalarWidget = Content ()->addWidget (cpp14::make_unique<VillaManager>(this->getDB (),true));
+    villalarWidget->UpdateList (VillaItem(),100,0);
 }
