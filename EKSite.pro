@@ -36,9 +36,11 @@ SOURCES += \
     eCore/db.cpp \
     eCore/item.cpp \
     eCore/listitem.cpp \
+    eWidget/evillawidget.cpp \
     main.cpp \
     mainapplication.cpp \
-    villa/villa.cpp
+    villa/villa.cpp \
+    villa/villamanager.cpp
 
 
 HEADERS += \
@@ -50,10 +52,12 @@ HEADERS += \
     eCore/db.h \
     eCore/item.h \
     eCore/listitem.h \
+    eWidget/evillawidget.h \
     inlinestyle.h \
     mainapplication.h \
     mongoheaders.h \
     villa/villa.h \
+    villa/villamanager.h \
     wtinclude.h
 
 FORMS +=
