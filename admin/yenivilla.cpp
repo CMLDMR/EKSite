@@ -57,8 +57,8 @@ YeniVilla::YeniVilla(eCore::DB *_db)
         auto container = rContainer->addWidget (cpp14::make_unique<WContainerWidget>());
         container->addStyleClass (Bootstrap::Grid::col_full_12);
         container->setContentAlignment (AlignmentFlag::Center);
-        auto villaName = container->addWidget (cpp14::make_unique<WLineEdit>());
-        villaName->setPlaceholderText ("Villa Adını Giriniz");
+        villaNameLineEdit = container->addWidget (cpp14::make_unique<WLineEdit>());
+        villaNameLineEdit->setPlaceholderText ("Villa Adını Giriniz");
     }
 
     {
@@ -77,14 +77,14 @@ YeniVilla::YeniVilla(eCore::DB *_db)
                                   Bootstrap::Grid::Medium::col_md_9+
                                   Bootstrap::Grid::Small::col_sm_9+
                                   Bootstrap::Grid::ExtraSmall::col_xs_9);
-        auto villaKisiSayisiLineEdit = container->addWidget (cpp14::make_unique<WSpinBox>());
+        villaKisiSayisiSpinBox = container->addWidget (cpp14::make_unique<WSpinBox>());
     }
 
 
     {
         auto container = rContainer->addWidget (cpp14::make_unique<WContainerWidget>());
         container->addStyleClass (Bootstrap::Grid::col_full_12);
-        auto villaKonumLineEdit = container->addWidget (cpp14::make_unique<WLineEdit>());
+        villaKonumLineEdit = container->addWidget (cpp14::make_unique<WLineEdit>());
         villaKonumLineEdit->setPlaceholderText ("Villa Konumunu Giriniz");
     }
 
@@ -106,7 +106,7 @@ YeniVilla::YeniVilla(eCore::DB *_db)
                                   Bootstrap::Grid::Medium::col_md_9+
                                   Bootstrap::Grid::Small::col_sm_9+
                                   Bootstrap::Grid::ExtraSmall::col_xs_9);
-        auto havuzComboBox = container->addWidget (cpp14::make_unique<WComboBox>());
+        havuzComboBox = container->addWidget (cpp14::make_unique<WComboBox>());
         havuzComboBox->addItem ("Havuzlu");
         havuzComboBox->addItem ("Ortak Havuzlu");
         havuzComboBox->addItem ("Yok");
@@ -115,8 +115,8 @@ YeniVilla::YeniVilla(eCore::DB *_db)
     {
         auto container = rContainer->addWidget (cpp14::make_unique<WContainerWidget>());
         container->addStyleClass (Bootstrap::Grid::col_full_12);
-        auto havuzComboBox = container->addWidget (cpp14::make_unique<WTextEdit>());
-        havuzComboBox->setHeight (350);
+        aciklamaTextEdit = container->addWidget (cpp14::make_unique<WTextEdit>());
+        aciklamaTextEdit->setHeight (350);
     }
 
 
@@ -158,11 +158,14 @@ YeniVilla::YeniVilla(eCore::DB *_db)
             FotoContainer->setHeight (100);
             FotoContainer->setMinimumSize (WLength::Auto,100);
             FotoContainer->setPositionScheme (PositionScheme::Relative);
+            FotoContainer->setAttributeValue (Style::userdata1,std::to_string (ekFotoList.size ()));
             auto delText = FotoContainer->addWidget (cpp14::make_unique<WText>("<b>X</b>",TextFormat::UnsafeXHTML));
             delText->addStyleClass (Bootstrap::Label::Danger);
             delText->setPositionScheme (PositionScheme::Absolute);
             delText->setOffsets (0,Side::Top|Side::Right);
             delText->decorationStyle ().setCursor (Cursor::PointingHand);
+
+            ekFotoList.push_back (uploaderContainer->fileLocation ());
 
             delText->clicked ().connect ([=](){
 
@@ -170,8 +173,16 @@ YeniVilla::YeniVilla(eCore::DB *_db)
 
                 yDialog->clicked ().connect ([=](){
 
-                    ekFotoContainer->removeWidget(FotoContainer);
 
+                    auto index = std::stoi (FotoContainer->attributeValue (Style::userdata1).toUTF8 ());
+
+                    if( ekFotoList.size () > index )
+                    {
+                        ekFotoList.removeAt (index);
+                        ekFotoContainer->removeWidget(FotoContainer);
+                    }else{
+                        this->showPopUpMessage ("Silinemedi","hata");
+                    }
                 });
 
             });
@@ -185,7 +196,25 @@ YeniVilla::YeniVilla(eCore::DB *_db)
         container->setContentAlignment (AlignmentFlag::Center);
         auto svBtn = container->addWidget (cpp14::make_unique<WPushButton>("Kaydet"));
         svBtn->addStyleClass (Bootstrap::Button::Primary);
-        _ClickBack.emit (NoClass());
+
+        svBtn->clicked ().connect ([=](){
+            this->setAdi (villaNameLineEdit->text ().toUTF8 ());
+            this->setYeri (villaKonumLineEdit->text ().toUTF8 ());
+            this->setKisiSayisi (villaKisiSayisiSpinBox->value ());
+            this->setHavuz (havuzComboBox->currentText ().toUTF8 ());
+            this->setTanim (aciklamaTextEdit->text ().toUTF8 ());
+            this->setYayinda (false);
+            for( auto fotoItem : ekFotoList )
+            {
+                auto val = this->mDB->uploadfile (fotoItem);
+                this->addFotoList (val.get_oid ().value);
+            }
+            mDB->insertItem (*this);
+            _ClickBack.emit (NoClass());
+        });
+
+
+
     }
 
 

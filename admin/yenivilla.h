@@ -8,17 +8,24 @@
 class YeniVilla : public ContainerWidget , public VillaItem
 {
 public:
-    YeniVilla(eCore::DB* _db);
+    explicit YeniVilla(eCore::DB* _db);
 
-    WContainerWidget* mFotoContainerWidget;
 
     Signal<NoClass> &ClickBack();
 
 private:
     Signal<NoClass> _ClickBack;
 
+    WContainerWidget* mFotoContainerWidget;
     WContainerWidget* ekFotoContainer;
 
+    WLineEdit* villaNameLineEdit;
+    WSpinBox* villaKisiSayisiSpinBox;
+    WLineEdit* villaKonumLineEdit;
+    WComboBox* havuzComboBox;
+    WTextEdit* aciklamaTextEdit;
+
+    QVector<QString> ekFotoList;
     eCore::DB* mDB;
 };
 
