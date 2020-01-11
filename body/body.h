@@ -3,11 +3,12 @@
 
 #include "eCore/containerwiget.h"
 #include "eCore/db.h"
+#include "villa/villamanager.h"
 
 class Body : public ContainerWidget , public eCore::DB
 {
 public:
-    Body(eCore::DB* _db);
+    explicit Body(eCore::DB* _db);
 };
 
 #endif // BODY_H
