@@ -22,6 +22,24 @@ namespace eWidget {
 
     };
 
+
+
+    class eVillaThumpWidget : public VillaItem , public ContainerWidget
+    {
+    public:
+        explicit eVillaThumpWidget( const VillaItem& villaItem , eCore::DB* _db );
+
+        virtual void errorOccured(const std::string &errorText) override;
+
+        Signal<bsoncxx::oid> &ClickedVilla();
+
+    private:
+
+        eCore::DB* mDB;
+
+        Signal<bsoncxx::oid> _clickedVilla;
+    };
+
 }
 
 
