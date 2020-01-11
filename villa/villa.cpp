@@ -49,6 +49,12 @@ VillaItem &VillaItem::setFotoOid(const std::string &fotoOid)
     return *this;
 }
 
+VillaItem &VillaItem::setFotoOid(const bsoncxx::oid &fotoOid)
+{
+    this->append(villaKey::fotoOid,fotoOid);
+    return *this;
+}
+
 VillaItem &VillaItem::setTanim(const std::string &tanim)
 {
     this->append(villaKey::tanim,tanim);

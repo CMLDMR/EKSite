@@ -31,6 +31,7 @@ public:
     VillaItem& setAdi( const std::string& adi );
     VillaItem& setYeri( const std::string& yeri );
     VillaItem& setFotoOid( const std::string& fotoOid );
+    VillaItem& setFotoOid( const bsoncxx::oid& fotoOid );
     VillaItem& setTanim( const std::string& tanim );
     VillaItem& setKisiSayisi( const int& kisiSayisi );
     VillaItem& setHavuz( const std::string &havuz );
