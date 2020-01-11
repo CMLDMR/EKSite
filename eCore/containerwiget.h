@@ -22,6 +22,11 @@ public:
 
     void setTitleBarBackColor( const std::string& color = Style::color::Purple::MidnightBlue );
 
+    void setBackGroundImg( const std::string& url ,
+                           const std::string& size = Style::background::size::cover ,
+                           const std::string& repeat = Style::background::repeat::norepeat ,
+                           const std::string& position = Style::background::position::center_center );
+
 
 
     WPushButton *askConfirm( const std::string& question );

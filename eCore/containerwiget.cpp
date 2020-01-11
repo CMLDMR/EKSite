@@ -52,6 +52,15 @@ void ContainerWidget::setTitleBarBackColor(const std::string &color)
     mTitleBar->setAttributeValue (Style::style,Style::background::color::color (color));
 }
 
+void ContainerWidget::setBackGroundImg(const std::string &url, const std::string &size, const std::string &repeat, const std::string &position)
+{
+    auto attributeStr = this->attributeValue (Style::style).toUTF8 ();
+
+    attributeStr += Style::background::url (url)+size+repeat+position;
+
+    this->setAttributeValue (Style::style,attributeStr);
+}
+
 WPushButton* ContainerWidget::askConfirm(const std::string &question)
 {
     auto mDialog = wApp->instance()->root()->addChild (cpp14::make_unique<WDialog>());
