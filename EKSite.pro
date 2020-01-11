@@ -36,6 +36,7 @@ SOURCES += \
     eCore/db.cpp \
     eCore/item.cpp \
     eCore/listitem.cpp \
+    eWidget/evillapage.cpp \
     eWidget/evillawidget.cpp \
     main.cpp \
     mainapplication.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     eCore/db.h \
     eCore/item.h \
     eCore/listitem.h \
+    eWidget/evillapage.h \
     eWidget/evillawidget.h \
     inlinestyle.h \
     mainapplication.h \
