@@ -24,10 +24,7 @@ MainApplication::MainApplication(const Wt::WEnvironment &env)
     this->initConfigration();
 
     auto body = root()->addWidget(cpp14::make_unique<ContainerWidget>());
-
     root ()->addWidget (cpp14::make_unique<Body>(mDB));
-
-//    body->showPopUpMessage (WString("sd sdfg dfg dfg ").toUTF8 (),"msg");
 
 }
 
