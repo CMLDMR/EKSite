@@ -6,6 +6,7 @@
 #include "eCore/listitem.h"
 #include "villa.h"
 #include "eWidget/evillawidget.h"
+#include "eWidget/evillapage.h"
 
 class VillaManager : public ContainerWidget, public eCore::ListItem<VillaItem>
 {

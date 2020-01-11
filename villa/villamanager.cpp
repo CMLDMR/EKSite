@@ -2,7 +2,7 @@
 #include "eWidget/evillawidget.h"
 VillaManager::VillaManager(DB *_db , const bool& _adminPage)
     :eCore::ListItem<VillaItem> (_db),
-      ContainerWidget ("Villalar"),
+      ContainerWidget (),
       mAdminPage(_adminPage)
 {
     setContentAlignment (AlignmentFlag::Center);
@@ -48,14 +48,15 @@ void VillaManager::initPublicList( const QVector<VillaItem> *mlist )
     for( auto item : *mlist )
     {
         auto container = Content ()->addWidget (cpp14::make_unique<eWidget::eVillaThumpWidget>(item,this->getDB ()));
-        container->addStyleClass (Bootstrap::Grid::col_full_12);
         container->addStyleClass (Bootstrap::Grid::Large::col_lg_3+
                                   Bootstrap::Grid::Medium::col_md_3+
                                   Bootstrap::Grid::Small::col_sm_4+
                                   Bootstrap::Grid::ExtraSmall::col_xs_6);
         container->ClickedVilla ().connect ([=]( const bsoncxx::oid& oid ){
 
-            std::cout << oid.to_string ()<< std::endl;
+            Content ()->clear ();
+            auto villaPage = Content ()->addWidget (cpp14::make_unique<eWidget::eVillaPage>(item,this->getDB ()));
+            villaPage->addStyleClass (Bootstrap::Grid::col_full_12);
         });
     }
 }
