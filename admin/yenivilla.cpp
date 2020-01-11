@@ -38,7 +38,7 @@ YeniVilla::YeniVilla(eCore::DB *_db)
             mFotoContainerWidget->setWidth (250);
             mFotoContainerWidget->setHeight (150);
             mFotoContainerWidget->setMinimumSize (250,150);
-
+            mFotoPath = uploaderContainer->fileLocation ();
         });
     }
 
@@ -198,6 +198,11 @@ YeniVilla::YeniVilla(eCore::DB *_db)
         svBtn->addStyleClass (Bootstrap::Button::Primary);
 
         svBtn->clicked ().connect ([=](){
+
+            auto _fotoOid = this->mDB->uploadfile (mFotoPath);
+
+            this->setFotoOid (_fotoOid.get_oid ().value);
+
             this->setAdi (villaNameLineEdit->text ().toUTF8 ());
             this->setYeri (villaKonumLineEdit->text ().toUTF8 ());
             this->setKisiSayisi (villaKisiSayisiSpinBox->value ());

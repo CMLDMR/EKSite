@@ -25,6 +25,7 @@ private:
     WComboBox* havuzComboBox;
     WTextEdit* aciklamaTextEdit;
 
+    QString mFotoPath;
     QVector<QString> ekFotoList;
     eCore::DB* mDB;
 };
