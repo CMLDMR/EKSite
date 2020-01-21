@@ -3,14 +3,13 @@
 Body::Body(DB *_db)
     :ContainerWidget ("Villacım ( Saturday Night )"),eCore::DB (_db)
 {
-
     auto villaManagerPage = this->Content ()->addWidget (cpp14::make_unique<VillaManager>(this->getDB ()));
     villaManagerPage->UpdateList ();
+    this->initFooter ();
+}
 
-
-
-
-
+void Body::initFooter()
+{
 
     Footer ()->setMargin (50,Side::Top);
     Footer ()->setHeight (100);

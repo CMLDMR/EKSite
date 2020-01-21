@@ -9,6 +9,9 @@ class Body : public ContainerWidget , public eCore::DB
 {
 public:
     explicit Body(eCore::DB* _db);
+
+
+    void initFooter();
 };
 
 #endif // BODY_H
