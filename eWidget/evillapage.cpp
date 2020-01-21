@@ -1,5 +1,7 @@
 #include "evillapage.h"
 
+#include "erezervationsearchwidget.h"
+
 
 eWidget::eVillaPage::eVillaPage(const VillaItem &villaItem, eCore::DB *_db, const bool &initPublicLink )
     :VillaItem (villaItem),mDB(_db),ContainerWidget (villaItem.adi ())
@@ -23,13 +25,31 @@ void eWidget::eVillaPage::initPublic()
         iconContainer->setHeight (350);
     }
 
+    {
+
+        auto container = Header ()->addWidget (cpp14::make_unique<WContainerWidget>());
+        container->setMargin (15,Side::Top|Side::Bottom);
+        container->addStyleClass (Bootstrap::Grid::col_full_12);
+        container->setAttributeValue (Style::style,Style::background::color::color (Style::color::Pink::DeepPink));
+        auto text = container->addWidget (cpp14::make_unique<WText>("<h5>Rezervasyon Yap</h5>",TextFormat::UnsafeXHTML));
+        text->setAttributeValue (Style::style,Style::color::color (Style::color::White::Snow)+Style::font::weight::bold);
+        container->addStyleClass ("boxShadow boxRadius");
+        container->decorationStyle ().setCursor (Cursor::PointingHand);
+
+        container->clicked ().connect (this,&eWidget::eVillaPage::initRezervasion);
+    }
+
 
 
     Content ()->clear ();
     Content ()->addStyleClass ("boxShadow boxRadius");
     Content ()->setMargin (30,Side::Top);
 
-    auto kisiContainer = Content ()->addWidget (cpp14::make_unique<WContainerWidget>());
+    Footer ()->clear ();
+    Footer ()->setMargin (30,Side::Top);
+    Footer ()->addStyleClass ("boxShadow boxRadius");
+
+    auto kisiContainer = Footer ()->addWidget (cpp14::make_unique<WContainerWidget>());
     kisiContainer->addStyleClass (Bootstrap::Grid::Large::col_lg_2+
                                   Bootstrap::Grid::Medium::col_md_3+
                                   Bootstrap::Grid::Small::col_sm_4+
@@ -39,7 +59,7 @@ void eWidget::eVillaPage::initPublic()
     kisiContainer->setMargin (15,Side::Top|Side::Bottom);
 
 
-    auto havuzContainer = Content ()->addWidget (cpp14::make_unique<WContainerWidget>());
+    auto havuzContainer = Footer ()->addWidget (cpp14::make_unique<WContainerWidget>());
     havuzContainer->addStyleClass (Bootstrap::Grid::Large::col_lg_3+
                                    Bootstrap::Grid::Medium::col_md_3+
                                    Bootstrap::Grid::Small::col_sm_4+
@@ -50,7 +70,7 @@ void eWidget::eVillaPage::initPublic()
 
 
 
-    auto yerContainer = Content ()->addWidget (cpp14::make_unique<WContainerWidget>());
+    auto yerContainer = Footer ()->addWidget (cpp14::make_unique<WContainerWidget>());
     yerContainer->addStyleClass (Bootstrap::Grid::Large::col_lg_3+
                                    Bootstrap::Grid::Medium::col_md_3+
                                    Bootstrap::Grid::Small::col_sm_4+
@@ -60,16 +80,14 @@ void eWidget::eVillaPage::initPublic()
     yerContainer->setMargin (15,Side::Top|Side::Bottom);
 
 
-    auto tanimContainer = Content ()->addWidget (cpp14::make_unique<WContainerWidget>());
+    auto tanimContainer = Footer ()->addWidget (cpp14::make_unique<WContainerWidget>());
     tanimContainer->addStyleClass (Bootstrap::Grid::col_full_12);
     tanimContainer->setContentAlignment (AlignmentFlag::Center);
     tanimContainer->addWidget (cpp14::make_unique<WText>("<b>"+this->tanim ()+"</b>",TextFormat::UnsafeXHTML));
     tanimContainer->setMargin (15,Side::Top|Side::Bottom);
 
 
-    Footer ()->clear ();
-    Footer ()->setMargin (30,Side::Top);
-    Footer ()->addStyleClass ("boxShadow boxRadius");
+
 
     for( auto item : this->fotoList () )
     {
@@ -106,6 +124,16 @@ void eWidget::eVillaPage::initPublic()
 
 void eWidget::eVillaPage::initAdmin()
 {
+
+}
+
+void eWidget::eVillaPage::initRezervasion()
+{
+
+    Content ()->clear ();
+
+    Content ()->setHeight (300);
+
 
 }
 

@@ -14,6 +14,8 @@ public:
 
     void initAdmin();
 
+    void initRezervasion();
+
     void errorOccured(const std::string &errorText) override;
 
 private:
